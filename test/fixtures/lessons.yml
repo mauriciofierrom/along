@@ -1,0 +1,7 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+layla:
+  name: "Layla - Eric Clapton"
+  video_url: https://youtube.com/something
+  instrument: guitar
+  order: 1

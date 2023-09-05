@@ -1,3 +1,3 @@
 class Instrument < ApplicationRecord
-  valdates :name, presence: true
+  validates :name, presence: true
 end
