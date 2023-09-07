@@ -62,6 +62,11 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  # Linting
+  gem "rubocop", require: false
+  gem "reek", require: false
+  gem "flog", require: false
 end
 
 group :test do
