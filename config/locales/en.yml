@@ -31,3 +31,14 @@
 
 en:
   hello: "Hello world"
+  lesson:
+  activerecord:
+    attributes:
+      lesson:
+        video_url: "Video URL"
+    errors:
+      models:
+        lesson:
+          attributes:
+            video_url:
+              host_not_allowed: "Host is not allowed"
