@@ -2,7 +2,7 @@ require "application_system_test_case"
 
 class LessonsTest < ApplicationSystemTestCase
   setup do
-    @lesson = lessons(:one)
+    @lesson = lessons(:layla)
   end
 
   test "visiting the index" do
@@ -14,10 +14,9 @@ class LessonsTest < ApplicationSystemTestCase
     visit lessons_url
     click_on "New lesson"
 
-    fill_in "Instrument", with: @lesson.instrument_id
-    fill_in "Name", with: @lesson.name
-    fill_in "Order", with: @lesson.order
-    fill_in "Video url", with: @lesson.video_url
+    select "Guitar", from: "Instrument"
+    fill_in "Name", with: "Wild Blue"
+    fill_in "Video URL", with: "https://youtube.com/something2"
     click_on "Create Lesson"
 
     assert_text "Lesson was successfully created"
@@ -28,10 +27,9 @@ class LessonsTest < ApplicationSystemTestCase
     visit lesson_url(@lesson)
     click_on "Edit this lesson", match: :first
 
-    fill_in "Instrument", with: @lesson.instrument_id
-    fill_in "Name", with: @lesson.name
-    fill_in "Order", with: @lesson.order
-    fill_in "Video url", with: @lesson.video_url
+    select "Guitar", from: "Instrument"
+    fill_in "Name", with: "New Light"
+    fill_in "Video URL", with: "https://youtube.com/other"
     click_on "Update Lesson"
 
     assert_text "Lesson was successfully updated"

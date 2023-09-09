@@ -2,7 +2,7 @@ require "test_helper"
 
 class LessonsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @lesson = lessons(:one)
+    @lesson = lessons(:layla)
   end
 
   test "should get index" do
@@ -17,7 +17,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create lesson" do
     assert_difference("Lesson.count") do
-      post lessons_url, params: { lesson: { instrument_id: @lesson.instrument_id, name: @lesson.name, order: @lesson.order, video_url: @lesson.video_url } }
+      post lessons_url, params: { lesson: { instrument_id: @lesson.instrument_id, name: "New Lesson", order: @lesson.order + 1, video_url: "https://youtu.be/other" } }
     end
 
     assert_redirected_to lesson_url(Lesson.last)
@@ -34,7 +34,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update lesson" do
-    patch lesson_url(@lesson), params: { lesson: { instrument_id: @lesson.instrument_id, name: @lesson.name, order: @lesson.order, video_url: @lesson.video_url } }
+    patch lesson_url(@lesson), params: { lesson: { instrument_id: @lesson.instrument_id, name: "Updated Lesson", order: @lesson.order + 2, video_url: "https://youtu.be/another" } }
     assert_redirected_to lesson_url(@lesson)
   end
 
