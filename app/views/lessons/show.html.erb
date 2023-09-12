@@ -8,3 +8,11 @@
 
   <%= button_to "Destroy this lesson", @lesson, method: :delete %>
 </div>
+
+<h2>Sections</h2>
+
+<% @lesson.sections.each do |section| %>
+  <%= render "sections/section", lesson: @lesson, section: section %>
+<% end %>
+
+<%= link_to "New section", new_lesson_section_path(@lesson) %>

@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  start_time: 2023-09-11 20:14:59
+  end_time: 2023-09-11 20:14:59
+  playback_speed: 9.99
+  finished: false
+  current: false
+  loop: false
+  lesson: one
+
+two:
+  name: MyString
+  start_time: 2023-09-11 20:14:59
+  end_time: 2023-09-11 20:14:59
+  playback_speed: 9.99
+  finished: false
+  current: false
+  loop: false
+  lesson: two

@@ -1,0 +1,36 @@
+<details id="<%= dom_id section %>">
+  <summary> <%= section.name %></summary>
+
+  <p>
+    <strong>Start time:</strong>
+    <%= format_start_time(section) %>
+  </p>
+
+  <p>
+    <strong>End time:</strong>
+    <%= format_end_time(section) %>
+  </p>
+
+  <p>
+    <strong>Playback speed:</strong>
+    <%= format_playback_speed(section.playback_speed) %>
+  </p>
+
+  <p>
+    <% if section.finished %>
+    <strong>Finished</strong>
+    <% end %>
+  </p>
+
+  <p>
+    <strong>Current:</strong>
+    <%= section.current %>
+  </p>
+
+  <p>
+  <% if section.loop %>
+    <strong>Loop</strong>
+  <% end %>
+  </p>
+  <%= link_to "Edit section", [:edit, lesson, section] %>
+</details>
