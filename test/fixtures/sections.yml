@@ -1,21 +1,29 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  start_time: 2023-09-11 20:14:59
-  end_time: 2023-09-11 20:14:59
-  playback_speed: 9.99
+  name: Intro
+  start_time_hour: 0
+  start_time_minute: 1
+  start_time_second: 23
+  end_time_hour: 0
+  end_time_minute: 2
+  end_time_second: 45
+  playback_speed: 1.0
   finished: false
   current: false
-  loop: false
-  lesson: one
+  loop: true
+  lesson: layla
 
 two:
-  name: MyString
-  start_time: 2023-09-11 20:14:59
-  end_time: 2023-09-11 20:14:59
-  playback_speed: 9.99
+  name: Signature riff
+  start_time_hour: 0
+  start_time_minute: 1
+  start_time_second: 23
+  end_time_hour: 0
+  end_time_minute: 2
+  end_time_second: 45
+  playback_speed: 1.5
   finished: false
   current: false
-  loop: false
-  lesson: two
+  loop: true
+  lesson: layla
