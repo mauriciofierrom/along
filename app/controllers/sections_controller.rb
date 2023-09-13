@@ -35,7 +35,7 @@ class SectionsController < ApplicationController
     @section.destroy
 
     respond_to do |format|
-      format.html { redirect_to sections_url, notice: "Section was successfully destroyed." }
+      format.html { redirect_to lesson_url(@lesson), notice: "Section was successfully destroyed." }
     end
   end
 
