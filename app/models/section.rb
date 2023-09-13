@@ -32,13 +32,13 @@ class Section < ApplicationRecord
   validates :start_time,
     numericality: {
       less_than:  -> (section) { section.lesson.duration_in_seconds },
-      message: -> (object, data) { "must be less than #{object.start_time}" }
+      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" }
     }
 
   validates :end_time,
     numericality: {
       less_than_or_equal_to: -> (section) { section.lesson.duration_in_seconds },
-      message: -> (object, data) { "must be less than #{object.start_time}" }
+      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" }
     }
 
   validates :end_time,
