@@ -3,46 +3,63 @@ require "test_helper"
 class SectionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @section = sections(:one)
-  end
-
-  test "should get index" do
-    get sections_url
-    assert_response :success
+    @lesson = lessons(:layla)
   end
 
   test "should get new" do
-    get new_section_url
+    get new_lesson_section_url(@lesson, @section)
     assert_response :success
   end
 
   test "should create section" do
     assert_difference("Section.count") do
-      post sections_url, params: { section: { current: @section.current, end_time: @section.end_time, finished: @section.finished, lesson_id: @section.lesson_id, loop: @section.loop, name: @section.name, playback_speed: @section.playback_speed, start_time: @section.start_time } }
+      post lesson_sections_url(@lesson),
+        params: { section: {
+          current: false,
+          start_time_hour: 0,
+          start_time_minute: 3,
+          start_time_second: 15,
+          end_time_hour: 0,
+          end_time_minute: 5,
+          end_time_second: 25,
+          finished: false,
+          loop: true,
+          name: "Strange Brew",
+          playback_speed: 2.5,
+        }}
     end
 
-    assert_redirected_to section_url(Section.last)
-  end
-
-  test "should show section" do
-    get section_url(@section)
-    assert_response :success
+    assert_redirected_to lesson_url(@lesson)
   end
 
   test "should get edit" do
-    get edit_section_url(@section)
+    get edit_lesson_section_url(@lesson, @section)
     assert_response :success
   end
 
   test "should update section" do
-    patch section_url(@section), params: { section: { current: @section.current, end_time: @section.end_time, finished: @section.finished, lesson_id: @section.lesson_id, loop: @section.loop, name: @section.name, playback_speed: @section.playback_speed, start_time: @section.start_time } }
-    assert_redirected_to section_url(@section)
+    patch lesson_section_url(@lesson, @section),
+        params: { section: {
+          current: true,
+          start_time_hour: 0,
+          start_time_minute: 3,
+          start_time_second: 15,
+          end_time_hour: 0,
+          end_time_minute: 5,
+          end_time_second: 25,
+          finished: true,
+          loop: false,
+          name: "White Room",
+          playback_speed: 0.5,
+        }}
+    assert_redirected_to lesson_url(@lesson)
   end
 
   test "should destroy section" do
     assert_difference("Section.count", -1) do
-      delete section_url(@section)
+      delete lesson_section_url(@lesson, @section)
     end
 
-    assert_redirected_to sections_url
+    assert_redirected_to lesson_url(@lesson)
   end
 end
