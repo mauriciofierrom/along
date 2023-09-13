@@ -29,11 +29,14 @@ class LessonsTest < ApplicationSystemTestCase
 
     select "Guitar", from: "Instrument"
     fill_in "Name", with: "New Light"
-    fill_in "Video URL", with: "https://youtube.com/other"
+    fill_in "Video URL", with: "https://youtube.com/other-thing"
     click_on "Update Lesson"
 
     assert_text "Lesson was successfully updated"
-    click_on "Back"
+    click_on "Back to lessons"
+
+    assert_selector "h1", text: "Lessons"
+    assert_text "New Light"
   end
 
   test "should destroy Lesson" do

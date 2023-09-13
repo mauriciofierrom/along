@@ -17,23 +17,22 @@ class LessonsController < ApplicationController
 
   def create
     @lesson = Lesson.new(lesson_params)
-
-    respond_to do |format|
-      if @lesson.save
+    if @lesson.save
+      respond_to do |format|
         format.html { redirect_to lesson_url(@lesson), notice: "Lesson was successfully created." }
-      else
-        render :new, status: :unprocessable_entity
       end
+    else
+        render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |format|
-      if @lesson.update(lesson_params)
+    if @lesson.update(lesson_params)
+      respond_to do |format|
         format.html { redirect_to lesson_url(@lesson), notice: "Lesson was successfully updated." }
-      else
-        render :edit, status: :unprocessable_entity
       end
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -53,6 +52,6 @@ class LessonsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def lesson_params
-      params.require(:lesson).permit(:name, :video_url, :instrument_id, :order)
+      params.require(:lesson).permit(:name, :video_url, :instrument_id, :order, :duration_in_seconds)
     end
 end

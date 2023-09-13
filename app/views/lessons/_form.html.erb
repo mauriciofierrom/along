@@ -26,6 +26,8 @@
     <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }) %>
   </div>
 
+  <%= form.hidden_field :duration_in_seconds, value: 15 %>
+
   <div>
     <%= form.submit %>
   </div>
