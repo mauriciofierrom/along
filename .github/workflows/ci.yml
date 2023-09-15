@@ -9,9 +9,9 @@ jobs:
         ports: ['6379:6379']
         options: --entrypoint redis-server
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Setup Ruby
-        uses: actions/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.2
       - name: Build and run tests
