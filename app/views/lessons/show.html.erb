@@ -1,18 +1,26 @@
-<p style="color: green"><%= notice %></p>
+<div class="lesson-grid">
+  <%# <p style="color: green"><%= notice %1></p> %>
 
-<%= render @lesson %>
+  <div class="header">
+    <%# <%= render @lesson %1> %>
+    <%= @lesson.name %>
+    <div>
+      <%= link_to "Edit this lesson", edit_lesson_path(@lesson) %> |
+      <%= link_to "Back to lessons", lessons_path %>
 
-<div>
-  <%= link_to "Edit this lesson", edit_lesson_path(@lesson) %> |
-  <%= link_to "Back to lessons", lessons_path %>
+      <%= button_to "Destroy this lesson", @lesson, method: :delete %>
+    </div>
+  </div>
 
-  <%= button_to "Destroy this lesson", @lesson, method: :delete %>
+  <div class="video-player">
+  </div>
+
+  <div class="sections">
+    <%= link_to "New section", new_lesson_section_path(@lesson) %>
+    <div class="sections-selector">
+      <% @lesson.sections.each do |section| %>
+        <%= render "sections/section_item", lesson: @lesson, section: section %>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-<h2>Sections</h2>
-
-<% @lesson.sections.each do |section| %>
-  <%= render "sections/section", lesson: @lesson, section: section %>
-<% end %>
-
-<%= link_to "New section", new_lesson_section_path(@lesson) %>

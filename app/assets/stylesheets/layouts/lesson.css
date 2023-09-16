@@ -1,0 +1,52 @@
+.lesson-grid {
+  display: grid;
+  border: 2px solid yellow;
+  grid-template-columns: 5% minmax(0, 1fr) 5%;
+  grid-template-rows: auto;
+  row-gap: 10px;
+  grid-template-areas:
+    ". header ."
+    ". video ."
+    ". sections .";
+}
+
+.header {
+  grid-area: header;
+  border: 2px solid green;
+}
+
+.video-player {
+  border: 2px solid red;
+  height: 480px;
+  grid-area: video;
+}
+
+.sections {
+  border: 2px solid blue;
+  height: 150px;
+  grid-area: sections;
+}
+
+.sections-selector {
+  overflow: auto;
+  white-space: nowrap;
+  padding: 10px;
+  /* Hide the scrollbar in Firefox */
+  scrollbar-width: none;
+
+  /* Hide the scrollbar in IE/Edge */
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbar in Webkit browsers */
+.sections-selector::-webkit-scrollbar {
+  display: none;
+}
+
+.section {
+  border: 2px solid black;
+  width: 200px;
+  height: 100px;
+  display: inline-block;
+  cursor: pointer;
+}
