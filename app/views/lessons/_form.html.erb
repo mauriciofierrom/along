@@ -18,7 +18,7 @@
 
   <div>
     <%= form.label :video_url, style: "display: block" %>
-    <%= form.text_field :video_url %>
+    <%= form.text_field :video_url, data: { action: "input->player#load", "player-target" =>  "source" } %>
   </div>
 
   <div>
@@ -26,7 +26,7 @@
     <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }) %>
   </div>
 
-  <%= form.hidden_field :duration_in_seconds, value: 15 %>
+  <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
 
   <div>
     <%= form.submit %>
