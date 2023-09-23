@@ -1,10 +1,20 @@
-<div class="range">
+<div class="range" data-controller="range">
    <div class="range-slider">
      <span class="range-selected"></span>
    </div>
    <div class="range-input">
-     <%= range_field_tag :min, 0, class: "min", min: 0.0, max: lesson.duration_in_seconds, step: 0.01 %>
-     <%= range_field_tag :max, lesson.duration_in_seconds, class: "max", min: 0.01, max: lesson.duration_in_seconds, step: 0.01 %>
+     <%= range_field_tag :min, 0,
+       class: "min",
+       min: 0.0,
+       max: lesson.duration_in_seconds,
+       step: 0.01,
+       data: { action: "input->range#update", "range-target" => "min" } %>
+     <%= range_field_tag :max, lesson.duration_in_seconds,
+       class: "max",
+       min: 0.01,
+       max: lesson.duration_in_seconds,
+       step: 0.01,
+       data: { action: "input->range#update", "range-target" => "max" } %>
      <%# <input type="range" class="min" min="0" max="1000" value="300" step="10"> %>
      <%# <input type="range" class="max" min="0" max="1000" value="700" step="10"> %>
    </div>

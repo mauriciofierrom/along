@@ -39,7 +39,7 @@ export default class extends Controller {
     }
   }
 
-  load() {
+  #load() {
     this.durationTarget.value = "";
     try {
       let formattedUrl = this.formatUrl(this.sourceTarget.value)
@@ -52,10 +52,9 @@ export default class extends Controller {
     }
   }
 
-  formatUrl(url) {
+  #formatUrl(url) {
     let baseUrl = "https://youtu.be/v"
     let parsedUrl = new URL(url)
     return `${baseUrl}${parsedUrl.pathname}`
   }
-
 }
