@@ -1,7 +1,7 @@
 <h1>New section</h1>
 
-<div>
-  <div id="player" style="display: none"></div>
+<div data-controller="player" data-video-id=<%= video_id(@lesson) %>>
+  <div id="player"></div>
 </div>
 
 <%= render "range", lesson: @lesson %>

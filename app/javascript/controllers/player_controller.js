@@ -14,11 +14,13 @@ export default class extends Controller {
   }
 
   initialize() {
+    const videoId = this.element.dataset.videoId;
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
       this.player = new YT.Player('player', {
         width: '640',
         height: '390',
+        videoId: videoId || '',
         playerVars: {
           'controls': 0,
         },
