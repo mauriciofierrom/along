@@ -41,10 +41,10 @@ export default class extends Controller {
     }
   }
 
-  #load() {
+  load() {
     this.durationTarget.value = "";
     try {
-      let formattedUrl = this.formatUrl(this.sourceTarget.value)
+      let formattedUrl = this.#formatUrl(this.sourceTarget.value)
       this.player.loadVideoByUrl(formattedUrl)
       this.durationTarget.value = this.player.getDuration()
       this.element.children[0].style = "";
