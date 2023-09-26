@@ -48,5 +48,5 @@ class Section < ApplicationRecord
 
   validates :playback_speed,
     presence: true,
-    inclusion: { in: 0.5.step(by: 0.5, to: 2.5) }
+    inclusion: { in: 0.5.step(by: 0.5, to: 2.0) }
 end
