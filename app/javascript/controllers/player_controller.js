@@ -3,6 +3,12 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   player;
   loaded;
+  start;
+  end;
+  loop;
+  videoId;
+  endIntervalId;
+
   static targets = [ "source", "duration" ]
 
   connect() {
@@ -14,13 +20,15 @@ export default class extends Controller {
   }
 
   initialize() {
-    const videoId = this.element.dataset.videoId;
+    this.videoId = this.element.dataset.videoId
+    this.loop = this.element.dataset.loop === "true" ? true : false
+    this.start = this.element.dataset.start || 0.00;
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
       this.player = new YT.Player('player', {
         width: '640',
         height: '390',
-        videoId: videoId || '',
+        videoId: this.videoId || '',
         playerVars: {
           'controls': 0,
         },
@@ -29,9 +37,29 @@ export default class extends Controller {
             console.log("ready")
           },
           'onStateChange': (evt) => {
-            if (evt.data == YT.PlayerState.PLAYING)
-              this.durationTarget.value = Math.floor(this.player.getDuration())
             console.log(`state changed to: ${evt.data}. duration: ${this.player.getDuration()}`)
+            switch (evt.data) {
+              case YT.PlayerState.PLAYING:
+                if (this.end == null || this.end == undefined)
+                  this.end = this.element.dataset.end || this.player.getDuration()
+
+                if (this.hasDurationTarget)
+                  this.durationTarget.value = Math.floor(this.player.getDuration())
+
+                this.onPlaying()
+
+                break;
+              case YT.PlayerState.ENDED:
+                if (this.loop) {
+                  this.player.seekTo(this.start)
+                }
+                break;
+              case YT.PlayerState.PAUSED:
+                clearInterval(this.endIntervalId)
+                break;
+              default:
+                console.log("Not using this event yet")
+            }
           },
           'onError': (evt) => {
             consolelog(`error: ${evt.data}`)
@@ -52,6 +80,30 @@ export default class extends Controller {
     catch (error) {
       console.log(error)
     }
+  }
+
+  startEndCheck(player, endTime) {
+    console.log("startEndCheck")
+    return setInterval(() => {
+      if (this.player.getCurrentTime() >= this.end)
+        this.player.seekTo(this.start)
+    }, 0.5)
+  }
+
+  // Used as a reference from other controllers. Allows overriding the start/end
+  // values. Used from sections
+  playFromTo(start, end) {
+    this.start = start
+    this.end = end
+
+    this.player.seekTo(start)
+    this.onPlaying()
+  }
+
+  onPlaying() {
+    // TODO: Do I have to check if its null to set it or something like that?
+    // this is rather ugly
+    this.endIntervalId = this.startEndCheck(this.player, this.end)
   }
 
   #formatUrl(url) {

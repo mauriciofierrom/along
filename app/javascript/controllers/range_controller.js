@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = [ "min", "max" ]
+  static outlets = [ "player" ]
 
   connect() {
     console.log("connected range controller")
@@ -26,5 +27,8 @@ export default class extends Controller {
       range.style.left = (minRange / this.minTarget.max) * 100 + "%";
       range.style.right = 100 - (maxRange / this.maxTarget.max) * 100 + "%";
     }
+
+    // Start the player again
+    this.playerOutlet.playFromTo(this.minTarget.value, this.maxTarget.value)
   }
 }
