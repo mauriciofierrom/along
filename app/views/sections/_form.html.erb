@@ -21,26 +21,6 @@
   </div>
 
   <div>
-    <label>Start Time</label>
-
-    <%= form.text_field :start_time_hour, type: :number, style: "width: 80px" %>
-    :
-    <%= form.text_field :start_time_minute, type: :number, max: 59, style: "width: 70px" %>
-    :
-    <%= form.text_field :start_time_second, max: 59, type: :number, style: "width: 70px" %>
-  </div>
-
-  <div>
-    <label>End Time</label>
-
-    <%= form.text_field :end_time_hour, type: :number, style: "width: 80px" %>
-    :
-    <%= form.text_field :end_time_minute, type: :number, max: 59, style: "width: 70px" %>
-    :
-    <%= form.text_field :end_time_second, max: 59, type: :number, style: "width: 70px" %>
-  </div>
-
-  <div>
     <%= form.label :playback_speed, style: "display: block" %>
     <%= form.text_field :playback_speed, min: 0, max: 2.5, type: :number, step: 0.5 %>
   </div>

@@ -10,7 +10,17 @@ class SectionsController < ApplicationController
   end
 
   def create
-    @section = @lesson.sections.build(section_params)
+    start_time = VideoPoint.from_seconds(section_params[:start_time].to_i)
+    end_time = VideoPoint.from_seconds(section_params[:end_time].to_i)
+
+    updated_params = section_params
+
+    updated_params[:start_time] = start_time
+    updated_params[:end_time] = end_time
+
+    pp updated_params
+
+    @section = @lesson.sections.build(updated_params)
 
     respond_to do |format|
       if @section.save

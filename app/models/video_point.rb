@@ -16,14 +16,23 @@ class VideoPoint < Numeric
 
   def coerce(other)
     duration = ActiveSupport::Duration.build(other.to_i)
-    hour = duration[:hours] || 0
-    minute = duration[:minutes] || 0
-    second = duration[:seconds] || 0
+    hour = duration.parts[:hours] || 0
+    minute = duration.parts[:minutes] || 0
+    second = duration.parts[:seconds] || 0
 
-    self.class.new(hour, minute, second)
+    [self.class.new(hour, minute, second), other]
   end
 
   def to_s
     "#{@hour.to_s.rjust(2, "0")}:#{@minute.to_s.rjust(2, "0")}:#{@second.to_s.rjust(2, "0")}"
+  end
+
+  def self.from_seconds(seconds)
+    duration = ActiveSupport::Duration.build(seconds)
+    VideoPoint.new(
+      duration.parts[:hours] || 0,
+      duration.parts[:minutes] || 0,
+      duration.parts[:seconds] || 0
+    )
   end
 end
