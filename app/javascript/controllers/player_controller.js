@@ -8,6 +8,11 @@ export default class extends Controller {
   loop;
   videoId;
   endIntervalId;
+  settingEnd;
+  settingStart;
+  startPending;
+  endPending;
+  settingCount = 3;
 
   static targets = [ "source", "duration" ]
 
@@ -56,6 +61,7 @@ export default class extends Controller {
                 break;
               case YT.PlayerState.PAUSED:
                 clearInterval(this.endIntervalId)
+                this.endIntervalId = null
                 break;
               default:
                 console.log("Not using this event yet")
@@ -85,24 +91,52 @@ export default class extends Controller {
   startEndCheck(player, endTime) {
     console.log("startEndCheck")
     return setInterval(() => {
-      if (this.player.getCurrentTime() >= this.end)
+      if (this.player.getCurrentTime() >= this.end) {
+        if (this.startSetting || this.endSetting) {
+          this.settingCount--
+          if (this.settingCount == 0)
+            if (this.startSetting)
+              this.start = this.startPending
+            else
+              this.end = this.endPending
+            this.#resetSettingCount()
+        }
         this.player.seekTo(this.start)
+      }
     }, 0.5)
   }
 
   // Used as a reference from other controllers. Allows overriding the start/end
   // values. Used from sections
   playFromTo(start, end) {
-    this.start = start
-    this.end = end
+    if (this.start !== start) {
+      console.log("start changed")
+      this.settingEnd = false
+      this.settingStart = true
+      this.endPending = end
+      this.start = start
+      this.end = start + 3 // TODO: Check that the end isn't reached
+    }
 
-    this.player.seekTo(start)
+    if (this.end !== endPending) {
+      console.log("end changed")
+      this.settingStart = false
+      this.settingEnd = true
+      this.startPending = start
+      this.end = end
+      this.start = end - 3 // TODO: Check that the value isn't negative
+    }
+
+    this.player.seekTo(this.start)
     this.onPlaying()
   }
 
   onPlaying() {
     // TODO: Do I have to check if its null to set it or something like that?
     // this is rather ugly
+    if (this.endIntervalId != null && this.endIntervalId != undefined)
+      clearInterval(this.endIntervalId)
+
     this.endIntervalId = this.startEndCheck(this.player, this.end)
   }
 
@@ -110,5 +144,9 @@ export default class extends Controller {
     let baseUrl = "https://youtu.be/v"
     let parsedUrl = new URL(url)
     return `${baseUrl}${parsedUrl.pathname}`
+  }
+
+  #resetSettingCount() {
+    this.settingCount = 3;
   }
 }
