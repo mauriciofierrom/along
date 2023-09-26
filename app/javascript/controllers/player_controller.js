@@ -37,11 +37,14 @@ export default class extends Controller {
         height: '390',
         videoId: this.videoId || '',
         playerVars: {
+          'autoplay': this.element.dataset.auto === "true" ? 1 : 0,
+          'disablekb': 1,
           'controls': 0,
+          'start': this.start || 0
         },
         events: {
           'onReady': (evt) => {
-            console.log("ready")
+            console.log(`READY! Start: ${this.start} Duration: ${this.player.getDuration()}`)
           },
           'onStateChange': (evt) => {
             console.log(`state changed to: ${evt.data}. duration: ${this.player.getDuration()}`)
@@ -69,7 +72,7 @@ export default class extends Controller {
                 console.log(`Unstarted: ${this.player.getDuration()}`)
                 break;
               default:
-                console.log("Not using this event yet")
+                console.log(`Not using this event yet: ${evt.data}`)
             }
           },
           'onError': (evt) => {
