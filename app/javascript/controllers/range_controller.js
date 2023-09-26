@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { debounce } from "controllers/util";
 
 export default class extends Controller {
   static targets = [ "min", "max" ]
@@ -6,6 +7,10 @@ export default class extends Controller {
 
   connect() {
     console.log("connected range controller")
+  }
+
+  initialize() {
+    this.update = debounce(this.update.bind(this), 100)
   }
 
   update(e) {
@@ -29,6 +34,6 @@ export default class extends Controller {
     }
 
     // Start the player again
-    this.playerOutlet.playFromTo(this.minTarget.value, this.maxTarget.value)
+    this.playerOutlet.playFromTo(parseFloat(this.minTarget.value), parseFloat(this.maxTarget.value))
   }
 }

@@ -1,6 +1,6 @@
 <h1>New section</h1>
 
-<div class="player" data-controller="player" data-video-id=<%= video_id(@lesson) %> data-loop="true" data-start>
+<div class="player" data-controller="player" data-video-id=<%= video_id(@lesson) %> data-loop="true" data-end=<%= @lesson.duration_in_seconds %>>
   <div id="player"></div>
 </div>
 

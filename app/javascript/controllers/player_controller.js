@@ -27,7 +27,9 @@ export default class extends Controller {
   initialize() {
     this.videoId = this.element.dataset.videoId
     this.loop = this.element.dataset.loop === "true" ? true : false
-    this.start = this.element.dataset.start || 0.00;
+    this.start = this.element.dataset.start || 0.00
+    this.end = this.element.dataset.end
+
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
       this.player = new YT.Player('player', {
@@ -45,9 +47,6 @@ export default class extends Controller {
             console.log(`state changed to: ${evt.data}. duration: ${this.player.getDuration()}`)
             switch (evt.data) {
               case YT.PlayerState.PLAYING:
-                if (this.end == null || this.end == undefined)
-                  this.end = this.element.dataset.end || this.player.getDuration()
-
                 if (this.hasDurationTarget)
                   this.durationTarget.value = Math.floor(this.player.getDuration())
 
@@ -62,6 +61,12 @@ export default class extends Controller {
               case YT.PlayerState.PAUSED:
                 clearInterval(this.endIntervalId)
                 this.endIntervalId = null
+                break;
+              case YT.PlayerState.CUED:
+                console.log(`Cued: ${this.player.getDuration()}`)
+                break;
+              case -1:
+                console.log(`Unstarted: ${this.player.getDuration()}`)
                 break;
               default:
                 console.log("Not using this event yet")
@@ -92,14 +97,24 @@ export default class extends Controller {
     console.log("startEndCheck")
     return setInterval(() => {
       if (this.player.getCurrentTime() >= this.end) {
-        if (this.startSetting || this.endSetting) {
+        if (this.settingStart || this.settingEnd) {
           this.settingCount--
-          if (this.settingCount == 0)
-            if (this.startSetting)
-              this.start = this.startPending
-            else
+          if (this.settingCount == 0) {
+            this.settingStart = false
+            this.settingEnd = false
+
+            if (this.endPending != null && this.endPending != undefined) {
               this.end = this.endPending
+              this.endPending = null
+            }
+
+            if (this.startPending != null && this.startPending != undefined) {
+              this.start = this.startPending
+              this.startPending = null
+            }
+
             this.#resetSettingCount()
+          }
         }
         this.player.seekTo(this.start)
       }
@@ -109,7 +124,10 @@ export default class extends Controller {
   // Used as a reference from other controllers. Allows overriding the start/end
   // values. Used from sections
   playFromTo(start, end) {
-    if (this.start !== start) {
+    console.log(`Play from: ${this.start} to: ${this.end}`)
+    this.#resetPlayback()
+
+    if (!this.settingEnd && this.start !== start) {
       console.log("start changed")
       this.settingEnd = false
       this.settingStart = true
@@ -118,8 +136,8 @@ export default class extends Controller {
       this.end = start + 3 // TODO: Check that the end isn't reached
     }
 
-    if (this.end !== endPending) {
-      console.log("end changed")
+    if (!this.settingStart && this.end !== end) {
+      console.log(`end changed: from ${this.end} to ${end}`)
       this.settingStart = false
       this.settingEnd = true
       this.startPending = start
@@ -128,10 +146,10 @@ export default class extends Controller {
     }
 
     this.player.seekTo(this.start)
-    this.onPlaying()
   }
 
   onPlaying() {
+    console.log("on playing")
     // TODO: Do I have to check if its null to set it or something like that?
     // this is rather ugly
     if (this.endIntervalId != null && this.endIntervalId != undefined)
@@ -148,5 +166,24 @@ export default class extends Controller {
 
   #resetSettingCount() {
     this.settingCount = 3;
+  }
+
+  #resetPlayback() {
+    if(this.endIntervalId != null && this.endIntervalId != undefined) {
+      clearInterval(this.endIntervalId)
+      this.endIntervalId = null
+    }
+
+    if(this.startPending != null && this.startPending != undefined) {
+      this.start = this.startPending
+      this.startPending = null
+      this.settingStart = false
+    }
+
+    if(this.endPending != null && this.endPending != undefined) {
+      this.end = this.endPending
+      this.endPending = null
+      this.settingEnd = false
+    }
   }
 }
