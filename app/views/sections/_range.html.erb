@@ -3,23 +3,19 @@
      <span class="range-selected"></span>
    </div>
    <div class="range-input">
-     <%= range_field_tag :min, 0,
+     <%= form.range_field :start_time,
+       value: 0,
        class: "min",
        min: 0.0,
        max: lesson.duration_in_seconds,
        step: 0.01,
        data: { action: "input->range#update", "range-target" => "min" } %>
-     <%= range_field_tag :max, lesson.duration_in_seconds,
+     <%= form.range_field :end_time,
+       value: lesson.duration_in_seconds,
        class: "max",
        min: 0.01,
        max: lesson.duration_in_seconds,
        step: 0.01,
        data: { action: "input->range#update", "range-target" => "max" } %>
-   </div>
-   <div class="range-price">
-     <label for="min">Min</label>
-     <input type="number" name="min" value="300">
-     <label for="max">Max</label>
-     <input type="number" name="max" value="700">
    </div>
  </div>

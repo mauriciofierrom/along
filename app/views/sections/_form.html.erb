@@ -12,6 +12,10 @@
   <% end %>
 
   <div>
+    <%= render "range", lesson: @lesson, form: form %>
+  </div>
+
+  <div>
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: "Name of the section" %>
   </div>

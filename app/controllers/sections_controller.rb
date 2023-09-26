@@ -52,12 +52,8 @@ class SectionsController < ApplicationController
       params
         .require(:section)
         .permit(:name,
-                :start_time_hour,
-                :start_time_minute,
-                :start_time_second,
-                :end_time_hour,
-                :end_time_minute,
-                :end_time_second,
+                :start_time,
+                :end_time,
                 :playback_speed,
                 :current,
                 :finished,
