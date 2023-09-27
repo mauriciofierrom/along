@@ -100,24 +100,22 @@ export default class extends Controller {
     console.log("startEndCheck")
     return setInterval(() => {
       if (this.player.getCurrentTime() >= this.end) {
-        if (this.settingStart || this.settingEnd) {
-          this.settingCount--
-          if (this.settingCount == 0) {
-            this.settingStart = false
-            this.settingEnd = false
+        this.settingCount--
+        if (this.settingCount === 0) {
+          this.#resetSettingCount()
+          this.settingStart = false
+          this.settingEnd = false
 
-            if (this.endPending != null && this.endPending != undefined) {
-              this.end = this.endPending
-              this.endPending = null
-            }
-
-            if (this.startPending != null && this.startPending != undefined) {
-              this.start = this.startPending
-              this.startPending = null
-            }
-
-            this.#resetSettingCount()
+          if (this.endPending != null && this.endPending != undefined) {
+            this.end = this.endPending
+            this.endPending = null
           }
+
+          if (this.startPending != null && this.startPending != undefined) {
+            this.start = this.startPending
+            this.startPending = null
+          }
+
         }
         this.player.seekTo(this.start)
       }
@@ -130,8 +128,8 @@ export default class extends Controller {
     console.log(`Play from: ${this.start} to: ${this.end}`)
     this.#resetPlayback()
 
-    if (!this.settingEnd && this.start !== start) {
-      console.log("start changed")
+    if (this.start !== start) {
+      console.log(`Start changed: from ${this.start} to ${start}`)
       this.settingEnd = false
       this.settingStart = true
       this.endPending = end
@@ -139,8 +137,8 @@ export default class extends Controller {
       this.end = start + 3 // TODO: Check that the end isn't reached
     }
 
-    if (!this.settingStart && this.end !== end) {
-      console.log(`end changed: from ${this.end} to ${end}`)
+    if (this.end !== end) {
+      console.log(`End changed: from ${this.end} to ${end}`)
       this.settingStart = false
       this.settingEnd = true
       this.startPending = start
