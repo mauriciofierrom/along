@@ -4,10 +4,9 @@
   background-color: #e1e9f6;
   border-radius: 2px;
 }
+
 .range-selected {
   height: 100%;
-  left: 30%;
-  right: 30%;
   position: absolute;
   border-radius: 5px;
   background-color: #1b53c0;

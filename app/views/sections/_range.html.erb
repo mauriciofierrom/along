@@ -4,16 +4,16 @@
    </div>
    <div class="range-input">
      <%= form.range_field :start_time,
-       value: 0,
+       value: section.start_time.to_i.to_f || 0.0,
        class: "min",
        min: 0.0,
        max: lesson.duration_in_seconds,
        step: 0.01,
        data: { action: "input->range#update", "range-target" => "min" } %>
      <%= form.range_field :end_time,
-       value: lesson.duration_in_seconds,
+       value: section.end_time.to_i.to_f || lesson.duration_in_seconds.to_f,
        class: "max",
-       min: 0.01,
+       min: 0.04,
        max: lesson.duration_in_seconds,
        step: 0.01,
        data: { action: "input->range#update", "range-target" => "max" } %>

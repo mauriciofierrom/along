@@ -11,11 +11,17 @@ export default class extends Controller {
 
   initialize() {
     this.update = debounce(this.update.bind(this), 100)
+
+    // Set initial style for the slider range
+    const range = document.querySelector(".range-selected")
+    let minRange = parseFloat(this.minTarget.value)
+    let maxRange = parseFloat(this.maxTarget.value)
+    range.style.left = (minRange / this.minTarget.max) * 100 + "%";
+    range.style.right = 100 - (maxRange / this.maxTarget.max) * 100 + "%";
   }
 
   update(e) {
     const rangeMin = 0
-    console.log("update")
     const range = document.querySelector(".range-selected")
     let minRange = parseFloat(this.minTarget.value)
     let maxRange = parseFloat(this.maxTarget.value)
@@ -27,8 +33,6 @@ export default class extends Controller {
         this.maxTarget.value = minRange + rangeMin;
       }
     } else {
-      this.minTarget.value = minRange;
-      this.maxTarget.value = maxRange;
       range.style.left = (minRange / this.minTarget.max) * 100 + "%";
       range.style.right = 100 - (maxRange / this.maxTarget.max) * 100 + "%";
     }
