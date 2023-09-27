@@ -18,8 +18,6 @@ class SectionsController < ApplicationController
     updated_params[:start_time] = start_time
     updated_params[:end_time] = end_time
 
-    pp updated_params
-
     @section = @lesson.sections.build(updated_params)
 
     respond_to do |format|
