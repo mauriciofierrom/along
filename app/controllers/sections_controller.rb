@@ -30,8 +30,16 @@ class SectionsController < ApplicationController
   end
 
   def update
+    start_time = VideoPoint.from_seconds(section_params[:start_time].to_i)
+    end_time = VideoPoint.from_seconds(section_params[:end_time].to_i)
+
+    updated_params = section_params
+
+    updated_params[:start_time] = start_time
+    updated_params[:end_time] = end_time
+
     respond_to do |format|
-      if @section.update(section_params)
+      if @section.update(updated_params)
         format.html { redirect_to lesson_url(@lesson), notice: "Section was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
