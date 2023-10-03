@@ -137,7 +137,7 @@ export default class extends Controller {
       this.end = start + 3 // TODO: Check that the end isn't reached
     }
 
-    if (this.end !== end) {
+    if (!this.settingStart && this.end !== end) {
       console.log(`End changed: from ${this.end} to ${end}`)
       this.settingStart = false
       this.settingEnd = true
