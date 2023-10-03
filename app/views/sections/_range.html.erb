@@ -4,14 +4,14 @@
    </div>
    <div class="range-input">
      <%= form.range_field :start_time,
-       value: section.start_time.to_i.to_f || 0.0,
+       value: unless section.start_time_second.nil? then section.start_time.to_i.to_f else 0.0 end,
        class: "min",
        min: 0.0,
        max: lesson.duration_in_seconds,
        step: 0.01,
        data: { action: "input->range#update", "range-target" => "min" } %>
      <%= form.range_field :end_time,
-       value: section.end_time.to_i.to_f || lesson.duration_in_seconds.to_f,
+       value: unless section.end_time_second.nil? then section.end_time.to_i.to_f else lesson.duration_in_seconds.to_i.to_f end,
        class: "max",
        min: 0.04,
        max: lesson.duration_in_seconds,
