@@ -147,8 +147,6 @@ export default class extends Controller {
     console.log("on playing")
     // TODO: Do I have to check if its null to set it or something like that?
     // this is rather ugly
-    if (this.endIntervalId != null && this.endIntervalId != undefined)
-      clearInterval(this.endIntervalId)
 
     this.endIntervalId = this.startEndCheck(this.player, this.end)
   }
@@ -164,6 +162,9 @@ export default class extends Controller {
   }
 
   #resetPlayback() {
+    if (this.endIntervalId != null && this.endIntervalId != undefined)
+      clearInterval(this.endIntervalId)
+
     if(this.endIntervalId != null && this.endIntervalId != undefined) {
       clearInterval(this.endIntervalId)
       this.endIntervalId = null
