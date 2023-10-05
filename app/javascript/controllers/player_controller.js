@@ -50,9 +50,7 @@ export default class extends Controller {
               case YT.PlayerState.PLAYING:
                 if (this.hasDurationTarget)
                   this.durationTarget.value = Math.floor(this.player.getDuration())
-
                 this.onPlaying()
-
                 break;
               case YT.PlayerState.ENDED:
                 if (this.loop) {
@@ -62,10 +60,6 @@ export default class extends Controller {
               case YT.PlayerState.PAUSED:
                 clearInterval(this.endIntervalId)
                 this.endIntervalId = null
-                break;
-              case YT.PlayerState.CUED:
-                break;
-              case -1:
                 break;
               default:
             }
@@ -151,8 +145,6 @@ export default class extends Controller {
 
   onPlaying() {
     console.log("on playing")
-    // TODO: Do I have to check if its null to set it or something like that?
-    // this is rather ugly
 
     this.endIntervalId = this.startEndCheck(this.player, this.end)
   }
