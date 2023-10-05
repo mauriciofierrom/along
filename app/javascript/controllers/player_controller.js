@@ -119,7 +119,7 @@ export default class extends Controller {
         }
         this.player.seekTo(this.start)
       }
-    }, 0.5)
+    }, 500)
   }
 
   // Used as a reference from other controllers. Allows overriding the start/end
