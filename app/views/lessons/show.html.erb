@@ -1,4 +1,4 @@
-<div class="lesson-grid">
+<div class="lesson-grid" data-controller="lesson" data-lesson-player-outlet=".video-player">
   <%# <p style="color: green"><%= notice %1></p> %>
 
   <div class="header">
@@ -12,7 +12,10 @@
     </div>
   </div>
 
-  <div data-controller="player" class="video-player">
+  <div class="video-player player"
+       data-controller="player"
+       data-video-id="<%= video_id(@lesson) %>">
+       <div id="player"></div>
   </div>
 
   <div class="sections">
