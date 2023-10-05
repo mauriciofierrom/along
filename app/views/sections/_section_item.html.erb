@@ -1,4 +1,8 @@
-<div class="section">
-  <%= section.name %>
+<div class="section"
+     data-start="<%= section.start_time.to_i.to_f %>"
+     data-end="<%= section.end_time.to_i.to_f %>"
+     data-loop="<%= section.loop %>"
+     data-playback-speed="<%= section.playback_speed %>">
+  <span lesson-target="section" data-action="click->lesson#loadSection"><%= section.name %></span>
   <%= link_to "Edit", edit_lesson_section_path(lesson, section) %> |
 </div>
