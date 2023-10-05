@@ -4,8 +4,8 @@
      data-controller="player"
      data-video-id="<%= video_id(@lesson) %>"
      data-loop="true"
-     data-start="<%= @section.start_time.to_i %>"
-     data-end="<%= @section.end_time.to_i %>"
+     data-start="<%= @section.start_time.to_i.to_f %>"
+     data-end="<%= @section.end_time.to_i.to_f %>"
      data-auto="true">
   <div id="player"></div>
 </div>
