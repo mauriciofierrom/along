@@ -44,10 +44,8 @@ export default class extends Controller {
         },
         events: {
           'onReady': (evt) => {
-            console.log(`READY! Start: ${this.start} Duration: ${this.player.getDuration()}`)
           },
           'onStateChange': (evt) => {
-            console.log(`state changed to: ${evt.data}. duration: ${this.player.getDuration()}`)
             switch (evt.data) {
               case YT.PlayerState.PLAYING:
                 if (this.hasDurationTarget)
@@ -66,13 +64,10 @@ export default class extends Controller {
                 this.endIntervalId = null
                 break;
               case YT.PlayerState.CUED:
-                console.log(`Cued: ${this.player.getDuration()}`)
                 break;
               case -1:
-                console.log(`Unstarted: ${this.player.getDuration()}`)
                 break;
               default:
-                console.log(`Not using this event yet: ${evt.data}`)
             }
           },
           'onError': (evt) => {
@@ -97,7 +92,6 @@ export default class extends Controller {
   }
 
   startEndCheck(player, endTime) {
-    console.log("startEndCheck")
     return setInterval(() => {
       if (this.player.getCurrentTime() >= this.end) {
         this.settingCount--
