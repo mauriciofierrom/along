@@ -27,8 +27,8 @@ export default class extends Controller {
   initialize() {
     this.videoId = this.element.dataset.videoId
     this.loop = this.element.dataset.loop === "true" ? true : false
-    this.start = this.element.dataset.start || 0.00
-    this.end = this.element.dataset.end
+    this.start = parseFloat(this.element.dataset.start) || 0.00
+    this.end = parseFloat(this.element.dataset.end)
 
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
