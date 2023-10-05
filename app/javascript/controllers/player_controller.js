@@ -37,7 +37,7 @@ export default class extends Controller {
         height: '390',
         videoId: this.videoId || '',
         playerVars: {
-          'autoplay': this.element.dataset.auto === "true" ? 1 : 0,
+          'autoplay': this.element.dataset.edit === "true" ? 1 : 0,
           'disablekb': 1,
           'controls': 0,
           'start': this.start || 0
@@ -122,22 +122,28 @@ export default class extends Controller {
     console.log(`Play from: ${this.start} to: ${this.end}`)
     this.#resetPlayback()
 
-    if (this.start !== start) {
-      console.log(`Start changed: from ${this.start} to ${start}`)
-      this.settingEnd = false
-      this.settingStart = true
-      this.endPending = end
-      this.start = start
-      this.end = start + 3 // TODO: Check that the end isn't reached
-    }
+    if (this.element.dataset.edit === "true" ? true : false)
+    {
+      if (this.start !== start) {
+        console.log(`Start changed: from ${this.start} to ${start}`)
+        this.settingEnd = false
+        this.settingStart = true
+        this.endPending = end
+        this.start = start
+        this.end = start + 3 // TODO: Check that the end isn't reached
+      }
 
-    if (!this.settingStart && this.end !== end) {
-      console.log(`End changed: from ${this.end} to ${end}`)
-      this.settingStart = false
-      this.settingEnd = true
-      this.startPending = start
+      if (!this.settingStart && this.end !== end) {
+        console.log(`End changed: from ${this.end} to ${end}`)
+        this.settingStart = false
+        this.settingEnd = true
+        this.startPending = start
+        this.end = end
+        this.start = end - 3 // TODO: Check that the value isn't negative
+      }
+    } else {
+      this.start = start
       this.end = end
-      this.start = end - 3 // TODO: Check that the value isn't negative
     }
 
     this.player.seekTo(this.start)
