@@ -9,4 +9,13 @@ module LessonsHelper
   def video_thumbnail_url(lesson)
     "https://img.youtube.com/vi/#{video_id(lesson)}/0.jpg"
   end
+
+  def instrument_emoji(lesson)
+    case lesson.instrument.name
+    when "Guitar"
+      "🎸"
+    else
+      "🎹"
+    end
+  end
 end
