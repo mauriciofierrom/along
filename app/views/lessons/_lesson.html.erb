@@ -1,17 +1,11 @@
-<div id="<%= dom_id lesson %>">
-  <p>
-    <strong>Name:</strong>
+<div id="<%= dom_id lesson %>" class="lesson-item">
+  <%= image_tag(video_thumbnail_url(lesson), class: "lesson-item-thumbnail", size: "314x177") %>
+  <div class="lesson-item-title">
     <%= instrument_emoji(lesson) %>
-    <%= lesson.name %>
-  </p>
+    <%= link_to lesson.name, lesson %>
+  </div>
+  <div class="lesson-item-subtitle">
+    Now learning:
+  </div>
 
-  <p>
-    <strong>Video url:</strong>
-    <%= lesson.video_url %>
-  </p>
-
-  <p>
-    <strong>Instrument:</strong>
-    <%= lesson.instrument.name %>
-  </p>
 </div>
