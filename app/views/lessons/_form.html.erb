@@ -25,7 +25,7 @@
 
   <div class="lesson-instrument">
     <%= form.label :instrument_id, style: "display: block" %>
-    <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }, style: "width: 100%") %>
+    <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }, {}, style: "width: 100%") %>
   </div>
 
 
