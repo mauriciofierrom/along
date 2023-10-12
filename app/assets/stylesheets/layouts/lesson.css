@@ -60,7 +60,6 @@
 .lesson-name {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
-  /* border: 2px solid blue; */
 }
 
 .lesson-instrument {
@@ -71,7 +70,6 @@
 .lesson-url {
   grid-column: 1 / span 3;
   grid-row: 2 / 3;
-  /* border: 2px solid red; */
 }
 
 .lesson-url.input[type="text"] {
