@@ -1,0 +1,4 @@
+<%= turbo_stream.update Lesson.new, "" %>
+<%= turbo_stream.prepend "lessons" do %>
+  <%= render @lesson %>
+<% end %>

@@ -20,6 +20,7 @@ class LessonsController < ApplicationController
     if @lesson.save
       respond_to do |format|
         format.html { redirect_to lesson_url(@lesson), notice: "Lesson was successfully created." }
+        format.turbo_stream { flash.now[:notice] = "Lesson was successfully created" }
       end
     else
         render :new, status: :unprocessable_entity
