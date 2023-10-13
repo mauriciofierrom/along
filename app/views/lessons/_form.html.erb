@@ -32,5 +32,6 @@
   <div class="lesson-action-buttons">
     <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
     <%= form.submit %>
+    <%= link_to "Cancel", lessons_path(lesson) %>
   </div>
 <% end %>
