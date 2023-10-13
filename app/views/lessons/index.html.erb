@@ -4,13 +4,11 @@
 
 <%= turbo_frame_tag Lesson.new %>
 
-<div id="lessons" class="lesson-list">
-  <%= turbo_frame_tag "lessons" do %>
-    <% @lessons.each do |lesson| %>
-      <%= render lesson %>
-    <% end %>
+<%= turbo_frame_tag "lessons", class: "lesson-list" do %>
+  <% @lessons.each do |lesson| %>
+    <%= render lesson %>
   <% end %>
-</div>
+<% end %>
 
 <%= link_to "New lesson",
   new_lesson_path,
