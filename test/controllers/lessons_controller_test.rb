@@ -15,9 +15,19 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Should be fixed by changing test database to postgres
   # test "should create lesson" do
   #   assert_difference("Lesson.count") do
-  #     post lessons_url, params: { lesson: { instrument_id: @lesson.instrument_id, name: "New Lesson", order: @lesson.order + 1, video_url: "https://youtu.be/other" } }
+  #     post lessons_url,
+  #       params: {
+  #         lesson: {
+  #           instrument_id: @lesson.instrument_id,
+  #           name: "New Lesson",
+  #           order: @lesson.order + 1,
+  #           video_url: "https://youtu.be/other",
+  #           duration: 123
+  #         }
+  #       }
   #   end
 
   #   assert_redirected_to lesson_url(Lesson.last)
