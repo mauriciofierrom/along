@@ -6,7 +6,7 @@
   </div>
   <% if lesson.sections.size > 0 then %>
     <div class="lesson-item-subtitle">
-      Now learning:
+      Now learning: <%= lesson.sections.where(current: true)&.first&.name %>
     </div>
   <% end %>
 </div>
