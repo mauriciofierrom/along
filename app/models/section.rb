@@ -1,5 +1,5 @@
 class Section < ApplicationRecord
-  belongs_to :lesson
+  belongs_to :lesson, counter_cache: true
 
   composed_of :start_time,
     class_name: "VideoPoint",

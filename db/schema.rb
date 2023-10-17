@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_12_083337) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_17_013904) do
   create_table "instruments", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_12_083337) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "duration_in_seconds", default: 0
+    t.integer "sections_count"
     t.index ["instrument_id"], name: "index_lessons_on_instrument_id"
     t.index ["name"], name: "index_lessons_on_name", unique: true
     t.index ["order"], name: "index_lessons_on_order", unique: true

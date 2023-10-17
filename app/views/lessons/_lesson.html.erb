@@ -4,8 +4,9 @@
     <%= instrument_emoji(lesson) %>
     <%= link_to lesson.name, lesson, data: { turbo: false } %>
   </div>
-  <div class="lesson-item-subtitle">
-    Now learning:
-  </div>
-
+  <% if lesson.sections.size > 0 then %>
+    <div class="lesson-item-subtitle">
+      Now learning:
+    </div>
+  <% end %>
 </div>
