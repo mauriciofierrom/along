@@ -1,6 +1,7 @@
 require 'uri'
 
 class Lesson < ApplicationRecord
+  paginates_per 10
   default_scope { order(created_at: :desc) }
   belongs_to :instrument
   has_many :sections, dependent: :destroy

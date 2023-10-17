@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[show edit update destroy]
 
   def index
-    @lessons = Lesson.includes(:instrument).all
+    @lessons = Lesson.includes(:instrument).page params[:page]
   end
 
   def show
@@ -53,6 +53,6 @@ class LessonsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def lesson_params
-      params.require(:lesson).permit(:name, :video_url, :instrument_id, :order, :duration_in_seconds)
+      params.require(:lesson).permit(:name, :video_url, :instrument_id, :order, :duration_in_seconds, :page)
     end
 end
