@@ -113,3 +113,19 @@
   flex-wrap: wrap;
   gap 10px;
 }
+
+.lesson-header {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.lesson-title {
+  order: 1;
+  align-self: flex-start;
+}
+
+.lesson-new {
+  order: 2;
+  align-self: flex-end;
+}

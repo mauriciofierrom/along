@@ -1,6 +1,17 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Lessons</h1>
+<div class="lesson-header">
+  <div class="lesson-title">
+    Lessons
+  </div>
+  <div class="lesson-new">
+    <%= link_to "New lesson",
+      new_lesson_path,
+      data: { turbo_frame: dom_id(Lesson.new) },
+      class: "lesson-new"
+    %>
+  </div>
+</div>
 
 <%= turbo_frame_tag Lesson.new %>
 
@@ -9,8 +20,3 @@
     <%= render lesson %>
   <% end %>
 <% end %>
-
-<%= link_to "New lesson",
-  new_lesson_path,
-  data: { turbo_frame: dom_id(Lesson.new) }
-%>
