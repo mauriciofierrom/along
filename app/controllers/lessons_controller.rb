@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[show edit update destroy]
 
   def index
-    @lessons = Lesson.includes(:instrument).page params[:page]
+    @lessons = Lesson.includes(:instrument, :sections).page params[:page]
   end
 
   def show
