@@ -15,32 +15,30 @@
     <%= render "range", section: @section, lesson: @lesson, form: form %>
   </div>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: "Name of the section" %>
+  <div class="section-form-row">
+    <div class="section-form-name">
+      <%= form.label :name, style: "display: block" %>
+      <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: "Name" %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :playback_speed, style: "display: block" %>
-    <%= form.text_field :playback_speed, min: 0.5, max: 2, type: :number, step: 0.5 %>
+  <div class="section-form-row">
+    <div class="section-form-playback">
+      <%= form.label :playback_speed, style: "display: block" %>
+      <%= form.text_field :playback_speed, min: 0.5, max: 2, type: :number, step: 0.5 %>
+    </div>
+
+    <div class="section-form-loop">
+      <%= form.label :loop %>
+      <label class="switch">
+        <%= form.check_box :loop %>
+        <span class="slider round"></span>
+      </label>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :finished, style: "display: block" %>
-    <%= form.check_box :finished %>
-  </div>
-
-  <div>
-    <%= form.label :current, style: "display: block" %>
-    <%= form.check_box :current %>
-  </div>
-
-  <div>
-    <%= form.label :loop, style: "display: block" %>
-    <%= form.check_box :loop %>
-  </div>
-
-  <div>
+  <div class="section-action-buttons">
     <%= form.submit %>
+    <%= link_to "Cancel", lesson_path(@lesson) %>
   </div>
 <% end %>

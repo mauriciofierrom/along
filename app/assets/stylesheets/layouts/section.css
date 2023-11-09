@@ -1,0 +1,35 @@
+.section-form-row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.section-form-name {
+  order: 0;
+  flex-grow: 1;
+}
+
+.section-form-name input[type="text"] {
+  width: 100%;
+}
+
+.section-form-playback {
+  order: 0;
+}
+
+.section-form-playback input[type="number"] {
+  width: 30%;
+}
+
+.section-form-loop {
+  order: 1;
+}
+
+.section-action-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  justify-content: right;
+  gap: 10px;
+}
