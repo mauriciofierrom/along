@@ -7,6 +7,11 @@ export default class extends Controller {
 
   connect() {
     console.log("connected range controller")
+    // When the player is set to edit we automatically start playing the section
+    if (this.playerOutlet.edit) {
+      this.playerOutlet.playFromTo(parseFloat(this.minTarget.value),
+        parseFloat(this.maxTarget.value))
+    }
   }
 
   initialize() {
