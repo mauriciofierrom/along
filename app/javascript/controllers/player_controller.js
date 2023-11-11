@@ -13,6 +13,7 @@ export default class extends Controller {
   startPending;
   endPending;
   settingCount = 3;
+  edit = false;
 
   static targets = [ "source", "duration" ]
 
@@ -29,6 +30,7 @@ export default class extends Controller {
     this.loop = this.element.dataset.loop === "true" ? true : false
     this.start = parseFloat(this.element.dataset.start) || 0.00
     this.end = parseFloat(this.element.dataset.end)
+    this.edit = this.element.dataset.edit === "true" ? true : false
 
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
@@ -37,7 +39,7 @@ export default class extends Controller {
         height: '390',
         videoId: this.videoId || '',
         playerVars: {
-          'autoplay': this.element.dataset.edit === "true" ? 1 : 0,
+          'autoplay': this.edit,
           'disablekb': 1,
           'controls': 0,
           'start': this.start || 0
@@ -70,6 +72,20 @@ export default class extends Controller {
         }
       })
     }
+
+    document.documentElement.addEventListener('turbo:before-fetch-request', (e) => {
+      if (e.srcElement.id === "sections") {
+        this.edit = !this.edit
+        if (!this.edit) {
+          this.#resetPlayer()
+        }
+      }
+    })
+
+    document.documentElement.addEventListener('turbo:submit-end', (e) => {
+      this.edit = !this.edit
+      this.#resetPlayer()
+    })
   }
 
   load() {
@@ -116,7 +132,7 @@ export default class extends Controller {
     console.log(`Play from: ${this.start} to: ${this.end}`)
     this.#resetPlayback()
 
-    if (this.element.dataset.edit === "true" ? true : false)
+    if (this.edit)
     {
       if (this.start !== start) {
         console.log(`Start changed: from ${this.start} to ${start}`)
@@ -179,5 +195,11 @@ export default class extends Controller {
       this.endPending = null
       this.settingEnd = false
     }
+  }
+
+  #resetPlayer() {
+    this.player.stopVideo()
+    this.start = parseFloat(this.element.dataset.start) || 0.00
+    this.end = parseFloat(this.element.dataset.end)
   }
 }
