@@ -18,12 +18,12 @@
        <div id="player"></div>
   </div>
 
-  <div class="sections">
+  <%= turbo_frame_tag "sections", class: "sections" do %>
     <%= link_to "New section", new_lesson_section_path(@lesson) %>
     <div class="sections-selector">
       <% @lesson.sections.each do |section| %>
         <%= render "sections/section_item", lesson: @lesson, section: section %>
       <% end %>
     </div>
-  </div>
+  <% end %>
 </div>
