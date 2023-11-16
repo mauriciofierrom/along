@@ -43,14 +43,6 @@
   display: none;
 }
 
-.section {
-  border: 2px solid black;
-  width: 200px;
-  height: 100px;
-  display: inline-block;
-  cursor: pointer;
-}
-
 .lesson-form {
   display: grid;
   grid-template-columns: 80% 20%;
