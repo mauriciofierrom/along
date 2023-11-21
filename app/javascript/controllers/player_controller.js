@@ -77,14 +77,14 @@ export default class extends Controller {
       if (e.srcElement.id === "sections") {
         this.edit = !this.edit
         if (!this.edit) {
-          this.#resetPlayer()
+          this.resetPlayer()
         }
       }
     })
 
     document.documentElement.addEventListener('turbo:submit-end', (e) => {
       this.edit = !this.edit
-      this.#resetPlayer()
+      this.resetPlayer()
     })
   }
 
@@ -165,6 +165,12 @@ export default class extends Controller {
     this.endIntervalId = this.startEndCheck(this.player, this.end)
   }
 
+  resetPlayer() {
+    this.player.stopVideo()
+    this.start = parseFloat(this.element.dataset.start) || 0.00
+    this.end = parseFloat(this.element.dataset.end)
+  }
+
   #formatUrl(url) {
     let baseUrl = "https://youtu.be/v"
     let parsedUrl = new URL(url)
@@ -197,9 +203,4 @@ export default class extends Controller {
     }
   }
 
-  #resetPlayer() {
-    this.player.stopVideo()
-    this.start = parseFloat(this.element.dataset.start) || 0.00
-    this.end = parseFloat(this.element.dataset.end)
-  }
 }
