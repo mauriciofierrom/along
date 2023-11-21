@@ -1,8 +1,11 @@
 .lesson-grid {
   display: grid;
-  border: 2px solid yellow;
+  /* border: 2px solid yellow; */
+  color: white;
+  height: 100vh;
+  background-color: black;
   grid-template-columns: 5% minmax(0, 1fr) 5%;
-  grid-template-rows: auto;
+  grid-template-rows: 10% minmax(0, 1fr) 20%;
   row-gap: 10px;
   grid-template-areas:
     ". header ."
@@ -12,18 +15,38 @@
 
 .header {
   grid-area: header;
-  border: 2px solid green;
+  display: flex;
+  flex-flow: row no-wrap;
+  /* border: 2px solid white; */
+  align-items: center;
+}
+
+.header h1{
+  order: 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.header-actions {
+  display: flex;
+  order: 1;
+  justify-content: right;
+  margin-left: auto;
+  gap: 5px;
 }
 
 .video-player {
-  border: 2px solid red;
-  height: 480px;
+  display: flex;
+  flex-flow: row no-wrap;
+  justify-content: center;
+  align-items: center;
+  /* border: 2px solid red; */
   grid-area: video;
+  background-color: black;
 }
 
 .sections {
-  border: 2px solid blue;
-  height: 150px;
+  /* border: 2px solid blue; */
   grid-area: sections;
 }
 
