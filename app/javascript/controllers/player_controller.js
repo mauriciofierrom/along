@@ -31,12 +31,13 @@ export default class extends Controller {
     this.start = parseFloat(this.element.dataset.start) || 0.00
     this.end = parseFloat(this.element.dataset.end)
     this.edit = this.element.dataset.edit === "true" ? true : false
+    const [width, height] = this.#calculateSize(this.element)
 
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
       this.player = new YT.Player('player', {
-        width: '640',
-        height: '390',
+        width: width.toString(),
+        height: height.toString(),
         videoId: this.videoId || '',
         playerVars: {
           'autoplay': this.edit,
@@ -203,4 +204,11 @@ export default class extends Controller {
     }
   }
 
+  #calculateSize(container) {
+    const baseWidth = 480
+    const baseHeight = 270
+    let targetHeight = container.offsetHeight
+
+    return [targetHeight * baseWidth / baseHeight, targetHeight]
+  }
 }
