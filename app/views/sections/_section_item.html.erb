@@ -5,10 +5,10 @@
        data-loop="<%= section.loop %>"
        data-playback-speed="<%= section.playback_speed %>">
     <div class="section-item-top">
-      <span class="section-item-title"
-            lesson-target="section"
-            data-action="click->lesson#loadSection">
-            <%= section.name %>
+      <span class="section-item-title">
+            <%= link_to section.name,
+              lesson_section_path(lesson, section),
+              data: { turbo_stream: "sections" } %>
       </span>
       <div class="section-item-actions">
         <%= link_to image_tag("edit.svg", size: "16x16"),
