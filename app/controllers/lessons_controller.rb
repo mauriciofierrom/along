@@ -6,6 +6,7 @@ class LessonsController < ApplicationController
   end
 
   def show
+    render layout: "practice"
   end
 
   def new
