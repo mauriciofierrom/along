@@ -1,4 +1,7 @@
 module SectionsHelper
+  LOOP_IMG = "repeat.svg".freeze
+  PLAY_ONCE_IMG = "once.png".freeze
+
   def format_start_time(section)
     "#{pad_time(section.start_time_hour)}:#{pad_time(section.start_time_minute)}:#{pad_time(section.start_time_second)}"
   end
@@ -18,8 +21,8 @@ module SectionsHelper
   end
 
   def loop_img(section)
-    return "repeat.svg" if section.loop
-    "once.png"
+    return LOOP_IMG if section.loop
+    PLAY_ONCE_IMG
   end
 
   private

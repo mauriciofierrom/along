@@ -25,5 +25,5 @@ two:
   playback_speed: 1.5
   finished: false
   current: false
-  loop: true
+  loop: false
   lesson: layla
