@@ -54,16 +54,6 @@
   overflow: auto;
   white-space: nowrap;
   padding: 10px;
-  /* Hide the scrollbar in Firefox */
-  scrollbar-width: none;
-
-  /* Hide the scrollbar in IE/Edge */
-  -ms-overflow-style: none;
-}
-
-/* Hide scrollbar in Webkit browsers */
-.sections-selector::-webkit-scrollbar {
-  display: none;
 }
 
 .lesson-form {
