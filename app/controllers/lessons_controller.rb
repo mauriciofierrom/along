@@ -2,7 +2,7 @@ class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[show edit update destroy]
 
   def index
-    @lessons = Lesson.includes(:instrument, :sections).page params[:page]
+    @lessons = Lesson.includes(:instrument, :sections).where(user_id: current_user.id).page params[:page]
   end
 
   def show
@@ -49,7 +49,7 @@ class LessonsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_lesson
-      @lesson = Lesson.includes(:instrument).find(params[:id])
+      @lesson = current_user.lessons.includes(:instrument).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
