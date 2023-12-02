@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_01_235621) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_02_004439) do
   create_table "instruments", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -27,10 +27,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_235621) do
     t.datetime "updated_at", null: false
     t.integer "duration_in_seconds", default: 0
     t.integer "sections_count"
+    t.integer "user_id"
     t.index ["instrument_id"], name: "index_lessons_on_instrument_id"
-    t.index ["name"], name: "index_lessons_on_name", unique: true
-    t.index ["order"], name: "index_lessons_on_order", unique: true
-    t.index ["video_url"], name: "index_lessons_on_video_url", unique: true
+    t.index ["name", "user_id"], name: "index_lessons_on_name_and_user_id", unique: true
+    t.index ["order", "user_id"], name: "index_lessons_on_order_and_user_id", unique: true
+    t.index ["user_id"], name: "index_lessons_on_user_id"
+    t.index ["video_url", "user_id"], name: "index_lessons_on_video_url_and_user_id", unique: true
   end
 
   create_table "sections", force: :cascade do |t|
@@ -70,5 +72,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_235621) do
   end
 
   add_foreign_key "lessons", "instruments"
+  add_foreign_key "lessons", "users"
   add_foreign_key "sections", "lessons"
 end
