@@ -1,7 +1,10 @@
 require "test_helper"
 
 class LessonsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   setup do
+    sign_in users(:default)
     @lesson = lessons(:layla)
   end
 
