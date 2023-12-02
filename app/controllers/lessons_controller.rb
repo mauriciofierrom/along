@@ -17,7 +17,7 @@ class LessonsController < ApplicationController
   end
 
   def create
-    @lesson = Lesson.new(lesson_params)
+    @lesson = current_user.lessons.build(lesson_params)
     if @lesson.save
       respond_to do |format|
         format.html { redirect_to lesson_url(@lesson), notice: "Lesson was successfully created." }
