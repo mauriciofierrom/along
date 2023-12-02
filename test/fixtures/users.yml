@@ -1,0 +1,3 @@
+default:
+  email: default@some.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, '12345') %>
