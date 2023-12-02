@@ -10,6 +10,8 @@
       data: { turbo_frame: dom_id(Lesson.new) },
       class: "lesson-new"
     %>
+    <%= button_to "Logout",
+        destroy_user_session_path, method: :delete %>
   </div>
 </div>
 
