@@ -2,6 +2,7 @@ require "application_system_test_case"
 
 class SectionsTest < ApplicationSystemTestCase
   setup do
+    login_as users(:default)
     @lesson = lessons(:layla)
     @section = sections(:one)
   end
@@ -18,8 +19,7 @@ class SectionsTest < ApplicationSystemTestCase
     fill_in "Name", with: "Part 4"
     page.execute_script("document.querySelector('#section_start_time').value = 123.2")
     page.execute_script("document.querySelector('#section_end_time').value = 323.2")
-    check "Finished"
-    check "Loop"
+    find(".switch").click
     fill_in "Playback speed", with: @section.playback_speed
     check "Current" if @section.current
 

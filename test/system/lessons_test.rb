@@ -2,6 +2,7 @@ require "application_system_test_case"
 
 class LessonsTest < ApplicationSystemTestCase
   setup do
+    login_as users(:default)
     @lesson = lessons(:layla)
   end
 
