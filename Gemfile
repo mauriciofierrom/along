@@ -71,6 +71,8 @@ group :development do
   gem "rubocop", require: false
   gem "reek", require: false
   gem "flog", require: false
+  gem "guard-rspec", require: false
+  gem "guard-minitest", "~> 2.4", require: false
 end
 
 group :test do
@@ -85,3 +87,4 @@ end
 
 
 gem "devise", "~> 4.9"
+
