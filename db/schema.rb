@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_17_190840) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_01_235621) do
   create_table "instruments", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -50,6 +50,23 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_190840) do
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_sections_on_lesson_id"
     t.index ["name"], name: "index_sections_on_name", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "lessons", "instruments"
