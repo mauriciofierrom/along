@@ -5,6 +5,7 @@ class Lesson < ApplicationRecord
   paginates_per 10
 
   belongs_to :instrument
+  belongs_to :user
   has_many :sections, dependent: :destroy
 
   validates :name, :instrument_id, presence: true
