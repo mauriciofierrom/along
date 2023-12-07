@@ -1,0 +1,33 @@
+# fly.toml app configuration file generated for along on 2023-12-08T10:50:18-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "along"
+primary_region = "mia"
+swap_size_mb = 1024
+console_command = "/rails/bin/rails console"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  DATABASE_URL = "sqlite3:///data/production.sqlite3"
+
+[[mounts]]
+  source = "data"
+  destination = "/data"
+  auto_extend_size_threshold = 0
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
