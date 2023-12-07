@@ -73,6 +73,7 @@ group :development do
   gem "flog", require: false
   gem "guard-rspec", require: false
   gem "guard-minitest", "~> 2.4", require: false
+  gem "dockerfile-rails", ">= 1.5", require: false
 end
 
 group :test do
@@ -87,4 +88,3 @@ end
 
 
 gem "devise", "~> 4.9"
-
