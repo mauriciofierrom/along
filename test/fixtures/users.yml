@@ -1,3 +1,4 @@
 default:
   email: default@some.com
+  confirmed_at: <%= Time.now %>
   encrypted_password: <%= Devise::Encryptor.digest(User, '12345') %>
