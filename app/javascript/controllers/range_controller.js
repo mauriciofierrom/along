@@ -7,11 +7,10 @@ export default class extends Controller {
 
   connect() {
     console.log("connected range controller")
-    // When the player is set to edit we automatically start playing the section
-    if (this.playerOutlet.edit) {
-      this.playerOutlet.playFromTo(parseFloat(this.minTarget.value),
-        parseFloat(this.maxTarget.value))
-    }
+    this.dispatch("connect", { detail: {
+      start: parseFloat(this.minTarget.value),
+      end: parseFloat(this.maxTarget.value)
+    }})
   }
 
   initialize() {
@@ -30,6 +29,7 @@ export default class extends Controller {
     const range = document.querySelector(".range-selected")
     let minRange = parseFloat(this.minTarget.value)
     let maxRange = parseFloat(this.maxTarget.value)
+    var setting = null
 
     if (maxRange - minRange < rangeMin) {
       if (e.target.className === "min") {
@@ -42,7 +42,15 @@ export default class extends Controller {
       range.style.right = 100 - (maxRange / this.maxTarget.max) * 100 + "%";
     }
 
+    if (e.target.className ==="min") {
+      setting = parseFloat(this.minTarget.value)
+    } else {
+      setting = parseFloat(this.maxTarget.value)
+    }
+
+    console.log(`dispatch wth ${setting}`)
+
     // Start the player again
-    this.playerOutlet.playFromTo(parseFloat(this.minTarget.value), parseFloat(this.maxTarget.value))
+    this.dispatch("update", { detail: { start: parseFloat(this.minTarget.value), end: parseFloat(this.maxTarget.value), setting: setting } })
   }
 }

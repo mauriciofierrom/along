@@ -1,19 +1,26 @@
 import { Controller } from "@hotwired/stimulus";
+import YoutubePlayer from "controllers/youtube_player";
 
 export default class extends Controller {
+  static values = {
+    start: Number,
+    end: Number,
+    loop: Boolean,
+    videoId: String,
+    edit: Boolean
+  }
+
   player;
   loaded;
-  start;
-  end;
-  loop;
-  videoId;
   endIntervalId;
-  settingEnd;
-  settingStart;
   startPending;
   endPending;
   settingCount = 3;
-  edit = false;
+  resetting = false;
+  setting = false;
+  startLoaded = false;
+  endLoaded = false;
+  editState = { };
 
   static targets = [ "source", "duration" ]
 
@@ -26,74 +33,25 @@ export default class extends Controller {
   }
 
   initialize() {
-    this.videoId = this.element.dataset.videoId
-    this.loop = this.element.dataset.loop === "true" ? true : false
-    this.start = parseFloat(this.element.dataset.start) || 0.00
-    this.end = parseFloat(this.element.dataset.end)
-    this.edit = this.element.dataset.edit === "true" ? true : false
     const [width, height] = this.#calculateSize(this.element)
 
     window.onYouTubeIframeAPIReady = () => {
       this.loaded = true
-      this.player = new YT.Player('player', {
-        width: width.toString(),
-        height: height.toString(),
-        videoId: this.videoId || '',
-        playerVars: {
-          'autoplay': this.edit,
-          'disablekb': 1,
-          'controls': 0,
-          'start': this.start || 0
-        },
-        events: {
-          'onReady': (evt) => {
-          },
-          'onStateChange': (evt) => {
-            console.log(`Youtube state: ${evt.data}`)
-            switch (evt.data) {
-              case YT.PlayerState.PLAYING:
-                if (this.hasDurationTarget)
-                  this.durationTarget.value = Math.floor(this.player.getDuration())
-                this.onPlaying()
-                break;
-              case YT.PlayerState.ENDED:
-                console.log("player ended")
-                if (this.loop) {
-                  this.player.seekTo(this.start, true)
-                  this.player.playVideo()
-                }
-                break;
-              case YT.PlayerState.PAUSED:
-                clearInterval(this.endIntervalId)
-                this.endIntervalId = null
-                break;
-              default:
-            }
-          },
-          'onError': (evt) => {
-            consolelog(`error: ${evt.data}`)
-          }
+      this.player = new YoutubePlayer({
+        width: width,
+        height: height,
+        videoId: this.videoIdValue,
+        edit: this.editValue,
+        onPlaying: () => this.onPlaying(),
+        onPause: () => {
+          clearInterval(this.endIntervalId)
+          this.endIntervalId = null
         }
       })
     }
 
-    document.documentElement.addEventListener('turbo:before-fetch-request', (e) => {
-      console.log(`turbo:before-fetch-request target: ${e.srcElement.id}`)
-
-      // if (e.srcElement.id === "sections") {
-      //   console.log(`turbo:before-fetch-request sections in -${this.edit ? "edit" : "playback"} mode-`)
-      //   this.edit = false;
-      //   console.log(`Edition mode after sections request ${this.edit}`)
-      //   // this.resetPlayer()
-      //   // if (!this.edit) {
-      //   //   this.resetPlayer()
-      //   // }
-      // }
-    })
-
     document.documentElement.addEventListener('turbo:submit-end', (e) => {
-      console.log("turbo:submit-end")
-      this.edit = !this.edit
+      this.editValue = !this.editValue
       this.resetPlayer()
     })
   }
@@ -102,8 +60,8 @@ export default class extends Controller {
     this.durationTarget.value = "";
     try {
       let formattedUrl = this.#formatUrl(this.sourceTarget.value)
-      this.player.loadVideoByUrl(formattedUrl)
-      this.durationTarget.value = this.player.getDuration()
+      this.player.load(formattedUrl)
+      this.durationTarget.value = this.player.duration
       this.element.children[0].style = "";
     }
     catch (error) {
@@ -111,98 +69,72 @@ export default class extends Controller {
     }
   }
 
-  startEndCheck(player, endTime) {
-    console.log(`startEndCheck loop`)
-    return setInterval(() => {
-      console.log(`Loop with start: ${this.start} end: ${this.end}`)
-      if (this.player.getCurrentTime() >= this.end) {
-        if (this.edit) {
+  loop() {
+    this.endIntervalId = setInterval(() => {
+      if (this.editValue) {
+        console.log(this.setting)
+
+        if (this.setting) {
+          console.log(`decreasing count with setting: ${this.editState.setting}`)
           this.settingCount--
-          if (this.settingCount === 0) {
-            this.#resetSettingCount()
-            this.settingStart = false
-            this.settingEnd = false
-
-            if (this.endPending != null && this.endPending != undefined) {
-              this.end = this.endPending
-              this.endPending = null
-            }
-
-            if (this.startPending != null && this.startPending != undefined) {
-              this.start = this.startPending
-              this.startPending = null
-            }
-
-          }
         }
 
-        // This triggers a PLAYING event in the Youtube player again, which
-        // re-triggers the onPlaying event which re-creates the interval without
-        // clearing it first.
-        console.log("seekTo from the loop (interval)")
-        this.player.seekTo(this.start, true)
-        this.player.playVideo()
+        console.log(`loop editing: ${this.editState.start} ${this.editState.end}`)
+        if (this.player.currentTime >= this.editState.end) {
+          // If we're setting a value we check the 3-time counter and
+          // we reset it and the pending values
+          if(this.setting) {
+            if (this.settingCount <= 0) {
+              switch (this.editState.setting) {
+                case this.editState.start:
+                  console.log("restoring edit end")
+                  this.editState.end = this.editState.pending
+                  break
+                case this.editState.end:
+                  console.log("restoring edit start")
+                  this.editState.start = this.editState.pending
+                  break
+              }
+
+              this.#resetSettingCount()
+            }
+          }
+
+          this.player.play(this.editState.start)
+
+          }
+      } else {
+        if (this.player.currentTime >= this.endValue) {
+          this.player.play(this.startValue)
+        }
       }
     }, 500)
   }
 
-  // Used as a reference from other controllers. Allows overriding the start/end
+  // Used as a reference from other controllers. Allows overriding the startValue/endValue
   // values. Used from sections
-  playFromTo(start, end) {
-    console.log(`Play from: ${start} to: ${end}`)
-    console.log(`Mode: ${ this.edit ? "edit" : "playback" }`)
-    this.#resetPlayback()
+  playFromTo(startValue, endValue) {
+    console.log("playFromTo")
+    this.#reset()
 
-    if (this.edit)
-    {
-      console.log("Setting start/end in edit mode")
-      if (this.start !== start) {
-        console.log(`Start changed: from ${this.start} to ${start}`)
-        this.settingEnd = false
-        this.settingStart = true
-        this.endPending = end
-        this.start = start
-        this.end = start + 3 // TODO: Check that the end isn't reached
-      }
+    this.startValue = startValue
+    this.endValue = endValue
 
-      if (!this.settingStart && this.end !== end) {
-        console.log(`End changed: from ${this.end} to ${end}`)
-        this.settingStart = false
-        this.settingEnd = true
-        this.startPending = start
-        this.end = end
-        this.start = end - 3 // TODO: Check that the value isn't negative
-      }
-    } else {
-      console.log(`Setting start not in edit mode: ${start} end: ${end}`)
-      this.start = start
-      this.end = end
-    }
-
-    console.log("seekTo from the playFromTo method")
-    this.player.seekTo(this.start, true)
-    this.player.playVideo()
+    // Play
+    this.player.play(this.startValue)
   }
 
   onPlaying() {
-    console.log(`on playing start: ${this.start} end: ${this.end}`)
-
-    if(this.endIntervalId != null && this.endIntervalId != undefined) {
-      console.log(`Clearing interval ${this.endIntervalId}`)
-      clearInterval(this.endIntervalId)
-      this.endIntervalId = null
-      console.log(`Cleared interval`)
+    if (this.editValue) {
+      console.log(`on playing on edit mode: ${this.editState}`)
+    } else {
+      console.log(`on playing startValue: ${this.startValue} endValue: ${this.endValue}`)
     }
-
-    this.#resetSettingCount()
-
-    this.endIntervalId = this.startEndCheck(this.player, this.end)
-    console.log(`Starting interval ${this.endIntervalId}`)
   }
 
   resetPlayer() {
-    this.player.pauseVideo()
-    this.player.seekTo(0)
+    console.log("resetPlayer")
+    this.player.pause()
 
     // Besides cleaning all intervals when starting playing, we clear the
     // interval when the player is reset externally to protect against external
@@ -216,11 +148,9 @@ export default class extends Controller {
 
     this.#resetSettingCount()
 
-    this.start = 54.0
-    // this.start = parseFloat(this.element.dataset.start) || 0.00
-    this.end = parseFloat(this.element.dataset.end)
+    this.endValue = parseFloat(this.element.dataset.endValue)
 
-    console.log(`on reset player start: ${this.start} end: ${this.end}`)
+    console.log(`on reset player startValue: ${this.startValue} endValue: ${this.endValue}`)
   }
 
   #formatUrl(url) {
@@ -230,27 +160,27 @@ export default class extends Controller {
   }
 
   #resetSettingCount() {
+    this.setting = false
     this.settingCount = 3;
   }
 
-  #resetPlayback() {
-    console.log("Reset playback")
-    console.log(`Start pending: ${this.startPending}`)
-    console.log(`End pending: ${this.endPending}`)
+  #reset () {
+    this.resetting = true
 
-    if(this.startPending != null && this.startPending != undefined) {
-      console.log("start pending")
-      this.start = this.startPending
-      this.startPending = null
-      this.settingStart = false
+    // Reset the loop if there's one ongoing
+    if(this.endIntervalId != null && this.endIntervalId != undefined) {
+      console.log(`Clearing interval ${this.endIntervalId}`)
+      clearInterval(this.endIntervalId)
+      console.log(`Cleared interval ${this.endIntervalId}`)
+      this.endIntervalId = null
     }
 
-    if(this.endPending != null && this.endPending != undefined) {
-      console.log("end pending")
-      this.end = this.endPending
-      this.endPending = null
-      this.settingEnd = false
-    }
+    // Reset the setting count
+    // this.#resetSettingCount()
+
+    // We restore the original start/end values
+
+    this.resetting = false
   }
 
   #calculateSize(container) {
@@ -259,5 +189,93 @@ export default class extends Controller {
     let targetHeight = container.offsetHeight
 
     return [targetHeight * baseWidth / baseHeight, targetHeight]
+  }
+
+  // If we're changing because we're setting the opposite value
+  // we need to not do it
+  startValueChanged() {
+    console.log(`startValueChanged ${this.editValue}`)
+
+    if (this.startLoaded && this.editValue && !this.resetting && !this.settingEnd) {
+      console.log("setting on start change")
+      this.settingStart = true
+      this.endPending = this.endValue
+      this.endValue = Math.min(this.player.duration, this.startValue + 3)
+      this.onPointChange()
+    }
+
+    if (!this.startLoaded) {
+      this.startLoaded = true
+    }
+  }
+
+  endValueChanged() {
+    console.log("endValueChanged")
+
+    if (this.endLoaded && this.editValue && !this.resetting && !this.settingStart) {
+      console.log("setting on end change")
+      this.settingEnd = true
+      this.startPending = this.startValue
+      this.startValue = Math.max(this.endValue - 3, 0)
+      this.onPointChange()
+    }
+
+    if (!this.endLoaded) {
+      this.endLoaded = true
+    }
+  }
+
+  // Runs for each point (start/end) update
+  onPointChange() {
+    console.log("onPointChange")
+    this.player.play(this.startValue)
+  }
+
+  editValueChanged () {
+    if (this.editValue) {
+      this.player.play(this.editState.start)
+    }
+  }
+
+  // On range connect we trigger edition by setting the editValue to true and
+  // feeding the initial values to edit.
+  // This will not include the 'setting' key in the state object
+  triggerEdition({ detail: state }) {
+    this.editValue = true
+    this.editState = state
+
+    // Loop will start after play
+    this.play(this.editState.start)
+  }
+
+  // Triggered by the range controller when a value is changed
+  updatePoints({ detail: state }) {
+    console.log(`Player: update points: ${this.editState.start} - ${this.editState.end}. Setting: ${this.editState.setting}`)
+
+    this.editState = state
+    console.log(this.editState)
+    this.setting = true
+
+    switch(this.editState.setting) {
+      case this.editState.start:
+        console.log("setting start")
+        this.editState.pending = this.editState.end
+        this.editState.end = Math.max(this.player.duration, this.editState.start + 3)
+        break
+      case this.editState.end:
+        console.log("setting end")
+        this.editState.pending = this.editState.start
+        this.editState.start = Math.max(this.editState.end - 3, 0)
+        break
+    }
+
+    console.log(`Playing with: ${this.editState.start} - ${this.editState.end}`)
+    this.play(this.editState.start)
+  }
+
+  play(start) {
+    this.#reset()
+    this.player.play(start)
+    this.loop()
   }
 }
