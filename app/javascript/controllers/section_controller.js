@@ -10,11 +10,11 @@ export default class extends Controller {
     const start = parseFloat(this.element.dataset.start)
     const end = parseFloat(this.element.dataset.end)
 
-
     this.playerOutlet.playFromTo(start, end)
   }
 
   disconnect() {
+    console.log("section disconnect")
     this.playerOutlet.resetPlayer()
   }
 }
