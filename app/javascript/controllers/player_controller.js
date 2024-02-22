@@ -124,16 +124,15 @@ export default class extends Controller {
   // values. Used from sections
   playFromTo({ detail: { start, end } }) {
     console.log("playFromTo")
-    this.#reset()
 
     this.startValue = start
     this.endValue = end
 
     // Play
-    this.player.play(this.startValue)
+    this.play(this.startValue)
   }
 
-  resetPlayer() {
+  resetPlayer(_e) {
     console.log("resetPlayer")
     this.player.pause()
 
@@ -190,46 +189,6 @@ export default class extends Controller {
     let targetHeight = container.offsetHeight
 
     return [targetHeight * baseWidth / baseHeight, targetHeight]
-  }
-
-  // If we're changing because we're setting the opposite value
-  // we need to not do it
-  startValueChanged() {
-    console.log(`startValueChanged ${this.editValue}`)
-
-    if (this.startLoaded && this.editValue && !this.resetting && !this.settingEnd) {
-      console.log("setting on start change")
-      this.settingStart = true
-      this.endPending = this.endValue
-      this.endValue = Math.min(this.player.duration, this.startValue + 3)
-      this.onPointChange()
-    }
-
-    if (!this.startLoaded) {
-      this.startLoaded = true
-    }
-  }
-
-  endValueChanged() {
-    console.log("endValueChanged")
-
-    if (this.endLoaded && this.editValue && !this.resetting && !this.settingStart) {
-      console.log("setting on end change")
-      this.settingEnd = true
-      this.startPending = this.startValue
-      this.startValue = Math.max(this.endValue - 3, 0)
-      this.onPointChange()
-    }
-
-    if (!this.endLoaded) {
-      this.endLoaded = true
-    }
-  }
-
-  // Runs for each point (start/end) update
-  onPointChange() {
-    console.log("onPointChange")
-    this.player.play(this.startValue)
   }
 
   editValueChanged () {
