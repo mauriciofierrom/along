@@ -42,7 +42,6 @@ export default class extends Controller {
         height: height,
         videoId: this.videoIdValue,
         edit: this.editValue,
-        onPlaying: () => this.onPlaying(),
         onPause: () => {
           clearInterval(this.endIntervalId)
           this.endIntervalId = null
@@ -51,8 +50,22 @@ export default class extends Controller {
     }
 
     document.documentElement.addEventListener('turbo:submit-end', (e) => {
-      this.editValue = !this.editValue
+      this.editValue = false
       this.resetPlayer()
+    })
+
+    document.documentElement.addEventListener('turbo:before-fetch-request', (e) => {
+      console.log(`turbo:before-fetch-request target: ${e.srcElement.id}`)
+
+      if (e.srcElement.id === "sections") {
+        console.log(`turbo:before-fetch-request sections in -${this.edit ? "edit" : "playback"} mode-`)
+        this.edit = false;
+        console.log(`Edition mode after sections request ${this.edit}`)
+        this.resetPlayer()
+        // if (!this.edit) {
+        //   this.resetPlayer()
+        // }
+      }
     })
   }
 
@@ -74,16 +87,12 @@ export default class extends Controller {
       if (this.editValue) {
         console.log(this.setting)
 
-        if (this.setting) {
-          console.log(`decreasing count with setting: ${this.editState.setting}`)
-          this.settingCount--
-        }
-
         console.log(`loop editing: ${this.editState.start} ${this.editState.end}`)
         if (this.player.currentTime >= this.editState.end) {
           // If we're setting a value we check the 3-time counter and
           // we reset it and the pending values
           if(this.setting) {
+            this.settingCount--
             if (this.settingCount <= 0) {
               switch (this.editState.setting) {
                 case this.editState.start:
@@ -95,8 +104,8 @@ export default class extends Controller {
                   this.editState.start = this.editState.pending
                   break
               }
-
               this.#resetSettingCount()
+              this.setting = false
             }
           }
 
@@ -113,23 +122,15 @@ export default class extends Controller {
 
   // Used as a reference from other controllers. Allows overriding the startValue/endValue
   // values. Used from sections
-  playFromTo(startValue, endValue) {
+  playFromTo({ detail: { start, end } }) {
     console.log("playFromTo")
     this.#reset()
 
-    this.startValue = startValue
-    this.endValue = endValue
+    this.startValue = start
+    this.endValue = end
 
     // Play
     this.player.play(this.startValue)
-  }
-
-  onPlaying() {
-    if (this.editValue) {
-      console.log(`on playing on edit mode: ${this.editState}`)
-    } else {
-      console.log(`on playing startValue: ${this.startValue} endValue: ${this.endValue}`)
-    }
   }
 
   resetPlayer() {
@@ -160,7 +161,7 @@ export default class extends Controller {
   }
 
   #resetSettingCount() {
-    this.setting = false
+    // this.setting = false
     this.settingCount = 3;
   }
 
@@ -176,7 +177,7 @@ export default class extends Controller {
     }
 
     // Reset the setting count
-    // this.#resetSettingCount()
+    this.#resetSettingCount()
 
     // We restore the original start/end values
 

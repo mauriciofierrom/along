@@ -18,10 +18,6 @@ export default class YoutubePlayer {
           'onStateChange': (evt) => {
             console.log(`Youtube state: ${evt.data}`)
             switch (evt.data) {
-              case YT.PlayerState.PLAYING:
-                console.log("YoutubePlayer: PLAYING")
-                params.onPlaying()
-                break;
               case YT.PlayerState.PAUSED:
                 params.onPause()
                 break;
