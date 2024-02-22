@@ -12,7 +12,7 @@
 
   <div class="video-player player"
        data-controller="player"
-       data-action="range:connect@window->player#triggerEdition range:update@window->player#updatePoints"
+       data-action="range:connect@window->player#triggerEdition range:update@window->player#updatePoints section:connect@window->player#playFromTo section:disconnect@window->player#resetPlayer"
        data-player-video-id-value="<%= video_id(@lesson) %>">
        <div id="player"></div>
   </div>
