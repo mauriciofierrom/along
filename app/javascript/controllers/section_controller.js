@@ -13,6 +13,5 @@ export default class extends Controller {
   disconnect() {
     console.log("section disconnect")
     this.dispatch("disconnect")
-    this.playerOutlet.resetPlayer()
   }
 }
