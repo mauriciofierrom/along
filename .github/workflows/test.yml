@@ -24,3 +24,7 @@ jobs:
           bundle exec rails db:prepare
           bundle exec rails test:all
           bundle exec rspec
+      - name: JS tests
+        run: |
+          yarn install
+          yarn test
