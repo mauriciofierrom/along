@@ -1,9 +1,9 @@
 "use strict";
 
 import { Controller } from "@hotwired/stimulus";
-import YoutubePlayer from "./player/youtube_player";
-import { PlayingState, ReadyState, EditingState, PickingPointState } from "./player/state";
-import LoopManager from "./player/loop_manager"
+import { PlayingState, ReadyState, EditingState, PickingPointState } from "controllers/player/state";
+import LoopManager from "controllers/player/loop_manager"
+import YoutubePlayer from "controllers/player/youtube_player";
 
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
