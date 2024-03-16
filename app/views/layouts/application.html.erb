@@ -5,13 +5,29 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-    <%= yield %>
-  </body>
+    <div class="lheader"></div>
+    <header>
+      <nav>
+        <h1 class="banner">Along</h1>
+        <ul>
+          <li>
+            <% if user_signed_in? %>
+              <%= button_to "Logout",
+                  destroy_user_session_path, method: :delete %>
+            <% else %>
+              <%= link_to "Sign in", new_user_session_path %>
+            <% end %>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <div class="rheader"></div>
+    <main>
+      <%= yield %>
+    </main>
 </html>
+

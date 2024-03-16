@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #8CBEB2;
+    --bg-dark: #291720;
+    --bg-light: #CCCCCC;
+    --primary: #820263;
+    --secondary: #d90368;
+    --accent: #f75c03;
+    --neutral: #FEDDD8;
+}
+
+@font-face {
+    font-family: "superMagic";
+    src: url("super_magic.ttf");
+}
+
+@font-face {
+    font-family: "freeSans";
+    src: url("FreeSans.ttf");
+}
+
+.banner {
+    order: 1;
+    align-self: flex-start;
+    color: var(--primary);
+    font-family: "superMagic", "Super Magic", fantasy;
+    text-transform: capitalize;
+    font-size: 1.3rem;
+    margin-left: 10px;
+    text-shadow:
+        1px 1px 1px var(--accent),
+        2px 2px 1px var(--accent);
+}
+
+.banner-big {
+    order: 1;
+    align-self: flex-start;
+    color: var(--primary);
+    font-family: "superMagic", "Super Magic", fantasy;
+    text-transform: capitalize;
+    font-size: 2.3rem;
+    margin-left: 10px;
+    text-shadow:
+        1px 1px 1px var(--accent),
+        2px 2px 1px var(--accent);
+}
+
+body {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 20% minmax(0, 1fr) 20%;
+    grid-template-rows: 18% minmax(0, 1fr) 20%;
+    grid-template-areas:
+        "lheader header rheader"
+        ". main ."
+        ". footer .";
+
+    background-color: var(--bg-light);
+    font-family: "freeSans", "Free Sans", serif;
+}
+
+header {
+    grid-area: header;
+    background: var(--bg);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+}
+
+/* This is a hack, check it later */
+.lheader {
+    grid-area: lheader;
+    background: var(--bg);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+}
+
+.rheader {
+    grid-area: rheader;
+    background: var(--bg);
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.18);
+}
+
+nav {
+    display: flex;
+    flex-flow: row no-wrap;
+    justify-content: space-between;
+
+    ul {
+        order: 2;
+        align-self: flex-end;
+        margin-right: 10px;
+
+        li {
+            list-style-type: none;
+            a {
+                color: var(--primary);
+                text-decoration: none;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+main {
+    grid-area: main;
+}
+
+h1, h2 {
+    color: var(--primary);
+    font-family: "superMagic", "Super Magic", fantasy;
+    text-shadow:
+        1px 1px 1px var(--accent),
+        2px 2px 1px var(--accent);
+}
+
+article {
+    /* border: 1px solid red; */
+    color: var(--bg-dark);
+    border-radius: 4px;
+    padding: 5px;
+    margin-bottom: 10px;
+
+    h1, h2 {
+        color: var(--bg-dark);
+        font-family: "freeSans", "Free Sans", serif;
+        font-size: 2rem;
+    }
+}
