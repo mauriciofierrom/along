@@ -204,7 +204,7 @@ export default class extends Controller {
       onPause: () => {},
       onPlaying: () => {
         // TODO: This is a float so check the backend
-        if(this.hasDurationValue) {
+        if(this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration)
         }
       }}
