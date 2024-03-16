@@ -1,10 +1,14 @@
-<h1>Welcome to Along!</h1>
-
-<p>
-  A web application to make it easier to practice along to YouTube music instrument video lessons (where enabled).
-</p>
-<% if user_signed_in? %>
-  <%= link_to "Lessons", lessons_path %>
-<% else %>
-  <%= link_to "Sign in", new_user_session_path %>
-<% end %>
+<article>
+  <section>
+    <h1>Welcome to <span class="banner-big">Along</span>!</h1>
+    <p>
+      Along is a web application to help practice along (he he) to YouTube instruction videos.
+    </p>
+    <p>
+      You can create <strong>Lessons</strong> by entering a YouTube video URL and then split the video in <strong>Sections</strong> that you can practice to by looping them over and over again, vastly simplifying the setup for practice sessions.
+    </p>
+    <p>
+      No more dragging the scrubber back over and over again. Set up once and practice with ease! Time to play along!
+    </p>
+  </section>
+</article>
