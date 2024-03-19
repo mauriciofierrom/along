@@ -8,7 +8,7 @@ class LessonsTest < ApplicationSystemTestCase
 
   test "visiting the index" do
     visit lessons_url
-    assert_selector ".lesson-title", text: "Lessons"
+    assert_selector ".title", text: "Lessons"
   end
 
   test "should create lesson" do
@@ -37,7 +37,7 @@ class LessonsTest < ApplicationSystemTestCase
     # assert_text "Lesson was successfully updated"
     click_on "Back to lessons"
 
-    assert_selector ".lesson-title", text: "Lessons"
+    assert_selector ".title", text: "Lessons"
     assert_text "New Light"
   end
 
