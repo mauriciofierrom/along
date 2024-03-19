@@ -1,24 +1,27 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="lesson-header">
-  <div class="lesson-title">
-    Lessons
+<div class="lessons">
+  <div class="header">
+    <div class="title">
+      <h1>Lessons</h1>
+    </div>
+
+    <div class="new">
+      <%= link_to "New lesson",
+        new_lesson_path,
+        data: { turbo_frame: dom_id(Lesson.new) }
+      %>
+    </div>
   </div>
-  <div class="lesson-new">
-    <%= link_to "New lesson",
-      new_lesson_path,
-      data: { turbo_frame: dom_id(Lesson.new) },
-      class: "lesson-new"
-    %>
-  </div>
+
+  <%= turbo_frame_tag Lesson.new %>
+
+  <%= turbo_frame_tag "lessons", class: "list" do %>
+    <% @lessons.each do |lesson| %>
+      <%= render lesson %>
+    <% end %>
+  <% end %>
+
+  <%= paginate @lessons %>
 </div>
 
-<%= turbo_frame_tag Lesson.new %>
-
-<%= turbo_frame_tag "lessons", class: "lesson-list" do %>
-  <% @lessons.each do |lesson| %>
-    <%= render lesson %>
-  <% end %>
-<% end %>
-
-<%= paginate @lessons %>
