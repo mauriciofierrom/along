@@ -1,11 +1,11 @@
-<div id="<%= dom_id lesson %>" class="lesson-item">
-  <%= image_tag(video_thumbnail_url(lesson), class: "lesson-item-thumbnail", size: "314x177") %>
-  <div class="lesson-item-title">
+<div id="<%= dom_id lesson %>" class="video-card">
+  <%= image_tag(video_thumbnail_url(lesson), class: "thumbnail") %>
+  <div class="title">
     <%= instrument_emoji(lesson) %>
     <%= link_to lesson.name, lesson, data: { turbo: false } %>
   </div>
   <% if lesson.sections.size > 0 && lesson.current_objective then %>
-    <div class="lesson-item-subtitle">
+    <div class="subtitle">
       Now learning: <%= lesson.sections.where(current: true)&.first&.name %>
     </div>
   <% end %>
