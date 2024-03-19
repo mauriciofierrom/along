@@ -128,3 +128,10 @@ article {
         font-size: 2rem;
     }
 }
+
+a {
+  color: var(--secondary);
+  text-decoration: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
