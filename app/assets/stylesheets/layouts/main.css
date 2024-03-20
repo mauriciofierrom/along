@@ -142,3 +142,12 @@ a {
   font-size: 1.2rem;
   cursor: pointer;
 }
+
+.pagination {
+  display: flex;
+  flex-flow: row no-wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
