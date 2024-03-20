@@ -11,26 +11,21 @@
     </div>
   <% end %>
 
-  <div class="lesson-name">
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name, style: "width: 95%" %>
-  </div>
+  <%= form.label :name %>
+  <%= form.text_field :name, class: "large", required: true %>
 
-  <div class="lesson-url">
-    <%= form.label :video_url, style: "display: block" %>
-    <%= form.text_field :video_url,
-      data: { action: "input->player#load", "player-target" =>  "source" },
-      style: "width: 100%"%>
-  </div>
+  <%= form.label :video_url %>
+  <%= form.text_field :video_url,
+    data: { action: "input->player#load", "player-target" =>  "source" },
+    class: "large",
+    required: true %>
 
-  <div class="lesson-instrument">
-    <%= form.label :instrument_id, style: "display: block" %>
-    <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }, {}, style: "width: 100%") %>
-  </div>
+  <%= form.label :instrument_id %>
+  <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }, {}, class: "small") %>
 
+  <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
 
-  <div class="lesson-action-buttons">
-    <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
+  <div class="form-footer">
     <%= form.submit %>
     <%= link_to "Cancel", lessons_path(lesson) %>
   </div>
