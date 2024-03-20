@@ -17,7 +17,7 @@
           <li>
             <% if user_signed_in? %>
               <%= button_to "Logout",
-                  destroy_user_session_path, method: :delete %>
+                  destroy_user_session_path, method: :delete, class: "small link" %>
             <% else %>
               <%= link_to "Sign in", new_user_session_path %>
             <% end %>
