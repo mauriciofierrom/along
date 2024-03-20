@@ -13,4 +13,5 @@
  *= require_self
  *= require layouts/main
  *= require lesson
+ *= require form
  */
