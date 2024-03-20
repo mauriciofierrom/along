@@ -52,7 +52,7 @@ body {
     margin: 0;
     display: grid;
     grid-template-columns: 20% minmax(0, 1fr) 20%;
-    grid-template-rows: 18% minmax(0, 1fr) 20%;
+    grid-template-rows: 60px; minmax(0, 1fr) 50px;
     grid-template-areas:
         "lheader header rheader"
         ". main ."
@@ -60,6 +60,7 @@ body {
 
     background-color: var(--bg-light);
     font-family: "freeSans", "Free Sans", serif;
+    min-height: 100vh;
 }
 
 header {
@@ -104,7 +105,14 @@ nav {
 }
 
 main {
-    grid-area: main;
+  grid-area: main;
+}
+
+footer {
+  display: flex;
+  flex-flow: row no-wrap;
+  grid-area: footer;
+  align-items: end;
 }
 
 h1, h2 {
@@ -116,7 +124,6 @@ h1, h2 {
 }
 
 article {
-    /* border: 1px solid red; */
     color: var(--bg-dark);
     border-radius: 4px;
     padding: 5px;
