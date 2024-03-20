@@ -1,0 +1,157 @@
+:root {
+  --width-input-border: 2px;
+  --radius-inputs: 0.25em;
+  --padding-inputs: 0.75em;
+  --opacity-input-disabled: 0.5;
+}
+
+.small {
+  width: 25%;
+}
+
+.medium {
+  width: 50%;
+}
+
+.large {
+  width: 75%;
+}
+
+.full {
+  width: 100%;
+}
+
+select,
+textarea,
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  font: inherit;
+  color: inherit;
+  line-height: 120%;
+  padding: var(--padding-inputs);
+  border: var(--width-input-border) solid;
+  border-radius: var(--radius-inputs);
+  accent-color: var(--accent);
+  color: var(--neutral);
+  background-image: linear-gradient(
+    to right,
+    var(--primary),
+    var(--secondary),
+    var(--accent)
+  );
+
+  &:focus {
+    outline: 0;
+    border-color: var(--primary);
+  }
+
+  &:hover,
+  &:active {
+    border-color: var(--secondary);
+  }
+
+  &:required {
+    &:invalid {
+      &:hover,
+      &:active {
+        &:not([readonly], [disabled]) {
+          border-color: var(--secondary);
+        }
+      }
+      &:focus {
+        &:not([readonly], [disabled]) {
+          border-color: var(--secondary);
+        }
+      }
+    }
+  }
+}
+
+:disabled {
+  opacity: var(--opacity-input-disabled);
+  cursor: not-allowed;
+}
+
+label {
+  cursor: pointer;
+  color: var(--bg-dark);
+  display: block;
+  font-family: "freeSans", "Free Sans", serif;
+  text-shadow:
+    1px 1px 1px var(--primary),
+    2px 2px 1px var(--secondary);
+
+  & + &,
+  & + input,
+  & + select,
+  & + textarea {
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+}
+
+button,
+input[type="submit"],
+input[type="button"] {
+  border: none;
+  border-radius: 8px;
+  padding: 0.25rem 0.75rem;
+  min-width: 10ch;
+  min-height: 44px;
+  text-align: center;
+  cursor: pointer;
+  line-height: 1.1;
+  background-color: var(--bg);
+  color: var(--bg-dark);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: "freeSans", "Free Sans", serif;
+  font-size: 1.2rem;
+
+  &.link {
+    color: var(--secondary);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
+    box-shadow: none;
+    min-width: auto;
+    min-height: auto;
+    cursor: pointer;
+  }
+
+  &:hover,
+  &:active {
+    filter: brightness(80%);
+  }
+
+  &:disabled {
+    filter: opacity(50%);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 1px var(--primary);
+    filter: brightness(80%);
+  }
+
+  &.danger {
+    background-color: var(--primary);
+    color: var(--bg-light);
+  }
+}
+
+.form-footer {
+  display: flex;
+  flex-flow: row no-wrap;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 20px;
+  margin-bottom: 20px;
+}
