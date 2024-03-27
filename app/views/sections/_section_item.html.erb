@@ -1,25 +1,25 @@
-<%= turbo_frame_tag section do %>
-  <div class="section-item"
+<%= turbo_frame_tag section, class: "section" do %>
+  <div class="item"
        data-start="<%= section.start_time.to_i.to_f %>"
        data-end="<%= section.end_time.to_i.to_f %>"
        data-loop="<%= section.loop %>"
        data-playback-speed="<%= section.playback_speed %>">
-    <div class="section-item-top">
-      <span class="section-item-title">
+    <div class="item-top">
+      <span class="item-title">
             <%= link_to section.name,
               lesson_section_path(lesson, section),
               data: { turbo_stream: "sections" } %>
       </span>
-      <div class="section-item-actions">
-        <%= link_to image_tag("edit.svg", size: "16x16"),
+      <div class="item-actions">
+        <%= link_to (fa_icon "pencil-square-o"),
           edit_lesson_section_path(lesson, section),
           data: { turbo_frame: "sections" } %>
       </div>
     </div>
-    <div class="section-item-bottom">
-      <span><%= format_playback_speed(section.playback_speed) %>x</span>
-      <span><%= "#{format_time(section.start_time)} -  #{format_time(section.end_time)}" %></span>
-      <span><%= image_tag(loop_img(section), size: "16x16") %></span>
+    <div class="item-bottom">
+      <%= format_playback_speed(section.playback_speed) %>x
+      <%= "#{format_time(section.start_time)} -  #{format_time(section.end_time)}" %>
+      <%= fa_icon "refresh" %>
     </div>
   </div>
 <% end %>
