@@ -45,6 +45,9 @@ gem "bootsnap", require: false
 # Pagination
 gem "kaminari"
 
+# Font icons
+gem "font-awesome-rails"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
