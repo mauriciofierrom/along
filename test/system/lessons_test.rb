@@ -27,7 +27,7 @@ class LessonsTest < ApplicationSystemTestCase
 
   test "should update Lesson" do
     visit lesson_url(@lesson)
-    click_on "Edit this lesson", match: :first
+    find(".fa-edit", match: :first).click
 
     select "Guitar", from: "Instrument"
     fill_in "Name", with: "New Light"
@@ -35,7 +35,7 @@ class LessonsTest < ApplicationSystemTestCase
     click_on "Update Lesson"
 
     # assert_text "Lesson was successfully updated"
-    click_on "Back to lessons"
+    find(".fa-arrow-left", match: :first).click
 
     assert_selector ".title", text: "Lessons"
     assert_text "New Light"
