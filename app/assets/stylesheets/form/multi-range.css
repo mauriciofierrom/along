@@ -1,7 +1,7 @@
 .range-slider {
   height: 5px;
   position: relative;
-  background-color: #e1e9f6;
+  background-color: var(--neutral);
   border-radius: 2px;
 }
 
@@ -9,7 +9,12 @@
   height: 100%;
   position: absolute;
   border-radius: 5px;
-  background-color: #1b53c0;
+  background-image: linear-gradient(
+    to right,
+    var(--primary),
+    var(--secondary),
+    var(--accent)
+  );
 }
 
 .range-input {
@@ -38,8 +43,8 @@
   height: 15px;
   width: 15px;
   border-radius: 50%;
-  border: 3px solid #1b53c0;
-  background-color: #fff;
+  border: 3px solid var(--primary);
+  background-color: var(--primary);
   pointer-events: auto;
   -moz-appearance: none;
 }

@@ -12,8 +12,8 @@
  *
  *= require font-awesome
  *= require_self
- *= require layouts/main
  *= require core
+ *= require_tree ./form
  *= require lesson
- *= require form
+ *= require section
  */
