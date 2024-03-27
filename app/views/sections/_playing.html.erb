@@ -1,25 +1,25 @@
-<%= turbo_frame_tag "sections" do %>
-  <div class="section-playing"
+<%= turbo_frame_tag "sections", class: "section" do %>
+  <div class="playing"
        data-controller="section"
        data-section-player-outlet=".video-player"
        data-start="<%= section.start_time.to_i.to_f %>"
        data-end="<%= section.end_time.to_i.to_f %>"
        data-loop="<%= section.loop %>"
        data-playback-speed="<%= section.playback_speed %>">
-    <div class="section-item-top">
-      <span class="section-item-title"
+    <div class="top">
+      <span class="title"
             lesson-target="section"
             data-action="click->lesson#loadSection">
             <%= section.name %>
       </span>
-      <div class="section-item-actions">
+      <div class="actions">
         <%= link_to "Cancel", lesson_path(@lesson) %>
       </div>
     </div>
-    <div class="section-item-bottom">
-      <span><%= format_playback_speed(section.playback_speed) %>x</span>
-      <span><%= "#{format_time(section.start_time)} -  #{format_time(section.end_time)}" %></span>
-      <span><%= image_tag(loop_img(section), size: "16x16") %></span>
+    <div class="bottom">
+      <%= format_playback_speed(section.playback_speed) %>x
+      <%= "#{format_time(section.start_time)} -  #{format_time(section.end_time)}" %>
+      <%= image_tag(loop_img(section), size: "16x16") %>
     </div>
   </div>
 <% end %>
