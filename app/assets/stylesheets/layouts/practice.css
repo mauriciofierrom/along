@@ -1,10 +1,16 @@
+body {
+  margin: 0;
+}
+
 .lesson-grid {
   display: grid;
   /* border: 2px solid yellow; */
-  color: white;
+  color: var(--neutral);
   height: 100vh;
-  background-color: black;
+  background-color: var(--bg);
+  /* prettier-ignore */
   grid-template-columns: 5% minmax(0, 1fr) 5%;
+  /* prettier-ignore */
   grid-template-rows: 10% minmax(0, 1fr) 20%;
   row-gap: 10px;
   grid-template-areas:
@@ -13,24 +19,46 @@
     ". sections .";
 }
 
+h1,
+h2 {
+  color: var(--primary);
+  font-family: "superMagic", "Super Magic", fantasy;
+  text-shadow:
+    1px 1px 1px var(--accent),
+    2px 2px 1px var(--accent);
+}
+
+a {
+  color: var(--secondary);
+  text-decoration: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
 .header {
   grid-area: header;
   display: flex;
   flex-flow: row no-wrap;
-  /* border: 2px solid white; */
   align-items: center;
 }
 
-.header h1{
+.header h1 {
   order: 0;
   font-size: 2rem;
   font-weight: bold;
+  color: var(--primary);
+  font-family: "superMagic", "Super Magic", fantasy;
+  text-transform: capitalize;
+  text-shadow:
+    1px 1px 1px var(--accent),
+    2px 2px 1px var(--accent);
 }
 
 .header-actions {
   display: flex;
   order: 1;
   justify-content: right;
+  align-items: center;
   margin-left: auto;
   gap: 5px;
 }
@@ -43,15 +71,4 @@
   /* border: 2px solid red; */
   grid-area: video;
   background-color: black;
-}
-
-.sections {
-  /* border: 2px solid blue; */
-  grid-area: sections;
-}
-
-.sections-selector {
-  overflow: auto;
-  white-space: nowrap;
-  padding: 10px;
 }

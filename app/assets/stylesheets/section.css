@@ -1,0 +1,151 @@
+.sections {
+  /* border: 2px solid blue; */
+  grid-area: sections;
+  margin-bottom: 10px;
+
+  form {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    align-content: baseline;
+
+    .range {
+      flex-basis: 100%;
+    }
+
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: row wrap;
+      width: 100%;
+      justify-content: right;
+      gap: 10px;
+    }
+  }
+}
+
+.sections-selector {
+  overflow: auto;
+  white-space: nowrap;
+  padding: 10px;
+}
+
+.section {
+  form {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+
+    .action-buttons {
+      display: flex;
+      flex-flow: row wrap;
+      width: 100%;
+      justify-content: right;
+      gap: 10px;
+    }
+  }
+
+  .item {
+    display: inline-grid;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+      "section-item-top"
+      "section-item-bottom";
+    height: 100px;
+    width: 250px;
+    padding: 10px;
+    background-color: var(--bg-dark);
+    border-radius: 5px;
+    box-shadow:
+      rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+      rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  }
+
+  .item-top {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    grid-area: section-item-top;
+    padding: 5px;
+  }
+
+  .item-title {
+    order: 0;
+    cursor: pointer;
+    text-overflow: clip;
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 24px;
+    }
+  }
+
+  .item-actions {
+    order: 1;
+    margin-left: auto;
+  }
+
+  .item-bottom {
+    display: flex;
+    grid-area: section-item-bottom;
+    font-family: "miniSystem", "Mini System", fantasy;
+    font-weight: bold;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .playing {
+    display: inline-grid;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+      "section-item-top"
+      "section-item-bottom";
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    background-color: var(--bg-dark);
+    border-radius: 5px;
+    justify-content: center;
+
+    .top {
+      display: flex;
+      width: 100%;
+      flex-wrap: nowrap;
+      grid-area: section-item-top;
+      padding: 5px;
+      /* border: 1px solid beige; */
+      align-items: center;
+
+      .title {
+        order: 1;
+        cursor: pointer;
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 24px;
+      }
+
+      .actions {
+        order: 1;
+        margin-left: auto;
+      }
+    }
+
+    .bottom {
+      display: flex;
+      grid-area: section-item-bottom;
+      font-family: "miniSystem", "Mini System", fantasy;
+      font-weight: bold;
+      font-size: 3rem;
+      gap: 10px;
+      justify-content: space-around;
+      justify-items: center;
+      align-content: center;
+      align-items: center;
+    }
+  }
+}
