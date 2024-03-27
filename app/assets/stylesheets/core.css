@@ -1,0 +1,28 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #8cbeb2;
+  --bg-dark: #291720;
+  --bg-light: #cccccc;
+  --primary: #820263;
+  --secondary: #d90368;
+  --accent: #f75c03;
+  --neutral: #feddd8;
+}
+
+@font-face {
+  font-family: "superMagic";
+  src: url("super_magic.ttf");
+}
+
+@font-face {
+  font-family: "freeSans";
+  src: url("FreeSans.ttf");
+}
+
+@font-face {
+  font-family: "miniSystem";
+  src: url("minisystem.otf");
+}

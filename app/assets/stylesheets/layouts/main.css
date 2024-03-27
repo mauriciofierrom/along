@@ -1,27 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
-:root {
-    --bg: #8CBEB2;
-    --bg-dark: #291720;
-    --bg-light: #CCCCCC;
-    --primary: #820263;
-    --secondary: #d90368;
-    --accent: #f75c03;
-    --neutral: #FEDDD8;
-}
-
-@font-face {
-    font-family: "superMagic";
-    src: url("super_magic.ttf");
-}
-
-@font-face {
-    font-family: "freeSans";
-    src: url("FreeSans.ttf");
-}
-
 .banner {
     order: 1;
     align-self: flex-start;
@@ -49,14 +25,16 @@
 }
 
 body {
-    margin: 0;
-    display: grid;
+  margin: 0;
+  display: grid;
+  /* prettier-ignore */
     grid-template-columns: 20% minmax(0, 1fr) 20%;
-    grid-template-rows: 60px; minmax(0, 1fr) 50px;
-    grid-template-areas:
-        "lheader header rheader"
-        ". main ."
-        ". footer .";
+  /* prettier-ignore */
+  grid-template-rows: 60px; minmax(0, 1fr) 50px;
+  grid-template-areas:
+      "lheader header rheader"
+      ". main ."
+      ". footer .";
 
     background-color: var(--bg-light);
     font-family: "freeSans", "Free Sans", serif;

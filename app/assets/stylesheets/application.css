@@ -13,6 +13,7 @@
  *= require font-awesome
  *= require_self
  *= require layouts/main
+ *= require core
  *= require lesson
  *= require form
  */
