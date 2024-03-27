@@ -1,12 +1,10 @@
 <div class="lesson-grid" data-lesson-player-outlet=".video-player">
-  <%# <p style="color: green"><%= notice %1></p> %>
-
   <div class="header">
     <h1><%= @lesson.name %></h1>
     <div class="header-actions">
-      <%= link_to "Edit this lesson", edit_lesson_path(@lesson) %> |
-      <%= link_to "Back to lessons", lessons_path %>
-      <%= button_to "Destroy this lesson", @lesson, method: :delete %>
+      <%= link_to (fa_icon "arrow-left"), lessons_path %>
+      <%= link_to (fa_icon "edit"), edit_lesson_path(@lesson) %> |
+      <%= button_to (fa_icon "trash"), @lesson, method: :delete, class: "danger" %>
     </div>
   </div>
 
