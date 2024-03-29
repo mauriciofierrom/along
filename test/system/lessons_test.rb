@@ -41,6 +41,11 @@ class LessonsTest < ApplicationSystemTestCase
     assert_text "New Light"
   end
 
+  test "should have app-capable meta tag" do
+    visit lesson_url(@lesson)
+    find 'meta[name="apple-mobile-web-app-capable"][content="yes"]', visible: :all
+  end
+
   # FIXME: Turbo stream flash notices
   # test "should destroy Lesson" do
   #   visit lesson_url(@lesson)
