@@ -50,6 +50,9 @@ export default class extends Controller {
   /** @property {PickingPointState} */
   pickingPointState;
 
+  /** @property {WakeLockSentinel} */
+  #wakeLock;
+
   static targets = [ "source", "duration" ]
 
   connect() {
@@ -69,6 +72,18 @@ export default class extends Controller {
 
   initialize() {
     this.#initStates()
+
+    if(!this.editValue) {
+      this.#acquireScreenLock()
+    }
+  }
+
+  disconnect() {
+    if(this.#wakeLock !== null && this.#wakeLock !== undefined) {
+      this.#wakeLock.release().then(() => {
+        console.log("wake lock released on player controller disconnect")
+      })
+    }
   }
 
   /**
@@ -241,6 +256,30 @@ export default class extends Controller {
   #onSectionCancel = (e) => {
     if (e.target.id === "sections") {
       this.reset()
+    }
+  }
+
+  #acquireScreenLock = async () => {
+    if ("wakeLock" in navigator) {
+      console.log("wakeLock in navigator")
+      try {
+        this.#wakeLock = await navigator.wakeLock.request("screen")
+
+        this.#wakeLock.addEventListener("release", () => {
+          console.log("wake lock released")
+        })
+
+        document.addEventListener("visibilitychange", async () => {
+          if (this.#wakeLock !== null && document.visibilityState === "visible") {
+            console.log("reacquiring lock")
+            this.#wakeLock = await navigator.wakeLock.request("screen");
+          }
+        });
+      } catch (err) {
+        console.log(`${err.name}, ${err.message}`)
+      }
+    } else {
+      console.log("no wakeLock in navigator")
     }
   }
 }
