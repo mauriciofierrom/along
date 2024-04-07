@@ -7,10 +7,8 @@
        data-loop="<%= section.loop %>"
        data-playback-speed="<%= section.playback_speed %>">
     <div class="top">
-      <span class="title"
-            lesson-target="section"
-            data-action="click->lesson#loadSection">
-            <%= section.name %>
+      <span class="title">
+        <%= section.name %>
       </span>
       <div class="actions">
         <%= link_to "Cancel", lesson_path(@lesson) %>
