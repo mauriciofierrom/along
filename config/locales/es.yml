@@ -1,0 +1,49 @@
+es:
+  sign_in: "Ingresar"
+  sign_up: "Registrarse"
+  logout: "Salir"
+  cancel: "Cancelar"
+  forgot_password: "¿Olvidaste tu contraseña?"
+  no_confirmation: "¿No recibiste las instrucciones de confirmación?"
+  no_unlock: "¿No recibiste las instrucciones de desbloqueo?"
+  actions:
+    new: "Agregar"
+    edit: "Editar"
+    delete: "Eliminar"
+  helpers:
+    submit:
+      create: "Crear %{model}"
+      update: "Actualizar %{model}"
+  activerecord:
+    models:
+      lesson:
+        one: "Lección"
+        other: "Lecciones"
+      section:
+        one: "Sección"
+        other: "Secciones"
+      instrument: "Instrumento"
+      user: "Usuario"
+    attributes:
+      lesson:
+        name: "Nombre"
+        video_url: "Enlace de video"
+        instrument: "Instrumento"
+      section:
+        name: "Nombre"
+        loop: "Repetir"
+        playback_speed: "Velocidad de reproducción"
+      user:
+        current_password: "Contraseña actual"
+        email: "Correo electrónico"
+        password: "Contraseña"
+        password_confirmation: "Confirmar contraseña"
+        remember_me: "Recordarme"
+    errors:
+      models:
+        lesson:
+          attributes:
+            video_url:
+              host_not_allowed: "El nombre de sitio no es permitido"
+              https_only: "Solo se acepta enlaces seguros (HTTPS)"
+              invalid: "Enlace no válido"

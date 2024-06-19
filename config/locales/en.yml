@@ -30,15 +30,30 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-  lesson:
+  sign_in: "Sign in"
+  sign_up: "Sign up"
+  logout: "Logout"
+  forgot_password: "Forgot your password?"
+  no_confirmation: "Didn't receive confirmation instructions?"
+  no_unlock: "Didn't receive unlock instructions"
+  cancel: "Cancel"
+  actions:
+    new: "New"
+    edit: "Edit"
+    delete: "Delete"
   activerecord:
+    models:
+      lesson:
+        one: "Lesson"
+        other: "Lessons"
     attributes:
       lesson:
-        video_url: "Video URL"
+        video_url: "Video link"
     errors:
       models:
         lesson:
           attributes:
             video_url:
               host_not_allowed: "Host is not allowed"
+              https_only: "Only secure links are allowed (HTTPS)"
+              invalid: "Invalid link"
