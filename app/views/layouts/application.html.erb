@@ -17,10 +17,10 @@
         <ul>
           <li>
             <% if user_signed_in? %>
-              <%= button_to "Logout",
+              <%= button_to t(:logout),
                   destroy_user_session_path, method: :delete, class: "small link" %>
             <% else %>
-              <%= link_to "Sign in", new_user_session_path %>
+              <%= link_to t(:sign_in), new_user_session_path %>
             <% end %>
           </li>
         </ul>
