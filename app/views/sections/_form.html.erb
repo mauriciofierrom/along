@@ -16,7 +16,7 @@
   </div>
 
   <%= form.label :name %>
-  <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: "Name" %>
+  <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: Section.human_attribute_name("name") %>
 
   <%= form.label :playback_speed  %>
   <%= form.text_field :playback_speed, min: 0.5, max: 2, type: :number, step: 0.5 %>
@@ -29,6 +29,6 @@
 
   <div class="action-buttons">
     <%= form.submit %>
-    <%= link_to "Cancel", lesson_path(@lesson) %>
+    <%= link_to t(:cancel), lesson_path(@lesson) %>
   </div>
 <% end %>
