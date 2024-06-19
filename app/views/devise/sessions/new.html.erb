@@ -1,4 +1,4 @@
-<h2>Log in</h2>
+<h2><%= t(:sign_in) %></h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <%= f.label :email %>
@@ -13,7 +13,7 @@
   <% end %>
 
   <div class="actions">
-    <%= f.submit "Log in", class: "small" %>
+    <%= f.submit t(:sign_in), class: "small" %>
   </div>
 <% end %>
 
