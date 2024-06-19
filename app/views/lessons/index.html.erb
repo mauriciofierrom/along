@@ -3,11 +3,11 @@
 <div class="lessons">
   <div class="header">
     <div class="title">
-      <h1>Lessons</h1>
+      <h1><%= Lesson.model_name.human(count: 2) %></h1>
     </div>
 
     <div class="new">
-      <%= link_to "New lesson",
+      <%= link_to "#{t("actions.new")} #{Lesson.model_name.human}",
         new_lesson_path,
         data: { turbo_frame: dom_id(Lesson.new) }
       %>

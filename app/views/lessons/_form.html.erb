@@ -20,13 +20,13 @@
     class: "large",
     required: true %>
 
-  <%= form.label :instrument_id %>
+  <%= form.label :instrument_id, Instrument.model_name.human %>
   <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }, {}, class: "small") %>
 
   <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
 
   <div class="form-footer">
     <%= form.submit %>
-    <%= link_to "Cancel", lessons_path(lesson) %>
+    <%= link_to t(:cancel), lessons_path(lesson) %>
   </div>
 <% end %>
