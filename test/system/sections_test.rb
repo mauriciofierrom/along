@@ -14,7 +14,7 @@ class SectionsTest < ApplicationSystemTestCase
 
   test "should create section" do
     visit lesson_url(@lesson)
-    click_on "New section"
+    click_on "New Section"
 
     fill_in "Name", with: "Part 4"
     page.execute_script("document.querySelector('#section_start_time').value = 123.2")
