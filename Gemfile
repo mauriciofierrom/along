@@ -48,6 +48,9 @@ gem "kaminari"
 # Font icons
 gem "font-awesome-rails"
 
+# Get locale from http header
+gem 'http_accept_language', '~> 2.1', '>= 2.1.1'
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
