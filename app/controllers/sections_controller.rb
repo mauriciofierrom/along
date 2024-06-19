@@ -52,6 +52,7 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to lesson_url(@lesson), notice: "Section was successfully destroyed." }
+      format.turbo_stream
     end
   end
 

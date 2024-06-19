@@ -86,7 +86,10 @@
 
   .item-actions {
     order: 1;
-    margin-left: auto;
+    margin-left: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   .item-bottom {
