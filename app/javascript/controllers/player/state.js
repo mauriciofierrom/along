@@ -1,3 +1,5 @@
+import { debug } from "controllers/util"
+
 /** Abstract class for a PlayerState */
 class PlayerState {
   /**
@@ -44,7 +46,7 @@ export class ReadyState extends PlayerState {
   }
 
   reset() {
-    console.log("ReadyState: Nothing to reset")
+    debug("ReadyState: Nothing to reset")
   }
 }
 
@@ -75,8 +77,11 @@ export class EditingState extends PlayerState {
 
 export class PickingPointState extends PlayerState {
   async loop(from, to) {
+    debug("Looping 3 times", { state: this.constructor.name, from, to })
     await this.context.loopManager.loop(from, to, 3)
+    debug("Done point looping. Doing editing loop:", this.context.editState)
     this.context.state = this.context.editingState
+    this.context.editState = { ...this.context.editState, setting: null }
     this.context.loop(this.context.editState.start, this.context.editState.end)
   }
 

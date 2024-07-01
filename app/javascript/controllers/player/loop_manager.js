@@ -1,3 +1,5 @@
+import { debug } from "controllers/util";
+
 /** Class driving the execution of a playback loop */
 export default class LoopManager {
   /** @property {YoutubePlayer} */
@@ -5,7 +7,7 @@ export default class LoopManager {
   /** @property {number} intervalId - The id to clear the interval */
   #intervalId;
   /** @property {number} times - The number of times the lopo has repeated */
-  #times = 1;
+  #times = 0;
   /** @property {boolean} aborted - Whether the loop has been canceled or not */
   #aborted = false;
   /** @property {AbortController} abortController - A controller to abort the
@@ -33,9 +35,9 @@ export default class LoopManager {
    * @param {?number} max - An optional maximum number of repetitions for the
    * loop
    */
-  loop(from, to, max = null) {
+  async loop(from, to, max = null) {
     // We need to stop any previous loop before we start a new one
-    this.clear()
+    await this.clear()
 
     this.#player.play(from)
 
@@ -61,8 +63,8 @@ export default class LoopManager {
           }
         })
 
-        if(max !== null && max !== undefined && this.#times > max) {
-          this.#times = 1
+        if(max !== null && max !== undefined && this.#times >= max) {
+          this.#times = 0
           clearInterval(this.#intervalId)
           resolve()
         }
@@ -75,17 +77,21 @@ export default class LoopManager {
    *
    * If there's a loop active we use the abort controller to stop it.
    */
-  clear() {
+  async clear() {
     if(this.#intervalId !== null && this.#intervalId !== undefined) {
-      // this.#player.pause()
-      this.#times = 1
-      if(this.#abortController && !this.#abortController.signal.aborted) {
+      debug("Interval id of this operation", this.#intervalId)
+      this.#player.pause()
+      this.#times = 0
+      if(this.#abortController !== null && this.#abortController !== undefined && !this.#abortController.signal.aborted) {
+        debug("aborting")
         this.#abortController.abort("LoopManager: Cancelled manually")
+      } else {
+        debug("Already aborted")
       }
-
       this.#intervalId = null
+      this.#aborted = false
     } else {
-      console.log("LoopManager: Tried to clear a non-existing loop")
+      debug("No interval")
     }
   }
 }

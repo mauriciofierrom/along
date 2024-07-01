@@ -32,6 +32,13 @@ describe("LoopManager", () => {
 
       loopManager.loop(1, 5, 3)
 
+      // Force the event loop to move before we clear to allow the code in the
+      // loop promise to run and set the intervalId used for the check of clear
+      // FIXME: Extremely hacky and I don't completely understand why this works
+      // nor have the time. For now and for this test I'll leave it until I read
+      // more about it.
+      await new Promise(jest.requireActual("timers").setImmediate);
+
       jest.runAllTimers()
 
       expect(mockPlay).toHaveBeenCalledTimes(4)
@@ -44,9 +51,15 @@ describe("LoopManager", () => {
 
       const loop = loopManager.loop(1, 5)
 
-      jest.advanceTimersByTime(2500)
-      loopManager.clear()
-      jest.advanceTimersByTime(1000)
+      // Force the event loop to move before we clear to allow the code in the
+      // loop promise to run and set the intervalId used for the check of clear
+      // FIXME: Extremely hacky and I don't completely understand why this works
+      // nor have the time. For now and for this test I'll leave it until I read
+      // more about it.
+      await new Promise(jest.requireActual("timers").setImmediate);
+
+      jest.advanceTimersByTime(500)
+      await loopManager.clear()
 
       await expect(loop).rejects.toMatch("LoopManager: Cancelled manually")
     })
