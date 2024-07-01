@@ -82,7 +82,7 @@ export default class extends Controller {
       this.element.children[0].style = "";
     }
     catch (error) {
-      console.log(error)
+      console.error(error)
     }
 
     this.state = this.readyState

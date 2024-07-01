@@ -1,17 +1,18 @@
 import { Controller } from "@hotwired/stimulus";
 import ScreenLockManager from "controllers/screen_lock_manager"
+import { debug } from "controllers/util";
 
 export default class extends Controller {
   #screenLockManager;
 
   initialize () {
-    console.log("initialize section controller")
+    debug("initialize section controller")
     this.#screenLockManager = new ScreenLockManager()
   }
   connect() {
-    console.log("connected section controller")
-    console.log(`Section load start: ${this.element.dataset.start}`)
-    console.log(`Section load end: ${this.element.dataset.end}`)
+    debug("connected section controller")
+    debug(`Section load start: ${this.element.dataset.start}`)
+    debug(`Section load end: ${this.element.dataset.end}`)
     const start = parseFloat(this.element.dataset.start)
     const end = parseFloat(this.element.dataset.end)
 
@@ -20,7 +21,7 @@ export default class extends Controller {
   }
 
   disconnect() {
-    console.log("section controller disconnect")
+    debug("section controller disconnect")
     this.dispatch("disconnect")
     this.#screenLockManager.releaseLock()
   }

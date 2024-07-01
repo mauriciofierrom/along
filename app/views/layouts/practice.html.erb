@@ -9,6 +9,9 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "layouts/practice", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_tag do %>
+      window.rails_env = "<%= Rails.env %>"
+    <% end %>
   </head>
 
   <body>
