@@ -1,5 +1,7 @@
 "use strict";
 
+import { debug } from "controllers/util";
+
 /** A class to encapsulate Screen Lock management */
 export default class {
 
@@ -7,34 +9,33 @@ export default class {
   #wakeLock;
 
   async acquireScreenLock () {
-    console.log("hey")
     if ("wakeLock" in navigator) {
-      console.log("wakeLock in navigator")
+      debug("wakeLock in navigator")
       try {
         this.#wakeLock = await navigator.wakeLock.request("screen")
 
         this.#wakeLock.addEventListener("release", () => {
-          console.log("wake lock released")
+          debug("wake lock released")
         })
 
         document.addEventListener("visibilitychange", async () => {
           if (this.#wakeLock !== null && document.visibilityState === "visible") {
-            console.log("reacquiring lock")
+            debug("reacquiring lock")
             this.#wakeLock = await navigator.wakeLock.request("screen");
           }
         });
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     } else {
-      console.log("no wakeLock in navigator")
+      debug("no wakeLock in navigator")
     }
   }
 
   releaseLock() {
     if(this.#wakeLock !== null && this.#wakeLock !== undefined) {
       this.#wakeLock.release().then(() => {
-        console.log("wake lock released")
+        debug("wake lock released")
       })
     }
   }

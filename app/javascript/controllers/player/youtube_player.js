@@ -1,4 +1,6 @@
-/** A cclass to encapsulate the YouTube player */
+import { debug } from "controllers/util";
+
+/** A class to encapsulate the YouTube player */
 export default class YoutubePlayer {
   /** @property {Player} player - The Youtube player */
   #player;
@@ -47,7 +49,7 @@ export default class YoutubePlayer {
         events: {
           'onReady': params.onReady,
           'onStateChange': (evt) => {
-            console.log(`Youtube state: ${evt.data}`)
+            debug(`Youtube state: ${evt.data}`)
             switch (evt.data) {
               case YT.PlayerState.PAUSED:
                 params.onPause()
@@ -58,7 +60,7 @@ export default class YoutubePlayer {
             }
           },
           'onError': (evt) => {
-            console.log(`error: ${evt.data}`)
+            console.error(`error: ${evt.data}`)
           }
         }
       })
