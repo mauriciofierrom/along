@@ -80,7 +80,6 @@ export default class LoopManager {
   async clear() {
     if(this.#intervalId !== null && this.#intervalId !== undefined) {
       debug("Interval id of this operation", this.#intervalId)
-      this.#player.pause()
       this.#times = 0
       if(this.#abortController !== null && this.#abortController !== undefined && !this.#abortController.signal.aborted) {
         debug("aborting")
