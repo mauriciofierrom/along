@@ -51,6 +51,12 @@ gem "font-awesome-rails"
 # Get locale from http header
 gem 'http_accept_language', '~> 2.1', '>= 2.1.1'
 
+gem "devise", "~> 4.9"
+
+gem "flipper-active_record", ">= 1.3"
+
+gem "flipper-ui", ">= 1.3"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
@@ -87,13 +93,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
-  gem "factory_bot_rails", "~> 6.4"
+  gem "factory_bot_rails", "~> 6.4.3"
   gem "faker", "~> 3.2.2"
   gem "shoulda-matchers", "~> 5.0"
 end
 
-gem "devise", "~> 4.9"
-
-gem "flipper-active_record", "~> 1.3"
-
-gem "flipper-ui", "~> 1.3"
