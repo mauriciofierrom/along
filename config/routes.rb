@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   authenticated :user do
     root "lessons#index", as: :authenticated_root
   end
+
+  mount Flipper::UI.app(Flipper) => '/flipper'
+
   # Defines the root path route ("/")
   root "home#index"
 end
