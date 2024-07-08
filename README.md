@@ -1,24 +1,14 @@
-# README
+**NOTE:** This is still a work in progress
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Along
 
-Things you may want to cover:
+Along is a web application to practice along to YouTube instrument instruction
+videos.
 
-* Ruby version
+## Motivation
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- Updating Ruby on Rails knowledge
+- Learning Hotwired tools (Turbo and Stimulus)
+- Using modern CSS features
+- Using vanilla JS with modern features
+- Improving my guitar learning process
