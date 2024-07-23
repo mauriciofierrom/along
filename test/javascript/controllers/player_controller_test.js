@@ -120,7 +120,7 @@ describe("PlayerController", () => {
 
         playerController.updatePoints({detail: { start: 22, end: 77, setting: 22 }})
 
-        expect(mockLoop).toHaveBeenCalledWith(22, 25, 3)
+        expect(mockLoop).toHaveBeenCalledWith(22, 25, 1)
       })
     })
 
@@ -135,7 +135,7 @@ describe("PlayerController", () => {
 
         playerController.updatePoints({detail: { start: 22, end: 77, setting: 22 }})
 
-        expect(mockLoop).toHaveBeenCalledWith(22, 25, 3)
+        expect(mockLoop).toHaveBeenCalledWith(22, 25, 1)
       })
     })
   })

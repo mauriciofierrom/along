@@ -103,7 +103,7 @@ describe("PlayerState", () => {
         playerController.state = playerController.pickingPointState
         await playerController.loop(1, 5)
 
-        expect(mockLoop).toHaveBeenCalledWith(1, 5, 3)
+        expect(mockLoop).toHaveBeenCalledWith(1, 5, 1)
         expect(playerController.state).toBeInstanceOf(EditingState)
       })
     })

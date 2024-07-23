@@ -78,7 +78,7 @@ export class EditingState extends PlayerState {
 export class PickingPointState extends PlayerState {
   async loop(from, to) {
     debug("Looping 3 times", { state: this.constructor.name, from, to })
-    await this.context.loopManager.loop(from, to, 3)
+    await this.context.loopManager.loop(from, to, 1)
     debug("Done point looping. Doing editing loop:", this.context.editState)
     this.context.state = this.context.editingState
     this.context.editState = { ...this.context.editState, setting: null }
