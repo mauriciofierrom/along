@@ -3,10 +3,11 @@ FactoryBot.define do
     name do
       "#{Faker::Music::RockBand.song} - #{Faker::Music::RockBand.name}"
     end
-    video_url { Faker::Internel.url(host: 'youtu.be') }
+    video_url { Faker::Internet.url(host: "youtu.be", scheme: "https") }
     duration_in_seconds do
-      Faker::Number.between(from: 0.0, to: 5.minutes.seconds.to_f)
+      Faker::Number.between(from: 0, to: 5.minutes.seconds)
     end
     instrument
+    user
   end
 end

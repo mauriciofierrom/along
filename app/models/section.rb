@@ -8,7 +8,8 @@ class Section < ApplicationRecord
     class_name: "VideoPoint",
     mapping: [ %w(end_time_hour hour), %w(end_time_minute minute), %w(end_time_second second) ]
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :lesson_id }
+
   validates :start_time_hour, :start_time_minute, :start_time_second,
     presence: true,
     numericality: {
@@ -29,16 +30,21 @@ class Section < ApplicationRecord
       less_than_or_equal_to: 59
     }
 
+  # Due to this issue in shoulda matchers library we'll have to add a default max value
+  # https://github.com/thoughtbot/shoulda-matchers/issues/1435
   validates :start_time,
     numericality: {
-      less_than:  -> (section) { section.lesson.duration_in_seconds },
-      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" }
+      less_than:  -> (section) { section.lesson&.duration_in_seconds || 9999.0 },
+      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" },
+      allow_nil: true
     }
 
+  # Due to this issue in shoulda matchers library we'll have to add a default max value
+  # https://github.com/thoughtbot/shoulda-matchers/issues/1435
   validates :end_time,
     numericality: {
-      less_than_or_equal_to: -> (section) { section.lesson.duration_in_seconds },
-      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" }
+      less_than_or_equal_to: -> (section) { section.lesson&.duration_in_seconds || 9999.0 },
+      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" },
     }
 
   validates :end_time,
