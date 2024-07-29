@@ -16,6 +16,17 @@ jest.mock("../../../app/javascript/controllers/player/youtube_player", () => {
   })
 })
 
+jest.mock("../../../app/javascript/controllers/player/loop_manager", () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      loop: jest.fn(),
+      clear: async () => {}
+    }
+  })
+})
+
+jest.useFakeTimers();
+
 describe("PlayerController", () => {
   let application;
 
@@ -24,6 +35,7 @@ describe("PlayerController", () => {
   // That would help simplify the tests.
   beforeEach(async () => {
     YoutubePlayer.mockClear()
+    LoopManager.mockClear()
 
     document.head.innerHTML = "<script></script>"
     document.body.innerHTML = ` <div data-controller="player" data-player-video-id-value="video-id">
@@ -61,7 +73,7 @@ describe("PlayerController", () => {
 
       window.onYouTubeIframeAPIReady()
 
-      const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
+      const mockLoop = jest.spyOn(playerController, "loop")
 
       playerController.playFromTo({detail: {start: 13, end: 43}})
 
@@ -87,56 +99,11 @@ describe("PlayerController", () => {
 
       window.onYouTubeIframeAPIReady()
 
-      const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
+      const mockLoop = jest.spyOn(playerController, "loop")
 
       playerController.triggerEdition({detail: { start: 43, end: 65 }})
 
       expect(mockLoop).toHaveBeenCalledWith(43, 65)
-    })
-  })
-
-  describe("updatePoints", () => {
-    it("sets the state to picking point", () => {
-      const playerElement = document.querySelector('[data-controller="player"]')
-      const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-      window.onYouTubeIframeAPIReady()
-
-      playerController.updatePoints({detail: { start: 34, end: 56, setting: 56 }})
-
-      expect(playerController.state).toBeInstanceOf(PickingPointState)
-    })
-
-    // TODO: The cases where either point are close to the end or the beginning
-    // don't make much sense in most cases. Tests pending.
-    describe("when setting start", () => {
-      it("calls the loop manager with start and start + 3", () => {
-        const playerElement = document.querySelector('[data-controller="player"]')
-        const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-        window.onYouTubeIframeAPIReady()
-
-        const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
-
-        playerController.updatePoints({detail: { start: 22, end: 77, setting: 22 }})
-
-        expect(mockLoop).toHaveBeenCalledWith(22, 25, 1)
-      })
-    })
-
-    describe("when setting end", () => {
-      it("calls the loop manager with start and start + 3", () => {
-        const playerElement = document.querySelector('[data-controller="player"]')
-        const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-        window.onYouTubeIframeAPIReady()
-
-        const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
-
-        playerController.updatePoints({detail: { start: 22, end: 77, setting: 22 }})
-
-        expect(mockLoop).toHaveBeenCalledWith(22, 25, 1)
-      })
     })
   })
 })

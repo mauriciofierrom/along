@@ -36,6 +36,7 @@ export default class LoopManager {
    * loop
    */
   async loop(from, to, max = null) {
+    debug(`LoopManager: Starting loop from ${from} to ${to}`)
     // We need to stop any previous loop before we start a new one
     await this.clear()
 
@@ -45,8 +46,8 @@ export default class LoopManager {
     const signal = this.#abortController.signal
 
     return new Promise ((resolve, reject) => {
+        debug("LoopManager: Interval promise", { max, intervalId: this.#intervalId, times: this.#times, from, to, currentTime: this.#player.currentTime })
       this.#intervalId = setInterval(() => {
-
         if (this.#player.currentTime >= to) {
           this.#player.play(from)
 
@@ -68,7 +69,7 @@ export default class LoopManager {
           clearInterval(this.#intervalId)
           resolve()
         }
-      }, 500)
+      }, 200)
     })
   }
 
@@ -78,19 +79,36 @@ export default class LoopManager {
    * If there's a loop active we use the abort controller to stop it.
    */
   async clear() {
+    debug("LoopManager: Clearing loop: ", { invervalId: this.#intervalId, times: this.#times })
+    this.#times = 0
     if(this.#intervalId !== null && this.#intervalId !== undefined) {
-      debug("Interval id of this operation", this.#intervalId)
-      this.#times = 0
       if(this.#abortController !== null && this.#abortController !== undefined && !this.#abortController.signal.aborted) {
-        debug("aborting")
+        debug("LoopManager: Aborting")
         this.#abortController.abort("LoopManager: Cancelled manually")
       } else {
-        debug("Already aborted")
+        debug("LoopManager: Already aborted")
       }
       this.#intervalId = null
       this.#aborted = false
     } else {
-      debug("No interval")
+      debug("LoopManager: No interval")
     }
+  }
+
+  static settingRange(start, end, setting) {
+    let finalEnd, finalStart;
+
+    switch(setting) {
+      case start:
+        finalStart = start
+        finalEnd = start + 3
+        break
+      case end:
+        finalEnd = end
+        finalStart = Math.max(end - 3, 0)
+        break
+    }
+
+    return [finalStart, finalEnd]
   }
 }
