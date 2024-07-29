@@ -64,4 +64,26 @@ describe("LoopManager", () => {
       await expect(loop).rejects.toMatch("LoopManager: Cancelled manually")
     })
   })
+
+  describe("setting range", () => {
+    describe("when setting the start point", () => {
+      it("should be between the start point and 3 more seconds", () => {
+        expect(LoopManager.settingRange(3.0, 14.0, 3.0)).toEqual([3.0, 6.0])
+      })
+    })
+
+    describe("when setting the end point", () => {
+      describe("when 3 seconds before the end is less than the start", () => {
+        it("should be between the end point and 3 less seconds or the start", () => {
+          expect(LoopManager.settingRange(1.0, 2.0, 2.0)).toEqual([0.0, 2.0])
+        })
+      })
+
+      describe("when 3 seoncs before the end is greater than the start", () => {
+        it("should be between the 3 seconds before the end and the end", () => {
+          expect(LoopManager.settingRange(4.0, 7.0, 7.0)).toEqual([4.0,7.0])
+        })
+      })
+    })
+  })
 })

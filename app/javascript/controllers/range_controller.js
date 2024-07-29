@@ -6,7 +6,7 @@ export default class extends Controller {
   static outlets = [ "player" ]
 
   connect() {
-    debug("connected range controller")
+    debug("RangeController: connected range controller")
     this.dispatch("connect", { detail: {
       start: parseFloat(this.minTarget.value),
       end: parseFloat(this.maxTarget.value)
@@ -48,9 +48,10 @@ export default class extends Controller {
       setting = parseFloat(this.maxTarget.value)
     }
 
-    debug(`dispatch wth ${setting}`)
+    const detail = { start: parseFloat(this.minTarget.value), end: parseFloat(this.maxTarget.value), setting: setting }
+    debug(`RangeController: dispatch wth ${setting}`)
 
     // Start the player again
-    this.dispatch("update", { detail: { start: parseFloat(this.minTarget.value), end: parseFloat(this.maxTarget.value), setting: setting } })
+    this.dispatch("update", { detail })
   }
 }

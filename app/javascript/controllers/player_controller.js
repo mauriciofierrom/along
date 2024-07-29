@@ -4,6 +4,7 @@ import { Controller } from "@hotwired/stimulus";
 import { PlayingState, ReadyState, EditingState, PickingPointState } from "controllers/player/state";
 import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player";
+import { debug, debounce } from "controllers/util";
 
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
@@ -68,6 +69,7 @@ export default class extends Controller {
   }
 
   initialize() {
+    this.updatePoints = debounce(this.updatePoints.bind(this), 1000)
     this.#initStates()
   }
 
@@ -147,17 +149,15 @@ export default class extends Controller {
    * to discern between the two
    */
   updatePoints({ detail: state }) {
+    debug("Update points:", state)
     this.editState = state
-    this.state = this.pickingPointState
 
-    switch(this.editState.setting) {
-      case this.editState.start:
-        this.loop(this.editState.start, Math.min(this.player.duration, this.editState.start + 3))
-        break
-      case this.editState.end:
-        this.loop(Math.max(this.editState.end - 3, 0), this.editState.end)
-        break
-    }
+    this.loopManager.clear().then(() => {
+      this.state = this.pickingPointState
+      const [start, end] = LoopManager.settingRange(this.editState.start, this.editStart.end, this.editState.setting)
+      this.loop(start, end)
+    })
+
   }
 
   /**
