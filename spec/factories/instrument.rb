@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :instrument do
-    name { Faker::Music.instrument }
+    sequence(:name) { |n| "#{Faker::Music.instrument}-#{n}" }
   end
 end

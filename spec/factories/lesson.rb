@@ -5,7 +5,7 @@ FactoryBot.define do
     end
     video_url { Faker::Internet.url(host: "youtu.be", scheme: "https") }
     duration_in_seconds do
-      Faker::Number.between(from: 0, to: 5.minutes.seconds)
+      Faker::Number.between(from: 1, to: 5.minutes.seconds)
     end
     instrument
     user
