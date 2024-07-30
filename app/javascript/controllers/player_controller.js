@@ -154,7 +154,7 @@ export default class extends Controller {
 
     this.loopManager.clear().then(() => {
       this.state = this.pickingPointState
-      const [start, end] = LoopManager.settingRange(this.editState.start, this.editStart.end, this.editState.setting)
+      const [start, end] = LoopManager.settingRange(this.editState.start, this.editState.end, this.editState.setting)
       this.loop(start, end)
     })
 
