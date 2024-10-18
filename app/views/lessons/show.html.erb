@@ -18,9 +18,7 @@
   <%= turbo_frame_tag "sections", class: "sections" do %>
     <%= link_to "#{t("actions.new")} #{Section.model_name.human}", new_lesson_section_path(@lesson) %>
     <div class="sections-selector">
-      <% @lesson.sections.each do |section| %>
-        <%= render "sections/section_item", lesson: @lesson, section: section %>
-      <% end %>
+      <%= render partial: "sections/section_item", collection: @lesson.sections, as: :section, locals: { lesson: @lesson }%>
     </div>
   <% end %>
 </div>

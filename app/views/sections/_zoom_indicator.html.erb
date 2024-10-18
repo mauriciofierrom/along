@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "zoom_indicator" do %>
+  <div style="width: #{width}%; margin-left:#{left_margin}%; background: red; height: 10px;"></div>
+<% end %>
+
+<%= turbo_frame_tag "zoom_fields" do %>
+  <%= fields_for "section[zoom]" %>
+<% end %>

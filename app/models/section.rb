@@ -1,5 +1,7 @@
 class Section < ApplicationRecord
   belongs_to :lesson, counter_cache: true
+  has_many :zoom
+  accepts_nested_attributes_for :zoom, allow_destroy: true
 
   composed_of :start_time,
     class_name: "VideoPoint",
@@ -55,4 +57,8 @@ class Section < ApplicationRecord
   validates :playback_speed,
     presence: true,
     inclusion: { in: 0.5.step(by: 0.5, to: 2.0) }
+
+  def zoom_level
+    @section.zoom.maximum(:level)
+  end
 end

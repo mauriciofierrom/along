@@ -2,6 +2,8 @@ class SectionsController < ApplicationController
   before_action :set_lesson
   before_action :set_section, only: %i[ show edit update destroy ]
 
+  MAX_ZOOM_LEVEL = 3
+
   def new
     @section = @lesson.sections.build
   end
@@ -62,6 +64,21 @@ class SectionsController < ApplicationController
     end
   end
 
+  # We asume the client has our back so we can just go ahead without checking
+  # the levels. This feels so hacky.
+  def zoom_in
+    format.turbo_stream { locals: {
+      indicator: {
+        left_margin: Zoom.left_margin(zoom_params[:start], zoom_params[:duration]),
+        width: Zoom.width(zoom_params[:start], zoom_params[:end], zoom_params[:duration])
+      },
+      zoom: Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
+    }}
+  end
+
+  def zoom_out
+  end
+
   private
     def set_section
       @section = @lesson.sections.find(params[:id])
@@ -82,5 +99,15 @@ class SectionsController < ApplicationController
                 :finished,
                 :loop,
                 :lesson_id)
+    end
+
+    def zoom_params
+      params
+        .require(:zoom)
+        .permit(:start,
+                :end,
+                :parent_start,
+                :parent_end
+               )
     end
 end
