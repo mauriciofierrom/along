@@ -67,13 +67,13 @@ class SectionsController < ApplicationController
   # We asume the client has our back so we can just go ahead without checking
   # the levels. This feels so hacky.
   def zoom_in
-    format.turbo_stream { locals: {
-      indicator: {
-        left_margin: Zoom.left_margin(zoom_params[:start], zoom_params[:duration]),
-        width: Zoom.width(zoom_params[:start], zoom_params[:end], zoom_params[:duration])
-      },
-      zoom: Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
-    }}
+    @indicator = {
+      left_margin: Zoom.left_margin(zoom_params[:start], zoom_params[:duration]),
+      width: Zoom.width(zoom_params[:start], zoom_params[:end], zoom_params[:duration])
+    }
+    @zoom = Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
+
+    format.turbo_stream
   end
 
   def zoom_out

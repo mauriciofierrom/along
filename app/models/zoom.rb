@@ -1,6 +1,8 @@
 class Zoom < ApplicationRecord
   belongs_to :section
 
+  default_scope { order(level: :asc) }
+
   def self.left_margin(zoom_start, top_duration)
     time_before = top_duraton - zoom_start
     time_before * 100 / top_duration

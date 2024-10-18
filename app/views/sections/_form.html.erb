@@ -11,6 +11,10 @@
     </div>
   <% end %>
 
+  <%= turbo_frame_tag "zoom_indicator" do %>
+    <%= render partial: "zoom_indicator", locals: {indicator: @indicator } %>@section.zooms
+  <% end %>
+
   <div class="range">
     <%= render "range", section: @section, lesson: @lesson, form: form %>
   </div>

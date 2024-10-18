@@ -94,6 +94,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_10_132808) do
     t.integer "section_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["level", "section_id"], name: "index_zooms_on_level_and_section_id", unique: true
     t.index ["section_id"], name: "index_zooms_on_section_id"
   end
 
