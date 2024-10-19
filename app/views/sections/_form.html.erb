@@ -12,7 +12,7 @@
   <% end %>
 
   <%= turbo_frame_tag "zoom_indicator" do %>
-    <%= render partial: "zoom_indicator", locals: {indicator: @indicator } %>@section.zooms
+    <%= render partial: "zoom_indicator", locals: {indicator: @indicator }, collection: @section.zoom %>
   <% end %>
 
   <div class="range">
