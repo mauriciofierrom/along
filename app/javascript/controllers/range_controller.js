@@ -11,6 +11,7 @@ export default class extends Controller {
       start: parseFloat(this.minTarget.value),
       end: parseFloat(this.maxTarget.value)
     }})
+    // TODO: Set the duration in the zoom form
   }
 
   initialize() {
@@ -53,5 +54,7 @@ export default class extends Controller {
 
     // Start the player again
     this.dispatch("update", { detail })
+
+    // TODO: Update the zoom level values
   }
 }

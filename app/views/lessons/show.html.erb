@@ -8,6 +8,18 @@
     </div>
   </div>
 
+  <div class="zoom-actions"
+       data-controller="zoom"
+       data-action="player:setDuration@window->zoom#setDuration"
+       style="display: none">
+    <%= form_with url: section_zoom_in_path, data: { zoom: { target: "zoomIn" } } do |form| %>
+      <%= form.hidden_field :start %>
+      <%= form.hidden_field :end %>
+      <%= form.hidden_field :duration %>
+      <%= form.submit fa_icon("search-plus") %>
+    <% end %>
+  </div>
+
   <div class="video-player player"
        data-controller="player"
        data-action="range:connect@window->player#triggerEdition range:update@window->player#updatePoints section:connect@window->player#playFromTo section:disconnect@window->player#reset"

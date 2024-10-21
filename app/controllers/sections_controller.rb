@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_action :set_lesson
+  before_action :set_lesson, except: %i[ zoom_in ]
   before_action :set_section, only: %i[ show edit update destroy ]
 
   MAX_ZOOM_LEVEL = 3
@@ -103,7 +103,6 @@ class SectionsController < ApplicationController
 
     def zoom_params
       params
-        .require(:zoom)
         .permit(:start,
                 :end,
                 :parent_start,

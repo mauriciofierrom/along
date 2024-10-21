@@ -4,7 +4,7 @@ class Zoom < ApplicationRecord
   default_scope { order(level: :asc) }
 
   def self.left_margin(zoom_start, top_duration)
-    time_before = top_duraton - zoom_start
+    time_before = top_duration - zoom_start
     time_before * 100 / top_duration
   end
 

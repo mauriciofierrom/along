@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   resources :lessons do
     resources :sections, except: [:index]
   end
+
+  post "section/zoom_in", to: "sections#zoom_in"
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   authenticated :user do

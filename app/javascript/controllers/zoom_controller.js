@@ -1,9 +1,36 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  zoomIn() {
+  static targets = [ "zoomIn" ]
+
+  // 1. Set the values
+  // 2. Set the controls visible if the section picked is different to the
+  // original value
+  // This should happen on point selection actually. Point selection will
+  // always be different from originl points so we should do it on first point
+  // selection
+  // Should there be a minimum value to be able to zoom into a section? at least
+  // half or a quarter of the whole duration? what %?
+  // Perhaps on connect we can set the duration and wait for the other events to
+  // set the other values
+
+  zoomInTargetConnected(el) {
   }
 
-  zoomOut() {
+  zoomInTargetDisconnected(el) {
+  }
+
+  /*
+   * The duration of the video to calculate various
+   * zoom related translations. To be called via dispatch
+   *
+   * @param {number} duration - The duration in seconds
+   */
+  setDuration(duration) {
+    const durationField = this.element.querySelector("input[name=\"duration\"]")
+
+    if(durationField !== null) {
+      durationField.value = duration
+    }
   }
 }

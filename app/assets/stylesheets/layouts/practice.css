@@ -15,8 +15,8 @@ body {
   row-gap: 10px;
   grid-template-areas:
     ". header ."
-    "zoom video ."
-    ". sections .";
+    ". video ."
+    "zoom sections .";
 }
 
 h1,
