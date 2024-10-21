@@ -15,7 +15,7 @@ body {
   row-gap: 10px;
   grid-template-areas:
     ". header ."
-    ". video ."
+    "zoom video ."
     ". sections .";
 }
 
@@ -71,4 +71,11 @@ a {
   /* border: 2px solid red; */
   grid-area: video;
   background-color: black;
+}
+
+.zoom-actions {
+  display: flex;
+  flex-flow: row no-wrap;
+  align-items: right;
+  grid-area: zoom;
 }
