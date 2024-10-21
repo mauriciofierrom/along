@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+// import { debug } from "controllers/util";
 
 export default class extends Controller {
   static targets = [ "zoomIn" ]
@@ -20,17 +21,31 @@ export default class extends Controller {
   zoomInTargetDisconnected(el) {
   }
 
+  ready({duration}) {
+    this.#setDuration(duration)
+    this.element.style = ""
+  }
+
+  cancel() {
+    this.element.style = "display: none"
+    this.#clear()
+  }
   /*
    * The duration of the video to calculate various
    * zoom related translations. To be called via dispatch
    *
    * @param {number} duration - The duration in seconds
    */
-  setDuration(duration) {
+  #setDuration(duration) {
     const durationField = this.element.querySelector("input[name=\"duration\"]")
 
     if(durationField !== null) {
       durationField.value = duration
     }
+  }
+
+  #clear() {
+    document.querySelector('#start').value = ""
+    document.querySelector('#end').value = ""
   }
 }

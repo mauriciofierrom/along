@@ -15,6 +15,8 @@ export default class extends Controller {
     edit: Boolean
   }
 
+  static outlets = [ "zoom" ]
+
   /** @property {YoutubePlayer} */
   player;
 
@@ -207,6 +209,10 @@ export default class extends Controller {
         if(this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration)
         }
+
+        // Set zoom controller as ready
+        debug("outlet", this.zoomOutlet)
+        this.zoomOutlet.ready({duration: parseInt(this.player.duration)})
       }}
     )
 
@@ -233,6 +239,7 @@ export default class extends Controller {
    */
   #onSectionSave = () => {
     this.reset()
+    this.zoomOutlet.clear()
   }
 
   /*
@@ -241,6 +248,7 @@ export default class extends Controller {
   #onSectionCancel = (e) => {
     if (e.target.id === "sections") {
       this.reset()
+      this.zoomOutlet.clear()
     }
   }
 }

@@ -5,6 +5,8 @@ export default class extends Controller {
   static targets = [ "min", "max" ]
   static outlets = [ "player" ]
 
+  zoomLevels = [];
+
   connect() {
     debug("RangeController: connected range controller")
     this.dispatch("connect", { detail: {
@@ -56,5 +58,22 @@ export default class extends Controller {
     this.dispatch("update", { detail })
 
     // TODO: Update the zoom level values
+  }
+
+  addZoomLevel(zoom) {
+    zoomLevels.push(zoom)
+  }
+
+  /*
+   *
+   * Convert a point from an original range to a sub range
+   *
+   * @param {number} point - The point in time to convert
+   */
+  #convertPoint(originalRange, newRange, point) {
+    return ((point / originalRange.max) * (newRange.max - newRange.min)) + newRange.min
+  }
+
+  #convert(start, end) {
   }
 }
