@@ -18,7 +18,13 @@ export default class extends Controller {
       start: parseFloat(this.minTarget.value),
       end: parseFloat(this.maxTarget.value)
     }})
-    // TODO: Set the duration in the zoom form
+
+    // TODO: Fetch the initial zoomLevel state
+    // WARN: Is there a chance for race conditions? this is rendered at the same
+    // time as the form for the section so the form elements should already be
+    // there but still, beware
+    this.zoomLevels = this.#initZoomLevels()
+    debug("zoom levels after init", this.zoomLevels)
   }
 
   initialize() {
@@ -87,6 +93,19 @@ export default class extends Controller {
    */
   #convertPoint(originalRange, newRange, point) {
     return ((point / originalRange.max) * (newRange.max - newRange.min)) + newRange.min
+  }
+
+  #initZoomLevels() {
+    const prefix = "section_zoom_attributes"
+    const starts =
+      Array.from(document.querySelectorAll(`input[id^='${prefix}'][id$='start']`))
+        .sort()
+        .map((e) => parseFloat(e.value))
+    const ends =
+      Array.from(document.querySelectorAll(`input[id^='${prefix}'][id$='end']`))
+        .sort()
+        .map((e) => parseFloat(e.value))
+    return starts.map((s, i) => ({ start: s, end: ends[i]}))
   }
 
   /*
