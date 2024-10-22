@@ -15,12 +15,6 @@ export default class extends Controller {
   // Perhaps on connect we can set the duration and wait for the other events to
   // set the other values
 
-  zoomInTargetConnected(el) {
-  }
-
-  zoomInTargetDisconnected(el) {
-  }
-
   ready({duration}) {
     this.#setDuration(duration)
     this.element.style = ""

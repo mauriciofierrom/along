@@ -5,6 +5,11 @@ export default class extends Controller {
   static targets = [ "min", "max" ]
   static outlets = [ "player" ]
 
+  /**
+   * @typedef {Object} Zoom
+   * @property {number} start - The start of the zoom range
+   * @property {number} end - The end of the zoom range
+   */
   zoomLevels = [];
 
   connect() {
@@ -33,6 +38,7 @@ export default class extends Controller {
     let minRange = parseFloat(this.minTarget.value)
     let maxRange = parseFloat(this.maxTarget.value)
     var setting = null
+    var detail = null
 
     if (maxRange - minRange < rangeMin) {
       if (e.target.className === "min") {
@@ -51,17 +57,26 @@ export default class extends Controller {
       setting = parseFloat(this.maxTarget.value)
     }
 
-    const detail = { start: parseFloat(this.minTarget.value), end: parseFloat(this.maxTarget.value), setting: setting }
+    if(this.zoomLevels.length > 0) {
+      detail = { ...this.convert(parseFloat(this.minTarget.value), parseFloat(this.maxTarget.value)), setting: setting }
+    } else {
+      detail = { start: parseFloat(this.minTarget.value), end: parseFloat(this.maxTarget.value), setting: setting }
+    }
+
     debug(`RangeController: dispatch wth ${setting}`)
 
     // Start the player again
     this.dispatch("update", { detail })
-
-    // TODO: Update the zoom level values
   }
 
+  /*
+   * Add a new zoom level to the end of the list
+   *
+   * @param {Zoom} zoom
+   *
+   */
   addZoomLevel(zoom) {
-    zoomLevels.push(zoom)
+    this.zoomLevels.push(zoom)
   }
 
   /*
@@ -74,6 +89,22 @@ export default class extends Controller {
     return ((point / originalRange.max) * (newRange.max - newRange.min)) + newRange.min
   }
 
-  #convert(start, end) {
+  /*
+   * Convert a point based on the current zoom range
+   *
+   * @param {number} start - The start value of the point
+   * @param {number} end - The end value of the point
+   *
+   * @return {Object} - The start/end values converted
+   */
+  convert(start, end) {
+    const zoomLevel = this.zoomLevels[this.zoomLevels.length - 1]
+    const originalRange = { min: 0, max: this.duration }
+    const newRange = { min: zoomLevel.start, max: zoomLevel.end }
+
+    return {
+      start: this.#convertPoint(originalRange, newRange, parseFloat(start)),
+      end: this.#convertPoint(originalRange, newRange, parseFloat(end))
+    }
   }
 }
