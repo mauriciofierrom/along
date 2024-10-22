@@ -1,4 +1,4 @@
-<%= fields_for "section[zooms_attributes][]", zoom, index: Time.current.to_i do |f| %>
+<%= fields_for "section[zoom_attributes][]", zoom, index: Time.current.to_i do |f| %>
   <%= f.hidden_field :start %>
   <%= f.hidden_field :end %>
 <% end %>

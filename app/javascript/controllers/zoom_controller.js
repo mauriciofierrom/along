@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
-// import { debug } from "controllers/util";
+import { debug } from "controllers/util";
 
 export default class extends Controller {
-  static targets = [ "zoomIn" ]
+  static targets = [ "zoomIn", "zoom-field" ]
 
   // 1. Set the values
   // 2. Set the controls visible if the section picked is different to the
@@ -36,6 +36,10 @@ export default class extends Controller {
     if(durationField !== null) {
       durationField.value = duration
     }
+  }
+
+  zoomFieldTargetConnected(el) {
+    debug("the target", el)
   }
 
   #clear() {

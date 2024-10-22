@@ -19,6 +19,13 @@
     <%= render "range", section: @section, lesson: @lesson, form: form %>
   </div>
 
+  <%= turbo_frame_tag "zoom_fields" do %>
+    <%= form.fields_for :zoom do |zoom_fields| %>
+      <%= zoom_fields.hidden_field :start %>
+      <%= zoom_fields.hidden_field :end %>
+    <% end %>
+  <% end %>
+
   <%= form.label :name %>
   <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: Section.human_attribute_name("name") %>
 
