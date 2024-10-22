@@ -20,10 +20,12 @@
   </div>
 
   <%= turbo_frame_tag "zoom_fields" do %>
-    <%= form.fields_for :zoom do |zoom_fields| %>
-      <%= zoom_fields.hidden_field :start %>
-      <%= zoom_fields.hidden_field :end %>
-    <% end %>
+    <div data-zoom-target="zoomField">
+      <%= form.fields_for :zoom do |zoom_fields| %>
+        <%= zoom_fields.hidden_field :start %>
+        <%= zoom_fields.hidden_field :end %>
+      <% end %>
+    </div>
   <% end %>
 
   <%= form.label :name %>

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { debug } from "controllers/util";
 
 export default class extends Controller {
-  static targets = [ "zoomIn", "zoomStart", "zoomEnd" ]
+  static targets = [ "zoomIn", "zoomField" ]
 
   // 1. Set the values
   // 2. Set the controls visible if the section picked is different to the
@@ -29,6 +29,21 @@ export default class extends Controller {
     this.zoomStartTarget.value = start
     this.zoomEndTarget.value = end
   }
+
+  zoomFieldTargetConnected(el) {
+    const start = parseFloat(el.querySelector("input[$=start]").value)
+    const end = parseFloat(el.querySelector("input[$=end]").value)
+
+    this.dispatch("addZoomLevel", { detail: { start, end } })
+  }
+
+  zoomFieldTargetDisconnected(el) {
+    const start = parseFloat(el.querySelector("input[$=start]").value)
+    const end = parseFloat(el.querySelector("input[$=end]").value)
+
+    this.dispatch("removeZoomLevel", { detail: { start, end } })
+  }
+
   /*
    * The duration of the video to calculate various
    * zoom related translations. To be called via dispatch
