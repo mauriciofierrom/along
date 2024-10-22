@@ -157,6 +157,7 @@ export default class extends Controller {
     this.loopManager.clear().then(() => {
       this.state = this.pickingPointState
       const [start, end] = LoopManager.settingRange(this.editState.start, this.editState.end, this.editState.setting)
+      this.zoomOutlet.setPoint(start, end)
       this.loop(start, end)
     })
 
@@ -239,7 +240,7 @@ export default class extends Controller {
    */
   #onSectionSave = () => {
     this.reset()
-    this.zoomOutlet.clear()
+    this.zoomOutlet.cancel()
   }
 
   /*
@@ -248,7 +249,7 @@ export default class extends Controller {
   #onSectionCancel = (e) => {
     if (e.target.id === "sections") {
       this.reset()
-      this.zoomOutlet.clear()
+      this.zoomOutlet.cancel()
     }
   }
 }

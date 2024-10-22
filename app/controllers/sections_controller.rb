@@ -68,12 +68,14 @@ class SectionsController < ApplicationController
   # the levels. This feels so hacky.
   def zoom_in
     @indicator = {
-      left_margin: Zoom.left_margin(zoom_params[:start], zoom_params[:duration]),
-      width: Zoom.width(zoom_params[:start], zoom_params[:end], zoom_params[:duration])
+      left_margin: Zoom.left_margin(zoom_params[:start].to_i, zoom_params[:duration].to_i),
+      width: Zoom.width(zoom_params[:start].to_i, zoom_params[:end].to_i, zoom_params[:duration].to_i)
     }
     @zoom = Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
 
-    format.turbo_stream
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   def zoom_out
@@ -98,15 +100,17 @@ class SectionsController < ApplicationController
                 :current,
                 :finished,
                 :loop,
-                :lesson_id)
+                :lesson_id,
+                zoom_attributes: {})
     end
 
     def zoom_params
       params
         .permit(:start,
                 :end,
-                :parent_start,
-                :parent_end
+                :duration,
+                :authenticity_token,
+                :commit
                )
     end
 end

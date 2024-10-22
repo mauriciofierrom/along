@@ -12,8 +12,8 @@
        data-controller="zoom"
        style="display: none">
     <%= form_with url: section_zoom_in_path, data: { zoom: { target: "zoomIn" } } do |form| %>
-      <%= form.hidden_field :start %>
-      <%= form.hidden_field :end %>
+      <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>
+      <%= form.hidden_field :end, data: { "zoom-target" => "zoomEnd" } %>
       <%= form.hidden_field :duration %>
       <%= form.submit fa_icon("search-plus") %>
     <% end %>
