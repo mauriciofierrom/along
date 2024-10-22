@@ -37,11 +37,8 @@ export default class extends Controller {
     this.dispatch("addZoomLevel", { detail: { start, end } })
   }
 
-  zoomFieldTargetDisconnected(el) {
-    const start = parseFloat(el.querySelector("input[$=start]").value)
-    const end = parseFloat(el.querySelector("input[$=end]").value)
-
-    this.dispatch("removeZoomLevel", { detail: { start, end } })
+  zoomFieldTargetDisconnected(_el) {
+    this.dispatch("removeZoomLevel")
   }
 
   /*

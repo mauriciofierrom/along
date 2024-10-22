@@ -10,6 +10,7 @@
 
   <div class="zoom-actions zoom"
        data-controller="zoom"
+       data-action="zoom:zoomFieldTargetConnected@window->range#addZoomLevel zoom:zoomFieldTargetDisconnected@window->range#removeZoomLevel"
        style="display: none">
     <%= form_with url: section_zoom_in_path, data: { zoom: { target: "zoomIn" } } do |form| %>
       <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>

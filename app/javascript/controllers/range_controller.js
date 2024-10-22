@@ -86,6 +86,15 @@ export default class extends Controller {
   }
 
   /*
+   * Removal of zoom levels will always be a pop
+   *
+   * TODO: Unless there's some possible race conditions?
+   */
+  removeZoomLevel() {
+    this.zoomLevels.pop()
+  }
+
+  /*
    *
    * Convert a point from an original range to a sub range
    *
