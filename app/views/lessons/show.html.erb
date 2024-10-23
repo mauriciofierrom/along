@@ -12,12 +12,13 @@
        data-controller="zoom"
        data-action="zoom:zoomFieldTargetConnected@window->range#addZoomLevel zoom:zoomFieldTargetDisconnected@window->range#removeZoomLevel"
        style="display: none">
-    <%= form_with url: section_zoom_in_path, data: { zoom: { target: "zoomIn" } } do |form| %>
+    <%= form_with url: section_zoom_in_path, data: { "zoom-target" => "zoomIn" } do |form| %>
       <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>
       <%= form.hidden_field :end, data: { "zoom-target" => "zoomEnd" } %>
       <%= form.hidden_field :duration %>
       <%= form.submit fa_icon("search-plus") %>
     <% end %>
+    <%= button_to (fa_icon "search-minus"), section_zoom_out_path, method: :delete %>
   </div>
 
   <div class="video-player player"

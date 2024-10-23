@@ -79,6 +79,10 @@ class SectionsController < ApplicationController
   end
 
   def zoom_out
+
+    respond_to do |format|
+      format.turbo_stream
+    end
   end
 
   private

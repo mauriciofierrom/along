@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   end
 
   post "section/zoom_in", to: "sections#zoom_in"
+  delete "section/zoom_out", to: "sections#zoom_out"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
