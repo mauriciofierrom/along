@@ -12,8 +12,10 @@ export default class extends Controller {
     const zoomOutButton = document.querySelector("#zoom-out")
     zoomOutButton.addEventListener("click", (_e) => {
       if(this.hasZoomFieldTarget) {
-        debug("zoom levels", this.zoomFieldTargets)
         let toRemove = this.zoomFieldTargets[this.zoomFieldTargets.length - 1]
+        const nameAttr = toRemove.querySelector('input').name
+        const index = nameAttr.match(/\[(\d+)\]/)[1]
+        const destroyInput =
         toRemove.remove()
       } else {
         debug("no more zoom field targets")
