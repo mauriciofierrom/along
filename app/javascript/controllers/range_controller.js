@@ -81,7 +81,8 @@ export default class extends Controller {
    * @param {Zoom} zoom
    *
    */
-  addZoomLevel(zoom) {
+  addZoomLevel({detail: zoom}) {
+    debug("Range: addZoomLevel")
     this.zoomLevels.push(zoom)
   }
 
@@ -90,7 +91,8 @@ export default class extends Controller {
    *
    * TODO: Unless there's some possible race conditions?
    */
-  removeZoomLevel() {
+  removeZoomLevel(_) {
+    debug("Range: removeZoomLevel")
     this.zoomLevels.pop()
   }
 

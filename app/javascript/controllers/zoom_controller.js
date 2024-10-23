@@ -14,20 +14,12 @@ export default class extends Controller {
   // half or a quarter of the whole duration? what %?
   // Perhaps on connect we can set the duration and wait for the other events to
   // set the other values
+  //
 
   ready({duration}) {
     this.#setDuration(duration)
     this.element.style = ""
-  }
 
-  cancel() {
-    this.element.style = "display: none"
-    this.#clear()
-  }
-
-  setPoint(start, end) {
-    this.zoomStartTarget.value = start
-    this.zoomEndTarget.value = end
   }
 
   zoomFieldTargetConnected(el) {
@@ -39,6 +31,16 @@ export default class extends Controller {
 
   zoomFieldTargetDisconnected(_el) {
     this.dispatch("removeZoomLevel")
+  }
+
+  cancel() {
+    this.element.style = "display: none"
+    this.#clear()
+  }
+
+  setPoint(start, end) {
+    this.zoomStartTarget.value = start
+    this.zoomEndTarget.value = end
   }
 
   /*

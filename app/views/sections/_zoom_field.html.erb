@@ -1,4 +1,4 @@
-<div data-zoom-target="zoomField">
+<div data-zoom-field-target="zoomField">
   <%= fields_for "section[zoom_attributes][]", @zoom, index: Time.current.to_i do |f| %>
     <%= f.hidden_field :start %>
     <%= f.hidden_field :end %>

@@ -78,13 +78,6 @@ class SectionsController < ApplicationController
     end
   end
 
-  def zoom_out
-
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
   private
     def set_section
       @section = @lesson.sections.find(params[:id])
