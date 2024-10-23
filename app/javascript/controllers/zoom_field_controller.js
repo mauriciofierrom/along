@@ -32,6 +32,6 @@ export default class extends Controller {
 
   zoomFieldTargetDisconnected(_el) {
     this.dispatch("removeZoomLevel")
+    this.dispatch("removeZoomIndicator")
   }
-
 }

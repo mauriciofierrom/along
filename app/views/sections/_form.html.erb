@@ -11,8 +11,18 @@
     </div>
   <% end %>
 
-  <%= turbo_frame_tag "zoom_indicator" do %>
-    <%= render partial: "zoom_indicator", locals: {indicator: @indicator }, collection: @section.zoom %>
+  <%= turbo_frame_tag "zoom_indicator",
+                      data: { controller: "zoom-indicator" ,
+                              action: "zoom-field:removeZoomIndicator@window->zoom-indicator#removeZoomIndicator"} do %>
+                              <% @section.zoom.each do |zoom| %>
+                                <%= render partial: "zoom_indicator",
+                                  locals: { indicator: {
+                                    left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
+                                    width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds)
+                                  }
+                                  }
+                                %>
+                              <% end %>
   <% end %>
 
   <div class="range">
