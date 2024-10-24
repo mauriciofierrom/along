@@ -12,13 +12,23 @@ export default class extends Controller {
     const zoomOutButton = document.querySelector("#zoom-out")
     zoomOutButton.addEventListener("click", (_e) => {
       if(this.hasZoomFieldTarget) {
-        let toRemove = this.zoomFieldTargets[this.zoomFieldTargets.length - 1]
-        const nameAttr = toRemove.querySelector('input').name
-        const index = nameAttr.match(/\[(\d+)\]/)[1]
-        const destroyInput =
-        toRemove.remove()
-      } else {
-        debug("no more zoom field targets")
+        let nonRemovedTargets = this.zoomFieldTargets.filter(t =>
+          t.querySelector("input[name$='[_destroy]']") === null
+        )
+
+        if(nonRemovedTargets.length > 0) {
+          let toRemove = nonRemovedTargets[nonRemovedTargets.length - 1]
+          const isPersisted = toRemove.querySelector("input[id$='id']")
+
+          if(isPersisted !== null) {
+            const nameAttr = toRemove.querySelector('input').name
+            const index = nameAttr.match(/\[(\d+)\]/)[1]
+            const destroyInput = this.#buildDestroyInput(index)
+            toRemove.appendChild(destroyInput)
+          } else {
+            toRemove.remove()
+          }
+        }
       }
     })
   }
@@ -35,5 +45,14 @@ export default class extends Controller {
   zoomFieldTargetDisconnected(_el) {
     this.dispatch("removeZoomLevel")
     this.dispatch("removeZoomIndicator")
+  }
+
+  #buildDestroyInput(index){
+    const destroyInput = document.createElement("input")
+    destroyInput.type = "hidden"
+    destroyInput.name = `section[zoom_attributes][${index}][_destroy]`
+    destroyInput.value = "1"
+
+    return destroyInput
   }
 }
