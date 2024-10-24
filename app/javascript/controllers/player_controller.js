@@ -136,6 +136,7 @@ export default class extends Controller {
   triggerEdition({ detail: state }) {
     this.editState = state
     this.state = this.editingState
+    this.zoomOutlet.setPoint(this.editState.start, this.editState.end)
     this.loop(this.editState.start, this.editState.end)
   }
 
@@ -212,14 +213,7 @@ export default class extends Controller {
         }
 
         // Set zoom controller as ready
-        debug("outlet", this.zoomOutlet)
-        debug(this.startValue)
-        debug(this.endValue)
-        this.zoomOutlet.ready({
-          duration: parseInt(this.player.duration),
-          start: parseFloat(this.startValue),
-          end: parseFloat(this.endValue)
-        })
+        this.zoomOutlet.ready({duration: parseInt(this.player.duration)})
       }}
     )
 

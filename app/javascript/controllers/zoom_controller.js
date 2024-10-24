@@ -16,13 +16,9 @@ export default class extends Controller {
   // set the other values
   //
 
-  ready({duration, start, end}) {
+  ready({duration}) {
     this.#setDuration(duration)
     this.element.style = ""
-
-    if(start !== null && start !== undefined && end !== null && end !== undefined) {
-      this.setPoint(start, end)
-    }
   }
 
   zoomFieldTargetConnected(el) {
@@ -42,6 +38,7 @@ export default class extends Controller {
   }
 
   setPoint(start, end) {
+    debug("Setting point", start, end)
     this.zoomStartTarget.value = start
     this.zoomEndTarget.value = end
   }
