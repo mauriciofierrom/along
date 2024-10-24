@@ -10,8 +10,7 @@
 
   <div class="zoom-actions zoom"
        data-controller="zoom"
-       data-action="zoom-field:zoomFieldTargetConnected@window->range#addZoomLevel zoom-field:zoomFieldTargetDisconnected@window->range#removeZoomLevel"
-       style="display: none">
+       data-action="zoom-field:zoomFieldTargetConnected@window->range#addZoomLevel zoom-field:zoomFieldTargetDisconnected@window->range#removeZoomLevel">
     <button id="zoom-out"><%= fa_icon("search-minus") %></button>
     <%= form_with url: section_zoom_in_path do |form| %>
       <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>
