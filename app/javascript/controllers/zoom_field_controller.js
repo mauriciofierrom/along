@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { debug } from "controllers/util";
 
 export default class extends Controller {
-  static targets = [ "zoomField" ]
+  static targets = [ "zoomField", "zoomDestroy" ]
 
   initialize() {
     console.log("init zoom field controller")
@@ -42,7 +42,22 @@ export default class extends Controller {
     this.dispatch("addZoomLevel", { detail: { start, end } })
   }
 
+  /*
+   * A zoom-field target is removed from the DOM when it's a non-persisted
+   * entry. That means we added the item to be saved on form submit, but decided
+   * to remove it now.
+   */
   zoomFieldTargetDisconnected(_el) {
+    this.dispatch("removeZoomLevel")
+    this.dispatch("removeZoomIndicator")
+  }
+
+  /*
+   * We also trigger the removal of a zoom events for persisted zoom fields,
+   * which means that we react to the destroy hidden input being added to the
+   * fields in the form to mark the destruction of the zoom record on submit
+   */
+  zoomDestroyConnected(el) {
     this.dispatch("removeZoomLevel")
     this.dispatch("removeZoomIndicator")
   }
@@ -52,6 +67,7 @@ export default class extends Controller {
     destroyInput.type = "hidden"
     destroyInput.name = `section[zoom_attributes][${index}][_destroy]`
     destroyInput.value = "1"
+    destroyInput.dataset.zoomFieldTarget = "zoomDestroy"
 
     return destroyInput
   }
