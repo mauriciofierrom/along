@@ -213,7 +213,13 @@ export default class extends Controller {
 
         // Set zoom controller as ready
         debug("outlet", this.zoomOutlet)
-        this.zoomOutlet.ready({duration: parseInt(this.player.duration)})
+        debug(this.startValue)
+        debug(this.endValue)
+        this.zoomOutlet.ready({
+          duration: parseInt(this.player.duration),
+          start: parseFloat(this.startValue),
+          end: parseFloat(this.endValue)
+        })
       }}
     )
 
