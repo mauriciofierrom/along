@@ -4,7 +4,8 @@ import { Controller } from "@hotwired/stimulus";
 import { PlayingState, ReadyState, EditingState, PickingPointState } from "controllers/player/state";
 import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player";
-import { debug, debounce } from "controllers/util";
+import DummyPlayer from "controllers/player/dummy_player";
+import { debug, debounce, Env } from "controllers/util";
 
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
@@ -15,7 +16,6 @@ export default class extends Controller {
     edit: Boolean
   }
 
-  /** @property {YoutubePlayer} */
   player;
 
   /**
@@ -54,13 +54,17 @@ export default class extends Controller {
   static targets = [ "source", "duration" ]
 
   connect() {
-    var tag = document.createElement('script')
+    debug("Connect")
+    this.#initPlayer().then(player => {
+      // Set the player
+      this.player = player
 
-    tag.src = "https://www.youtube.com/iframe_api"
-    var firstScriptTag = document.getElementsByTagName('script')[0]
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+      // Init the loop manager
+      this.loopManager = new LoopManager(this.player)
 
-    window.onYouTubeIframeAPIReady = this.#onYoutubeReady
+      // With the Player and Loop manager initialized we're ready to rumble
+      this.state = this.readyState
+    })
 
     // INFO: We do our own player-related thing despite the fact that we're
     // reacting to a section turbo-stream event.
@@ -79,15 +83,13 @@ export default class extends Controller {
    */
   load() {
     try {
-      let formattedUrl = this.#formatUrl(this.sourceTarget.value)
-      this.player.load(formattedUrl)
+      this.player.load(this.sourceTarget.value)
       this.element.children[0].style = "";
+      this.state = this.readyState
     }
     catch (error) {
       console.error(error)
     }
-
-    this.state = this.readyState
   }
 
   /**
@@ -161,63 +163,6 @@ export default class extends Controller {
   }
 
   /**
-   * Format a YouTube url (probably from the URL in the browser) to create a url
-   * to use to load a video in the player
-   *
-   * @param {string} url The url to format
-   * @return {string} The formatted url
-   */
-  #formatUrl(url) {
-    let baseUrl = "https://youtu.be/v"
-    let parsedUrl = new URL(url)
-    return `${baseUrl}${parsedUrl.pathname}`
-  }
-
-  /**
-   * Calculate the size of the player relative to the base width and height
-   * values recommended for it and the current size of the container of the
-   * player.
-   *
-   * @param {Element} The controller's element
-   * @return {number[]} A tuple (a 2-element list) with the width and height
-   */
-  #calculateSize(container) {
-    const baseWidth = 480
-    const baseHeight = 270
-    let targetHeight = container.offsetHeight
-
-    return [targetHeight * baseWidth / baseHeight, targetHeight]
-  }
-
-  /**
-   * The callback function to initialize the YoutubePlayer wrapper.
-   */
-  #onYoutubeReady = () => {
-    const [width, height] = this.#calculateSize(this.element)
-
-    this.player = new YoutubePlayer({
-      width: width,
-      height: height,
-      videoId: this.videoIdValue,
-      edit: this.editValue,
-      // WARN: This might not be a good idea
-      onPause: () => {},
-      onPlaying: () => {
-        // TODO: This is a float so check the backend
-        if(this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration)
-        }
-      }}
-    )
-
-    // Init the loop manager
-    this.loopManager = new LoopManager(this.player)
-
-    // With the Player and Loop manager initialized we're ready to rumble
-    this.state = this.readyState
-  }
-
-  /**
    * Initializes the states with the controller as their context
    */
   #initStates = () => {
@@ -241,6 +186,69 @@ export default class extends Controller {
   #onSectionCancel = (e) => {
     if (e.target.id === "sections") {
       this.reset()
+    }
+  }
+
+  /*
+   * Initialize the adequate player based on the environment
+   *
+   * Checks the rails_env and is_cypress properties in the Window object to
+   * determine which player to use. These properties are set on load in the
+   * practice layout.
+   *
+   * @return {Promise<Player>} The player Promise
+   *
+   */
+  #initPlayer() {
+    debug("env", window.rails_env)
+    switch(window.rails_env) {
+      case Env.Prod:
+        return YoutubePlayer.create(this.#mkYTPlayerParams())
+      case Env.Dev:
+        if(window.is_cypress === "true") {
+          return DummyPlayer.create(this.#mkYTPlayerParams())
+        } else {
+          return YoutubePlayer.create(this.#mkYTPlayerParams())
+        }
+      case Env.Test:
+        return DummyPlayer.create(this.#mkYTPlayerParams())
+      default:
+        return DummyPlayer.create(this.#mkDummyParams())
+    }
+  }
+
+  /*
+   * The paramateres to initialize the Youtube Player
+   */
+  #mkYTPlayerParams() {
+    return {
+      videoId: this.videoIdValue,
+      edit: this.editValue,
+      containerOffsetHeight: this.element.offsetHeight,
+      // WARN: This might not be a good idea
+      onPause: () => {},
+      onPlaying: () => {
+        // TODO: This is a float so check the backend
+        if(this.hasDurationTarget) {
+          this.durationTarget.value = parseInt(this.player.duration)
+        }
+      }
+    }
+  }
+
+  /*
+   * The parameters to initialize the Dummy Player
+   */
+  #mkDummyParams() {
+    return {
+      currentTime: 0,
+      duration: 500,
+      onPlaying: () => {
+        // TODO: This is a float so check the backend
+        if(this.hasDurationTarget) {
+          this.durationTarget.value = parseInt(this.player.duration)
+        }
+      }
     }
   }
 }

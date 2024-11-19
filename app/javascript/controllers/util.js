@@ -11,3 +11,10 @@ export function debug(msg, ...options) {
     console.log(msg, ...options)
   }
 }
+
+export const Env = {
+  Prod: "production",
+  Dev: "development",
+  Test: "test",
+  Cypress: "CYPRESS"
+}
