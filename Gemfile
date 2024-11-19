@@ -67,6 +67,9 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "rspec-rails", "~> 6.0.0"
+  gem "cypress-on-rails", "~> 1.15.0"
+  gem "faker", "~> 3.2.2"
+  gem 'database_cleaner-active_record'
 end
 
 group :development do
@@ -94,7 +97,6 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "factory_bot_rails", "~> 6.4.3"
-  gem "faker", "~> 3.2.2"
   gem "shoulda-matchers", "~> 5.0"
 end
 
