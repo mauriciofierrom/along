@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   resources :lessons do
     resources :sections, except: [:index]
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   authenticated :user do
     root "lessons#index", as: :authenticated_root
@@ -15,4 +14,11 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "home#index"
+
+  # Cypress login
+  unless Rails.env.production?
+    scope path: "/__cypress__", controller: 'cypress' do
+      post "forceLogin", action: 'force_login'
+    end
+  end
 end

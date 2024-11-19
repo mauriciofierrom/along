@@ -11,6 +11,7 @@
     <%= javascript_importmap_tags %>
     <%= javascript_tag do %>
       window.rails_env = "<%= Rails.env %>"
+      window.is_cypress = "<%= not ENV["CYPRESS"].nil? %>"
     <% end %>
   </head>
 
