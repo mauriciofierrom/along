@@ -1,20 +1,8 @@
 import { Application } from "@hotwired/stimulus"
 import PlayerController from "../../../../app/javascript/controllers/player_controller"
-import { ReadyState, PlayingState, EditingState, PickingPointState} from "../../../../app/javascript/controllers/player/state"
+import { PlayingState, EditingState } from "../../../../app/javascript/controllers/player/state"
 import LoopManager from "../../../../app/javascript/controllers/player/loop_manager"
-import YoutubePlayer from "../../../../app/javascript/controllers/player/youtube_player"
 
-jest.mock("../../../../app/javascript/controllers/player/youtube_player", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      duration: 15,
-      currentTime: 7,
-      play: () => {},
-      load: () => {},
-      pause: () => {},
-    }
-  })
-})
 jest.mock("../../../../app/javascript/controllers/player/loop_manager")
 jest.useFakeTimers();
 
@@ -22,8 +10,6 @@ describe("PlayerState", () => {
   let application;
 
   beforeEach(async () => {
-    YoutubePlayer.mockClear()
-
     document.head.innerHTML = "<script></script>"
     document.body.innerHTML = ` <div data-controller="player" data-player-video-id-value="video-id">
     </div>
@@ -38,8 +24,6 @@ describe("PlayerState", () => {
       it("loops and transitions to playing state", async () => {
         const playerElement = document.querySelector('[data-controller="player"]')
         const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-        window.onYouTubeIframeAPIReady()
 
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 
@@ -58,8 +42,6 @@ describe("PlayerState", () => {
         const playerElement = document.querySelector('[data-controller="player"]')
         const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
 
-        window.onYouTubeIframeAPIReady()
-
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 
         playerController.state = playerController.playingState
@@ -77,8 +59,6 @@ describe("PlayerState", () => {
         const playerElement = document.querySelector('[data-controller="player"]')
         const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
 
-        window.onYouTubeIframeAPIReady()
-
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 
         playerController.state = playerController.editingState
@@ -95,8 +75,6 @@ describe("PlayerState", () => {
       it("loops three times and then transitions back to EditingState", async () => {
         const playerElement = document.querySelector('[data-controller="player"]')
         const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-        window.onYouTubeIframeAPIReady()
 
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 

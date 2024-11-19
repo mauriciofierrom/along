@@ -1,20 +1,7 @@
 import { Application } from "@hotwired/stimulus"
 import PlayerController from "../../../app/javascript/controllers/player_controller"
 import LoopManager from "../../../app/javascript/controllers/player/loop_manager"
-import YoutubePlayer from "../../../app/javascript/controllers/player/youtube_player"
-import { ReadyState, PlayingState, EditingState, PickingPointState } from "../../../app/javascript/controllers/player/state"
-
-jest.mock("../../../app/javascript/controllers/player/youtube_player", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      duration: 222,
-      currentTime: 7,
-      play: () => {},
-      load: () => {},
-      pause: () => {},
-    }
-  })
-})
+import { ReadyState, PlayingState, EditingState } from "../../../app/javascript/controllers/player/state"
 
 jest.mock("../../../app/javascript/controllers/player/loop_manager", () => {
   return jest.fn().mockImplementation(() => {
@@ -34,7 +21,6 @@ describe("PlayerController", () => {
   // from creating and sharing the playerController/Element from the beforeEach.
   // That would help simplify the tests.
   beforeEach(async () => {
-    YoutubePlayer.mockClear()
     LoopManager.mockClear()
 
     document.head.innerHTML = "<script></script>"
@@ -50,8 +36,6 @@ describe("PlayerController", () => {
     const playerElement = document.querySelector('[data-controller="player"]')
     const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
 
-    window.onYouTubeIframeAPIReady()
-
     expect(playerController.state).toBeInstanceOf(ReadyState)
   })
 
@@ -59,8 +43,6 @@ describe("PlayerController", () => {
     it("sets the state to playing", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
       const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-      window.onYouTubeIframeAPIReady()
 
       playerController.playFromTo({detail: {start: 13, end: 43}})
 
@@ -70,8 +52,6 @@ describe("PlayerController", () => {
     it("calls the loop manager with the right parameters", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
       const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-      window.onYouTubeIframeAPIReady()
 
       const mockLoop = jest.spyOn(playerController, "loop")
 
@@ -86,8 +66,6 @@ describe("PlayerController", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
       const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
 
-      window.onYouTubeIframeAPIReady()
-
       playerController.triggerEdition({detail: { start: 34, end: 56 }})
 
       expect(playerController.state).toBeInstanceOf(EditingState)
@@ -96,8 +74,6 @@ describe("PlayerController", () => {
     it("calls the loop manager with the right parameters", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
       const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
-
-      window.onYouTubeIframeAPIReady()
 
       const mockLoop = jest.spyOn(playerController, "loop")
 

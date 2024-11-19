@@ -1,7 +1,8 @@
 import { debug } from "controllers/util";
+import Player from "controllers/player/player";
 
 /** A class to encapsulate the YouTube player */
-export default class YoutubePlayer {
+export default class extends Player {
   /** @property {Player} player - The Youtube player */
   #player;
 
@@ -36,50 +37,44 @@ export default class YoutubePlayer {
    * player with
    */
   constructor(params) {
-    this.#player = new YT.Player('player', {
-        width: params.width.toString(),
-        height: params.height.toString(),
-        videoId: params.videoId || '',
-        playerVars: {
-          'autoplay': params.edit,
-          'disablekb': 1,
-          'controls': 0,
-          'startValue': 0
-        },
-        events: {
-          'onReady': params.onReady,
-          'onStateChange': (evt) => {
-            debug(`Youtube state: ${evt.data}`)
-            switch (evt.data) {
-              case YT.PlayerState.PAUSED:
-                params.onPause()
-                break
-              case YT.PlayerState.PLAYING:
-                params.onPlaying()
-                break
-            }
-          },
-          'onError': (evt) => {
-            console.error(`error: ${evt.data}`)
-          }
-        }
-      })
-  }
+    super()
 
-  /**
-   * Get the duration of the current loaded video
-   *
-   * @return {number} The duration
-   */
+    const [width, height] = this.#calculateSize(params.containerOffsetHeight)
+
+    this.#player = new YT.Player('player', {
+      width: width.toString(),
+      height: height.toString(),
+      videoId: params.videoId || '',
+      playerVars: {
+        'autoplay': params.edit,
+        'disablekb': 1,
+        'controls': 0,
+        'startValue': 0
+      },
+      events: {
+        'onReady': params.onReady,
+        'onStateChange': (evt) => {
+          debug(`Youtube state: ${evt.data}`)
+          switch (evt.data) {
+            case YT.PlayerState.PAUSED:
+              params.onPause()
+              break
+            case YT.PlayerState.PLAYING:
+              params.onPlaying()
+              break
+          }
+        },
+        'onError': (evt) => {
+          console.error(`error: ${evt.data}`)
+        }
+      }
+    })
+ }
+
   get duration() {
     return this.#player.getDuration()
   }
 
-  /**
-   * Get the current playback point in time
-   *
-   * @return {number} The current point in time
-   */
   get currentTime() {
     return this.#player.getCurrentTime()
   }
@@ -90,14 +85,10 @@ export default class YoutubePlayer {
    * @param {!string} url - A valid YouTube URL to load
    */
   load(url) {
-    this.#player.loadVideoByUrl(url)
+    const formattedUrl = this.#formatUrl(url)
+    this.#player.loadVideoByUrl(formattedUrl)
   }
 
-  /**
-   * Play the video starting at the provided point
-   *
-   * @param {!number} from - The starting point for playback
-   */
   play(from) {
     this.#player.seekTo(from, true)
     this.#player.playVideo()
@@ -114,5 +105,52 @@ export default class YoutubePlayer {
   pause() {
     this.#player.pauseVideo()
     this.#player.seekTo(0)
+  }
+
+  static async create(params) {
+    return new Promise(resolve => {
+      var tag = document.createElement('script')
+
+      tag.src = "https://www.youtube.com/iframe_api"
+      var firstScriptTag = document.getElementsByTagName('script')[0]
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
+
+      if(window && window.YT) {
+        resolve(new this(params))
+      } else {
+        window.onYouTubeIframeAPIReady = () => {
+          resolve(new this(params))
+        }
+      }
+    })
+  }
+
+  /**
+   * Calculate the size of the player relative to the base width and height
+   * values recommended for it and the current size of the container of the
+   * player.
+   *
+   * @param {Element} The controller's element
+   * @return {number[]} A tuple (a 2-element list) with the width and height
+   */
+  #calculateSize(containerOffsetHeight) {
+    const baseWidth = 480
+    const baseHeight = 270
+    let targetHeight = containerOffsetHeight
+
+    return [targetHeight * baseWidth / baseHeight, targetHeight]
+  }
+
+  /**
+   * Format a YouTube url (probably from the URL in the browser) to create a url
+   * to use to load a video in the player
+   *
+   * @param {string} url The url to format
+   * @return {string} The formatted url
+   */
+  #formatUrl(url) {
+    let baseUrl = "https://youtu.be/v"
+    let parsedUrl = new URL(url)
+    return `${baseUrl}${parsedUrl.pathname}`
   }
 }
