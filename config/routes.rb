@@ -4,6 +4,9 @@ Rails.application.routes.draw do
     resources :sections, except: [:index]
   end
 
+  post "section/zoom_in", to: "sections#zoom_in"
+  delete "section/zoom_out", to: "sections#zoom_out"
+
   authenticated :user do
     root "lessons#index", as: :authenticated_root
   end

@@ -1,4 +1,9 @@
-<%= form_with(model: [@lesson, @section]) do |form| %>
+<%= form_with(model: [@lesson, @section],
+              data: {
+                name: "section",
+                controller: "section-form",
+                action: "range:submitForm@window->section-form#submitForm"
+              }) do |form| %>
   <% if section.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(section.errors.count, "error") %> prohibited this section from being saved:</h2>
@@ -11,9 +16,33 @@
     </div>
   <% end %>
 
+  <%= turbo_frame_tag "zoom_indicator",
+                      class: "zoom-indicators",
+                      data: { controller: "zoom-indicator" ,
+                              action: "zoom-field:removeZoomIndicator@window->zoom-indicator#removeZoomIndicator"} do %>
+                              <% @section.zoom.each do |zoom| %>
+                                <%= render partial: "zoom_indicator",
+                                  locals: { indicator: {
+                                    left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
+                                    width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds)
+                                  }}
+                                %>
+                              <% end %>
+  <% end %>
+
   <div class="range">
     <%= render "range", section: @section, lesson: @lesson, form: form %>
   </div>
+
+  <%= turbo_frame_tag "zoom_fields", data: { controller: "zoom-field" } do %>
+    <%= form.fields_for :zoom do |zoom_fields| %>
+      <div data-zoom-field-target="zoomField" data-existing="true">
+        <%= zoom_fields.hidden_field :start %>
+        <%= zoom_fields.hidden_field :end %>
+        <%= zoom_fields.hidden_field :id %>
+      </div>
+    <% end %>
+  <% end %>
 
   <%= form.label :name %>
   <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: Section.human_attribute_name("name") %>
@@ -28,7 +57,7 @@
   </label>
 
   <div class="action-buttons">
-    <%= form.submit %>
+    <%= form.submit :Create, data: { action: "click->section-form#submit:prevent"} %>
     <%= link_to t(:cancel), lesson_path(@lesson) %>
   </div>
 <% end %>

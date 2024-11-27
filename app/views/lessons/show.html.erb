@@ -8,11 +8,38 @@
     </div>
   </div>
 
+  <%= content_tag :div,
+    class: "zoom-actions zoom",
+    data: {
+      controller: "zoom",
+      action: [
+        "zoom-field:zoomFieldTargetConnected@window->range#addZoomLevel",
+        "zoom-field:zoomFieldTargetDisconnected@window->range#removeZoomLevel",
+        "range:zoomLevelAdded@window->zoom#zoomLevelAdded",
+        "range:zoomLevelRemoved@window->zoom#zoomLevelRemoved",
+        "range:rangeUpdated@window->zoom#rangeUpdated",
+        "range:ready@window->zoom#ready",
+        "player:zoomCancelled@window->zoom#zoomCancelled",
+      ].join(" "),
+    } do %>
+    <%= form_with url: section_zoom_in_path, data: { name: "zoom-in", "zoom-target" => "zoomIn" }, class: "hidden" do |form| %>
+      <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>
+      <%= form.hidden_field :end, data: { "zoom-target" => "zoomEnd" } %>
+      <%= form.hidden_field :duration, data: { "zoom-target" => "zoomDuration" } %>
+      <%= button_tag type: "submit" do %>
+        <%= fa_icon("search-plus") %>
+      <% end %>
+    <% end %>
+    <button id="zoom-out" class="hidden" data-zoom-target="zoomOut">
+      <%= fa_icon("search-minus") %>
+    </button>
+  <% end %>
+
   <div class="video-player player"
        data-controller="player"
        data-action="range:connect@window->player#triggerEdition range:update@window->player#updatePoints section:connect@window->player#playFromTo section:disconnect@window->player#reset"
        data-player-video-id-value="<%= video_id(@lesson) %>">
-       <div id="player"></div>
+    <div id="player"></div>
   </div>
 
   <%= turbo_frame_tag "sections", class: "sections" do %>

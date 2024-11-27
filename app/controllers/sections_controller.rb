@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_action :set_lesson
+  before_action :set_lesson, except: %i[ zoom_in ]
   before_action :set_section, only: %i[ show edit update destroy ]
 
   def new
@@ -62,6 +62,20 @@ class SectionsController < ApplicationController
     end
   end
 
+  # We asume the client has our back so we can just go ahead without checking
+  # the levels.
+  def zoom_in
+    @indicator = {
+      left_margin: Zoom.left_margin(zoom_params[:start].to_i, zoom_params[:duration].to_i),
+      width: Zoom.width(zoom_params[:start].to_i, zoom_params[:end].to_i, zoom_params[:duration].to_i)
+    }
+    @zoom = Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   private
     def set_section
       @section = @lesson.sections.find(params[:id])
@@ -81,6 +95,18 @@ class SectionsController < ApplicationController
                 :current,
                 :finished,
                 :loop,
-                :lesson_id)
+                :lesson_id,
+                zoom_attributes: {})
+    end
+
+    def zoom_params
+      params
+        .permit(:start,
+                :end,
+                :duration,
+                :button,
+                :authenticity_token,
+                :commit
+               )
     end
 end

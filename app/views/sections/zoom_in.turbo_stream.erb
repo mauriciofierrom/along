@@ -1,0 +1,6 @@
+<%= turbo_stream.append "zoom_indicator" do %>
+  <%= render partial: "zoom_indicator", locals: { indicator: @indicator } %>
+<% end %>
+<%= turbo_stream.append "zoom_fields" do %>
+  <%= render "sections/zoom_field", locals: { zoom: @zoom } %>
+<% end %>

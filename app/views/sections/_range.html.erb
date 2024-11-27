@@ -1,6 +1,19 @@
-<div class="range" data-controller="range" data-range-player-outlet=".player">
+<%= content_tag :div,
+  class: "range",
+  data: {
+    controller: "range",
+    action: [
+      "zoom-field:addZoomLevel@window->range#addZoomLevel",
+      "zoom-field:removeZoomLevel@window->range#removeZoomLevel",
+      "player:resetRange@window->range#resetRange",
+      "section-form:convertFields@window->range#convertFields"
+    ].join(" "),
+    "range-player-outlet" => ".player",
+    "range-min-default-value" => section.start_time_second,
+    "range-max-default-value" => section.end_time_second
+} do %>
    <div class="range-slider">
-     <span class="range-selected"></span>
+     <span class="range-selected" data-range-target="slider"></span>
    </div>
    <div class="range-input">
      <%= form.range_field :start_time,
@@ -18,4 +31,4 @@
        step: 0.01,
        data: { action: "input->range#update", "range-target" => "max" } %>
    </div>
- </div>
+<% end %>
