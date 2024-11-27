@@ -33,7 +33,7 @@ export default class extends Controller {
   /*
    * Set the current range selection as the potential zoom
    */
-  setPoint(start, end) {
+  rangeUpdated({detail: { start, end, max }}) {
     console.log("Setting point", start, end)
     this.zoomStartTarget.value = start
     this.zoomEndTarget.value = end
@@ -85,19 +85,6 @@ export default class extends Controller {
         disable(this.zoomInTarget)
       }
     }
-  }
-
-  /*
-   * Event fired when the range has been updated
-   */
-  rangeUpdated({ detail: { start, end, max }}) {
-    debug(`Start: ${start}. End: ${end}. Max: ${max}`)
-    if(start !== 0 || end !== max) {
-      enable(this.zoomInTarget)
-      show(this.zoomInTarget)
-    }
-    // TODO: Prime candidate to override the use of the zoomOutlet in
-    // PlayerController.
   }
 
   /*
