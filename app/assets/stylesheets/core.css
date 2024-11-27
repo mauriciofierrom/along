@@ -26,3 +26,12 @@
   font-family: "miniSystem";
   src: url("minisystem.otf");
 }
+
+.hidden {
+  display: none !important;
+}
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

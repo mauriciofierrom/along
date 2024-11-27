@@ -12,12 +12,66 @@ export function debug(msg, ...options) {
   }
 }
 
+/*
+ * Enum for run environments for the application
+ *
+ * @readonly
+ * @enum {string}
+ */
 export const Env = {
   Prod: "production",
   Dev: "development",
   Test: "test",
   Cypress: "CYPRESS"
 }
+
+/*
+ * Enum for general element actions
+ *
+ * @readonly
+ * @enum {string}
+ */
+export const ElementAction = {
+  Hide: "hidden",
+  Disable: "disabled",
+}
+
+/*
+ * Make an element visible
+ *
+ * @param {Element} element
+ */
+export function show(element) {
+  element.classList.remove(ElementAction.Hide)
+}
+
+/*
+ * Make an element not visible
+ *
+ * @param {Element} element
+ */
+export function hide(element) {
+  element.classList.add(ElementAction.Hide)
+}
+
+/*
+ * Enable an element
+ *
+ * @param {Element} element
+ */
+export function enable(element) {
+  element.classList.remove(ElementAction.Disable)
+}
+
+/*
+ * Disable an element
+ *
+ * @param {Element} element
+ */
+export function disable(element) {
+  element.classList.add(ElementAction.Disable)
+}
+
 // FIXME: Parsing depends on the agent (browser)
 function extractPrefix() {
   const stackTrace = Error().stack
