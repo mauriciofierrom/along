@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_23_030225) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_10_132808) do
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", null: false
@@ -87,7 +87,19 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_23_030225) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "zooms", force: :cascade do |t|
+    t.float "start"
+    t.float "end"
+    t.integer "level"
+    t.integer "section_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["level", "section_id"], name: "index_zooms_on_level_and_section_id", unique: true
+    t.index ["section_id"], name: "index_zooms_on_section_id"
+  end
+
   add_foreign_key "lessons", "instruments"
   add_foreign_key "lessons", "users"
   add_foreign_key "sections", "lessons"
+  add_foreign_key "zooms", "sections", on_delete: :cascade
 end
