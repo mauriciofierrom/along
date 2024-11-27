@@ -61,7 +61,7 @@ describe("LoopManager", () => {
       jest.advanceTimersByTime(500)
       await loopManager.clear()
 
-      await expect(loop).rejects.toMatch("LoopManager: Cancelled manually")
+      await expect(loop).rejects.toMatch("Cancelled manually")
     })
   })
 
