@@ -17,9 +17,7 @@
   <%= turbo_frame_tag Lesson.new %>
 
   <%= turbo_frame_tag "lessons", class: "list" do %>
-    <% @lessons.each do |lesson| %>
-      <%= render lesson %>
-    <% end %>
+    <%= render @lessons %>
   <% end %>
 
   <%= paginate @lessons %>
