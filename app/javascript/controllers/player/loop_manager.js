@@ -14,6 +14,7 @@ export default class LoopManager {
    * promise that wraps the interval that drives the loop repetition */
   #abortController;
 
+
   /**
    * Create a loop manager
    *
@@ -36,7 +37,6 @@ export default class LoopManager {
    * loop
    */
   async loop(from, to, max = null) {
-    debug(`LoopManager: Starting loop from ${from} to ${to}`)
     // We need to stop any previous loop before we start a new one
     await this.clear()
 
@@ -46,7 +46,6 @@ export default class LoopManager {
     const signal = this.#abortController.signal
 
     return new Promise ((resolve, reject) => {
-        debug("LoopManager: Interval promise", { max, intervalId: this.#intervalId, times: this.#times, from, to, currentTime: this.#player.currentTime })
       this.#intervalId = setInterval(() => {
         if (this.#player.currentTime >= to) {
           this.#player.play(from)
@@ -79,22 +78,36 @@ export default class LoopManager {
    * If there's a loop active we use the abort controller to stop it.
    */
   async clear() {
-    debug("LoopManager: Clearing loop: ", { invervalId: this.#intervalId, times: this.#times })
+    debug("Clearing loop: ", { invervalId: this.#intervalId, times: this.#times })
     this.#times = 0
     if(this.#intervalId !== null && this.#intervalId !== undefined) {
       if(this.#abortController !== null && this.#abortController !== undefined && !this.#abortController.signal.aborted) {
-        debug("LoopManager: Aborting")
-        this.#abortController.abort("LoopManager: Cancelled manually")
+        debug("Aborting")
+        this.#abortController.abort("Cancelled manually")
       } else {
-        debug("LoopManager: Already aborted")
+        debug("Already aborted")
       }
       this.#intervalId = null
       this.#aborted = false
     } else {
-      debug("LoopManager: No interval")
+      debug("No interval")
     }
   }
 
+  /*
+   * Returns a tuple of start and end values to loop based on the value we're
+   * setting for looping when updating a point. If it's the starting point we
+   * loop from it to 3 seconds from it. If it's the end point we do it 3 seconds
+   * before it or zero if there's not enough time before
+   *
+   * @summary Return a two-tuple of start and end values to loop when setting a
+   * point of a section
+   *
+   * @param {!number} start - The start point of the section
+   * @param {!number} end - The end point of the section
+   * @param {?number} setting - The value being set (either start or end)
+   * @returns {number[]} 2-Tuple [start,end]
+   */
   static settingRange(start, end, setting) {
     let finalEnd, finalStart;
 
@@ -107,6 +120,9 @@ export default class LoopManager {
         finalEnd = end
         finalStart = Math.max(end - 3, 0)
         break
+      default:
+        finalStart = start
+        finalEnd = end
     }
 
     return [finalStart, finalEnd]

@@ -6,6 +6,7 @@ import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player";
 import DummyPlayer from "controllers/player/dummy_player";
 import { debug, debounce, Env } from "controllers/util";
+import { ZoomType } from "controllers/zoom"
 
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
@@ -16,16 +17,20 @@ export default class extends Controller {
     edit: Boolean
   }
 
+  /** @property {YoutubePlayer} PlayerController.player */
   player;
 
   /**
    * Edit state definition
    *
    * @typedef {Object} EditState
-   * @property {number} start
-   * @property {number} end
-   * @property {number=} setting
+   * @property {!number} start
+   * @property {!number} end
+   * @property {?number} setting
+   * @property {?boolean} zooming
    */
+
+  /** @type {EditState} */
   editState = { };
 
   /** @property {LoopManager} */
@@ -56,6 +61,7 @@ export default class extends Controller {
   connect() {
     debug("Connect")
     this.#initPlayer().then(player => {
+      debug("init player")
       // Set the player
       this.player = player
 
@@ -151,15 +157,25 @@ export default class extends Controller {
    * to discern between the two
    */
   updatePoints({ detail: state }) {
-    debug("Update points:", state)
     this.editState = state
 
+    // Disable the fields here and enable them after the clear
     this.loopManager.clear().then(() => {
-      this.state = this.pickingPointState
-      const [start, end] = LoopManager.settingRange(this.editState.start, this.editState.end, this.editState.setting)
+      switch(this.state.zoom) {
+        case ZoomType.In:
+          this.state = this.editingState
+        break;
+        case ZoomType.Out:
+          this.state = this.pickingPointState
+        break;
+        default:
+          this.state = this.pickingPointState
+      }
+      const [start, end] =
+        LoopManager.settingRange(this.editState.start, this.editState.end, this.editState.setting)
+
       this.loop(start, end)
     })
-
   }
 
   /**
@@ -176,16 +192,34 @@ export default class extends Controller {
   /**
    * Callback for the event triggered when a section is saved
    */
-  #onSectionSave = () => {
-    this.reset()
+  #onSectionSave = (e) => {
+    switch(e.target.dataset.name) {
+      case "section":
+        debug("Section event")
+        this.dispatch("zoomCancelled")
+        this.reset()
+      break
+      case "zoom-in":
+        this.dispatch("resetRange")
+      break;
+    }
   }
 
   /*
    * Callback for the event triggered when section playback/edition is cancelled
    */
   #onSectionCancel = (e) => {
+    debug("cancelled", e)
     if (e.target.id === "sections") {
-      this.reset()
+      debug("section cancelled")
+      const r = this.#isSectionEditPath(e.detail.url.pathname)
+      debug("is the path?", r)
+
+      if(!this.#isSectionEditPath(e.detail.url.pathname) && !this.#isSectionNewPath(e.detail.url.pathname)) {
+        debug("onSectionCancel is being fired and resetting everything", e)
+        this.reset()
+        this.dispatch("zoomCancelled")
+      }
     }
   }
 
@@ -206,7 +240,7 @@ export default class extends Controller {
         return YoutubePlayer.create(this.#mkYTPlayerParams())
       case Env.Dev:
         if(window.is_cypress === "true") {
-          return DummyPlayer.create(this.#mkYTPlayerParams())
+          return DummyPlayer.create(this.#mkDummyParams())
         } else {
           return YoutubePlayer.create(this.#mkYTPlayerParams())
         }
@@ -228,9 +262,12 @@ export default class extends Controller {
       // WARN: This might not be a good idea
       onPause: () => {},
       onPlaying: () => {
-        // TODO: This is a float so check the backend
-        if(this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration)
+        // FIXME: This should be fired only once but it's firing every time the
+        // youtube player starts replaying/looping. Duration is only guaranteed
+        // to be available when video metadata is loaded, which happens on first
+        // play only.
+        if(this.hasDurationTarget && this.durationTarget.value !== "") {
+          this.durationTarget.value = parseFloat(this.player.duration)
         }
       }
     }
@@ -244,11 +281,34 @@ export default class extends Controller {
       currentTime: 0,
       duration: 500,
       onPlaying: () => {
-        // TODO: This is a float so check the backend
         if(this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration)
+          this.durationTarget.value = parseFloat(this.player.duration)
         }
       }
     }
+  }
+
+  /*
+   * Check if an URL path matches the section edit route
+   *
+   * @param {!string} - The url path
+   * @return {boolean}
+   */
+  #isSectionEditPath = (urlPath) => {
+    debug("path", urlPath)
+    const r = /\/sections\/\d+\/edit$/
+    return r.test(urlPath)
+  }
+
+  /*
+   * Check if an URL path matches the section new route
+   *
+   * @param {!string} - The url path
+   * @return {boolean}
+   */
+  #isSectionNewPath = (urlPath) => {
+    debug("path", urlPath)
+    const r = /\/sections\/new$/
+    return r.test(urlPath)
   }
 }
