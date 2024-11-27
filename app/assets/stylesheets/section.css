@@ -24,6 +24,24 @@
       justify-content: right;
       gap: 10px;
     }
+
+    .zoom-indicators {
+      display: flex;
+      justify-content: flex-start;
+      flex-flow: column nowrap;
+      width: 100%;
+    }
+
+    .zoom-indicator {
+      background-image: linear-gradient(
+        to right,
+        var(--primary),
+        var(--secondary),
+        var(--accent)
+      );
+      margin-bottom: 5px;
+      height: 10px;
+    }
   }
 }
 
@@ -152,3 +170,4 @@
     }
   }
 }
+

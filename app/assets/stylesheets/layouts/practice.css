@@ -16,7 +16,7 @@ body {
   grid-template-areas:
     ". header ."
     ". video ."
-    ". sections .";
+    "zoom sections .";
 }
 
 h1,
@@ -68,7 +68,24 @@ a {
   flex-flow: row no-wrap;
   justify-content: center;
   align-items: center;
-  /* border: 2px solid red; */
   grid-area: video;
   background-color: black;
+}
+
+.zoom-actions {
+  display: flex;
+  flex-flow: row;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  grid-area: zoom;
+  width: 100%;
+
+  button, input[type="submit"] {
+    all: unset;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: var(--bg-dark)
+  }
 }
