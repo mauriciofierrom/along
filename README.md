@@ -12,3 +12,17 @@ videos.
 - Using modern CSS features
 - Using vanilla JS with modern features
 - Improving my guitar learning process
+
+# Test
+
+Run all the jest specs:
+
+`npm test`
+
+Run all jest specs with logs printing enabled:
+
+`npm test -- --silent=false`
+
+Run a focused spec:
+
+`npm test -- --silent=false -t "dispatches to player controller"`
