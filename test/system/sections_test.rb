@@ -23,7 +23,7 @@ class SectionsTest < ApplicationSystemTestCase
     fill_in "Playback speed", with: @section.playback_speed
     check "Current" if @section.current
 
-    click_on "Create Section"
+    click_on "Create"
 
     assert_text "Part 4"
   end
