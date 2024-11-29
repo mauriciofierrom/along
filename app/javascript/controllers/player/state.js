@@ -87,6 +87,7 @@ export class PickingPointState extends PlayerState {
 
   reset() {
     this.context.loopManager.clear()
+    this.context.player.pause()
     this.context.state = this.context.readyState
   }
 }
