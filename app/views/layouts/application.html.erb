@@ -8,6 +8,10 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "layouts/main", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <%= javascript_tag do %>
+      window.rails_env = "<%= Rails.env %>"
+      window.is_cypress = "<%= not ENV["CYPRESS"].nil? %>"
+    <% end %>
   </head>
   <body>
     <div class="lheader"></div>
