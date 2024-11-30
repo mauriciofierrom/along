@@ -110,16 +110,21 @@ export default class extends Player {
   static async create(params) {
     return new Promise(resolve => {
       var tag = document.createElement('script')
+      let player
+      let newParams = params
+      newParams.onReady = () => {
+        resolve(player)
+      }
 
       tag.src = "https://www.youtube.com/iframe_api"
       var firstScriptTag = document.getElementsByTagName('script')[0]
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 
       if(window && window.YT) {
-        resolve(new this(params))
+        player = new this(newParams)
       } else {
         window.onYouTubeIframeAPIReady = () => {
-          resolve(new this(params))
+          player = new this(newParams)
         }
       }
     })

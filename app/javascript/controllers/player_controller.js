@@ -267,7 +267,7 @@ export default class extends Controller {
         // to be available when video metadata is loaded, which happens on first
         // play only.
         if(this.hasDurationTarget && this.durationTarget.value !== "") {
-          this.durationTarget.value = parseFloat(this.player.duration)
+          this.durationTarget.value = parseInt(this.player.duration)
         }
       }
     }
