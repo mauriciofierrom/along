@@ -2,7 +2,7 @@
 
 <%= turbo_frame_tag @lesson do %>
   <div data-controller="player">
-    <div id="player" style="display: none"></div>
+    <div id="player" class="hidden"></div>
     <%= render "form", lesson: @lesson %>
   </div>
 <% end %>

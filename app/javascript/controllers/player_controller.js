@@ -5,7 +5,7 @@ import { PlayingState, ReadyState, EditingState, PickingPointState } from "contr
 import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player";
 import DummyPlayer from "controllers/player/dummy_player";
-import { debug, debounce, Env } from "controllers/util";
+import { debug, debounce, show, Env } from "controllers/util";
 import { ZoomType } from "controllers/zoom"
 
 /** Controller for the YouTube player custom functionality */
@@ -90,7 +90,7 @@ export default class extends Controller {
   load() {
     try {
       this.player.load(this.sourceTarget.value)
-      this.element.children[0].style = "";
+      show(this.element.children[0])
       this.state = this.readyState
     }
     catch (error) {
