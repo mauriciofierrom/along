@@ -17,7 +17,8 @@ describe("Zoom", () => {
     beforeEach(() => {
       cy.appFactories([["create", "section"]]).then(([s]) => {
         cy.forceLogin({ redirect_to: `/lessons/${s.lesson_id}` })
-        cy.get('.fa-pencil-square-o').click()
+        cy.reload()
+        cy.get('.fa-pencil-square-o').click({force: true})
         cy.get("#section_start_time")
           .invoke('val', 10)
           .trigger('input', {force: true})
