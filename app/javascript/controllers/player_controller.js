@@ -61,7 +61,7 @@ export default class extends Controller {
   connect() {
     debug("Connect")
     this.#initPlayer().then(player => {
-      debug("init player")
+      debug("init player", player)
       // Set the player
       this.player = player
 
@@ -87,9 +87,9 @@ export default class extends Controller {
    * Load a video in the youtube player. Used to override the initialization of
    * the player and to show it. Used on Lesson creation.
    */
-  load() {
+  load({detail: { url }}) {
     try {
-      this.player.load(this.sourceTarget.value)
+      this.player.load(url)
       show(this.element.children[0])
       this.state = this.readyState
     }
@@ -245,7 +245,7 @@ export default class extends Controller {
           return YoutubePlayer.create(this.#mkYTPlayerParams())
         }
       case Env.Test:
-        return DummyPlayer.create(this.#mkYTPlayerParams())
+        return DummyPlayer.create(this.#mkDummyParams())
       default:
         return DummyPlayer.create(this.#mkDummyParams())
     }
@@ -261,15 +261,22 @@ export default class extends Controller {
       containerOffsetHeight: this.element.offsetHeight,
       // WARN: This might not be a good idea
       onPause: () => {},
+      // FIXME: This should be fired only once but it's firing every time the
+      // youtube player starts replaying/looping. Duration is only guaranteed
+      // to be available when video metadata is loaded, which happens on first
+      // play only.
       onPlaying: () => {
-        // FIXME: This should be fired only once but it's firing every time the
-        // youtube player starts replaying/looping. Duration is only guaranteed
-        // to be available when video metadata is loaded, which happens on first
-        // play only.
-        if(this.hasDurationTarget && this.durationTarget.value !== "") {
+        // Dispatch to the lesson controller (if connected) that we've
+        // successfully loaded and played the video
+        this.dispatch("videoLoaded")
+
+        if(this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration)
         }
-      }
+      },
+      onLoadError: () => {
+        this.dispatch("videoLoadFailed")
+      },
     }
   }
 
@@ -281,10 +288,14 @@ export default class extends Controller {
       currentTime: 0,
       duration: 500,
       onPlaying: () => {
+        this.dispatch("videoLoaded")
         if(this.hasDurationTarget) {
           this.durationTarget.value = parseFloat(this.player.duration)
         }
-      }
+      },
+      onLoadError: () => {
+        this.dispatch("videoLoadFailed")
+      },
     }
   }
 

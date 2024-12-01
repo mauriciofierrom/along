@@ -1,32 +1,44 @@
-<%= form_with(model: lesson, class: "lesson-form") do |form| %>
-  <% if lesson.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(lesson.errors.count, "error") %> prohibited this lesson from being saved:</h2>
+<%= form_with(
+  model: lesson,
+  class: "lesson-form",
+  data: {
+    controller: "lesson-form",
+    action: [
+      "player:videoLoadFailed@window->lesson-form#videoLoadFailed",
+      "player:videoLoaded@window->lesson-form#videoLoaded"
+    ].join(" ")
+  }) do |form| %>
+  <div style="color: red" data-lesson-form-target="errorContainer" class="<%= "hidden" if !lesson.errors.any? %>">
+      <h2>Errors prohibited this lesson from being saved:</h2>
 
-      <ul>
-        <% lesson.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <ul data-lesson-form-target="errorList">
+      <% lesson.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
 
   <%= form.label :name %>
-  <%= form.text_field :name, class: "large", required: true %>
+  <%= form.text_field :name, class: "large", required: true, data: { "lesson-form-target" => "field" } %>
 
   <%= form.label :video_url %>
   <%= form.text_field :video_url,
-    data: { action: "input->player#load", "player-target" =>  "source" },
+    data: { action: "input->lesson-form#load", "lesson-form-target" =>  "url" },
     class: "large",
     required: true %>
 
   <%= form.label :instrument_id, Instrument.model_name.human %>
-  <%= form.select(:instrument_id, Instrument.all.collect { |i| [i.name, i.id] }, {}, class: "small") %>
+  <%= form.select(
+    :instrument_id,
+    Instrument.all.collect { |i| [i.name, i.id] }, {},
+    class: "small",
+    data: { "lesson-form-target" => "field" }
+  ) %>
 
   <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
 
   <div class="form-footer">
-    <%= form.submit %>
+    <%= form.submit nil, data: { "lesson-form-target" => "field" } %>
     <%= link_to t(:cancel), lessons_path(lesson) %>
   </div>
 <% end %>
