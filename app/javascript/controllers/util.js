@@ -72,6 +72,13 @@ export function disable(element) {
   element.classList.add(ElementAction.Disable)
 }
 
+/*
+ * Generate a random number between two values
+ */
+export function randomBetween(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
 // FIXME: Parsing depends on the agent (browser)
 function extractPrefix() {
   const stackTrace = Error().stack
