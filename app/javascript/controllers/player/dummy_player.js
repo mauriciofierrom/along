@@ -1,5 +1,5 @@
 import Player from "controllers/player/player";
-import { debug } from "controllers/util";
+import { debug, randomBetween } from "controllers/util";
 
 /** Dummy Player to use in tests */
 export default class extends Player {
@@ -8,12 +8,15 @@ export default class extends Player {
   #loaded;
   #duration;
   #onPlaying;
+  #onLoadError;
 
-  constructor({ currentTime = 0, duration = 10, onPlaying = () => {} }) {
+  constructor({ currentTime = 0, duration = randomBetween(300, 600), onPlaying = () => {}, onLoadError = () => {} }) {
     super()
+
     this.#currentTime = currentTime
     this.#duration = duration
     this.#onPlaying = onPlaying
+    this.#onLoadError = onLoadError
   }
 
   get duration() {
@@ -29,9 +32,14 @@ export default class extends Player {
   }
 
   load(_url) {
-    debug("Loaded")
-    this.#onPlaying()
-    this.#loaded = true
+    const playerElement = document.querySelector("#player")
+
+    if(playerElement.dataset.error !== undefined) {
+      this.#simulateError(playerElement.dataset.error)
+    } else {
+      this.#onPlaying()
+      this.#loaded = true
+    }
   }
 
   play(from) {
@@ -51,5 +59,13 @@ export default class extends Player {
       debug("Dummy needs no preparation")
       resolve(new this(params))
     })
+  }
+
+  #simulateError(error) {
+    switch(error) {
+      case "load":
+        this.#onLoadError()
+      break
+    }
   }
 }

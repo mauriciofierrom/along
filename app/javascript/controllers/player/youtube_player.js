@@ -40,6 +40,7 @@ export default class extends Player {
     super()
 
     const [width, height] = this.#calculateSize(params.containerOffsetHeight)
+    this.onLoadError = params.onLoadError
 
     this.#player = new YT.Player('player', {
       width: width.toString(),
@@ -66,6 +67,16 @@ export default class extends Player {
         },
         'onError': (evt) => {
           console.error(`error: ${evt.data}`)
+          switch(evt.data) {
+            case 101:
+              params.onLoadError()
+            break
+            case 150:
+              params.onLoadError()
+            break
+            default:
+              debug(`Unprocessed error: ${evt.data}`)
+          }
         }
       }
     })
