@@ -237,24 +237,24 @@ export default class extends Controller {
     debug("env", window.rails_env)
     switch(window.rails_env) {
       case Env.Prod:
-        return YoutubePlayer.create(this.#mkYTPlayerParams())
+        return YoutubePlayer.create(this.#mkPlayerParams())
       case Env.Dev:
         if(window.is_cypress === "true") {
-          return DummyPlayer.create(this.#mkDummyParams())
+          return DummyPlayer.create(this.#mkPlayerParams())
         } else {
-          return YoutubePlayer.create(this.#mkYTPlayerParams())
+          return YoutubePlayer.create(this.#mkPlayerParams())
         }
       case Env.Test:
-        return DummyPlayer.create(this.#mkDummyParams())
+        return DummyPlayer.create(this.#mkPlayerParams())
       default:
-        return DummyPlayer.create(this.#mkDummyParams())
+        return DummyPlayer.create(this.#mkPlayerParams())
     }
   }
 
   /*
    * The paramateres to initialize the Youtube Player
    */
-  #mkYTPlayerParams() {
+  #mkPlayerParams() {
     return {
       videoId: this.videoIdValue,
       edit: this.editValue,
@@ -272,25 +272,6 @@ export default class extends Controller {
 
         if(this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration)
-        }
-      },
-      onLoadError: () => {
-        this.dispatch("videoLoadFailed")
-      },
-    }
-  }
-
-  /*
-   * The parameters to initialize the Dummy Player
-   */
-  #mkDummyParams() {
-    return {
-      currentTime: 0,
-      duration: 500,
-      onPlaying: () => {
-        this.dispatch("videoLoaded")
-        if(this.hasDurationTarget) {
-          this.durationTarget.value = parseFloat(this.player.duration)
         }
       },
       onLoadError: () => {
