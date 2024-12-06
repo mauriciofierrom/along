@@ -1,10 +1,11 @@
 import { debug } from "controllers/util";
-import Player from "controllers/player/player";
+import Player, { PlayerRestriction } from "controllers/player/player";
 
 /** A class to encapsulate the YouTube player */
 export default class extends Player {
   /** @property {Player} player - The Youtube player */
   #player;
+  #userId;
 
   /**
    * @callback OnPlayerReady
@@ -41,6 +42,7 @@ export default class extends Player {
 
     const [width, height] = this.#calculateSize(params.containerOffsetHeight)
     this.onLoadError = params.onLoadError
+    this.#userId = params.userId
 
     this.#player = new YT.Player('player', {
       width: width.toString(),
@@ -57,10 +59,22 @@ export default class extends Player {
         'onStateChange': (evt) => {
           debug(`Youtube state: ${evt.data}`)
           switch (evt.data) {
+            case YT.PlayerState.CUED:
+              debug(evt.data)
+              debug("duration", this.#player.getDuration())
+              params.onCue()
+              break
             case YT.PlayerState.PAUSED:
               params.onPause()
               break
             case YT.PlayerState.PLAYING:
+              // INFO: If we got to playing that means we went past the
+              // restriction to play dynamically, so we set the value in local
+              // storage to setup subsequent checks
+              if(!this.#hasPlayedManually()) {
+                debug("setting the played manually value")
+                localStorage.setItem(this.#manualPlayKey(), Date.now())
+              }
               params.onPlaying()
               break
           }
@@ -90,6 +104,25 @@ export default class extends Player {
     return this.#player.getCurrentTime()
   }
 
+  async canPlay(from) {
+    debug("can it play", this.#hasPlayedManually())
+    return new Promise((resolve, reject) => {
+      if(this.#hasPlayedManually()) {
+        debug("Has played manually")
+        resolve()
+      } else {
+        debug("hasn't played manually, rejecting")
+        // We seek to the right value so that manual playback for the user still
+        // starts at the desired point
+        this.#player.seekTo(from, true)
+        reject(JSON.stringify({
+          restriction: PlayerRestriction.UserActionRequired,
+          message: `You must play manually to make it count towards the video creator's view count. <a href="">Learn more</a>`
+        }))
+      }
+    })
+  }
+
   /**
    * Load a video using the provided URL
    *
@@ -97,10 +130,10 @@ export default class extends Player {
    */
   load(url) {
     const formattedUrl = this.#formatUrl(url)
-    this.#player.loadVideoByUrl(formattedUrl)
+    this.#player.cueVideoByUrl(formattedUrl)
   }
 
-  play(from) {
+  async play(from) {
     this.#player.seekTo(from, true)
     this.#player.playVideo()
   }
@@ -168,5 +201,26 @@ export default class extends Player {
     let baseUrl = "https://youtu.be/v"
     let parsedUrl = new URL(url)
     return `${baseUrl}${parsedUrl.pathname}`
+  }
+
+  #manualPlayKey = () => `${this.#player.getVideoUrl()}_${this.#userId}`
+
+  #hasPlayedManually() {
+    debug(this.#manualPlayKey())
+    const manualPlayRecord =
+      localStorage.getItem(this.#manualPlayKey())
+
+    debug("Manual play record", manualPlayRecord)
+
+    if(!manualPlayRecord) {
+      debug("no manual play record")
+      return false
+    } else {
+      const manuallyPlayedAt = parseInt(manualPlayRecord)
+      debug("last played manually at", manuallyPlayedAt)
+      const now = Date.now()
+
+      return now - manuallyPlayedAt < 3600*3*1000
+    }
   }
 }
