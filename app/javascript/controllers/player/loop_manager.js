@@ -14,7 +14,6 @@ export default class LoopManager {
    * promise that wraps the interval that drives the loop repetition */
   #abortController;
 
-
   /**
    * Create a loop manager
    *
@@ -22,6 +21,10 @@ export default class LoopManager {
    */
   constructor(player) {
     this.#player = player
+  }
+
+  async #canLoop(from) {
+    return this.#player.canPlay(from)
   }
 
   /**
@@ -37,6 +40,8 @@ export default class LoopManager {
    * loop
    */
   async loop(from, to, max = null) {
+    await this.#canLoop(from)
+
     // We need to stop any previous loop before we start a new one
     await this.clear()
 
@@ -80,7 +85,7 @@ export default class LoopManager {
   async clear() {
     debug("Clearing loop: ", { invervalId: this.#intervalId, times: this.#times })
     this.#times = 0
-    if(this.#intervalId !== null && this.#intervalId !== undefined) {
+    if(!this.#intervalId !== null && this.#intervalId !== undefined) {
       if(this.#abortController !== null && this.#abortController !== undefined && !this.#abortController.signal.aborted) {
         debug("Aborting")
         this.#abortController.abort("Cancelled manually")

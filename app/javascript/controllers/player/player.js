@@ -1,5 +1,5 @@
 /** A class to abstract over video players */
-export default class {
+export default class Player {
   constructor() {
     if(this.constructor == "Player") {
       throw new Error("Abstract class Player cannot be instantiated")
@@ -60,6 +60,14 @@ export default class {
   }
 
   /*
+   * Can play
+   *
+   */
+  async canPlay(from) {
+    throw new Error("Abstract method canPlay must be implemented")
+  }
+
+  /*
    * A factory function to create the player based on the params
    *
    * @param {Object}
@@ -70,3 +78,7 @@ export default class {
   }
 }
 
+
+export const PlayerRestriction = {
+  UserActionRequired: "user_action_required"
+}
