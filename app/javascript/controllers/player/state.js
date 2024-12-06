@@ -41,8 +41,8 @@ class PlayerState {
  */
 export class ReadyState extends PlayerState {
   async loop(from, to) {
-    this.context.loopManager.loop(from, to)
     this.context.state = this.context.playingState
+    return this.context.loopManager.loop(from, to)
   }
 
   reset() {
@@ -53,7 +53,7 @@ export class ReadyState extends PlayerState {
 export class PlayingState extends PlayerState {
   // eslint-disable-next-line
   async loop(from, to) {
-    this.context.loopManager.loop(from, to)
+    return this.context.loopManager.loop(from, to)
   }
 
   reset() {
@@ -65,7 +65,7 @@ export class PlayingState extends PlayerState {
 
 export class EditingState extends PlayerState {
   async loop(from, to) {
-    this.context.loopManager.loop(from, to)
+    return this.context.loopManager.loop(from, to)
   }
 
   reset() {
@@ -82,7 +82,7 @@ export class PickingPointState extends PlayerState {
     debug("PickingPointState: Done point looping. Doing editing loop:", this.context.editState)
     this.context.state = this.context.editingState
     this.context.editState = { ...this.context.editState, setting: null }
-    this.context.loop(this.context.editState.start, this.context.editState.end)
+    return this.context.loop(this.context.editState.start, this.context.editState.end)
   }
 
   reset() {

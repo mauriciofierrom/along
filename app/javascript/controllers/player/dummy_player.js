@@ -13,6 +13,8 @@ export default class extends Player {
   constructor({ currentTime = 0, duration = randomBetween(300, 600), onPlaying = () => {}, onLoadError = () => {} }) {
     super()
 
+    debug("dummy player is created")
+
     this.#currentTime = currentTime
     this.#duration = duration
     this.#onPlaying = onPlaying
@@ -52,6 +54,18 @@ export default class extends Player {
 
   pause() {
     clearInterval(this.#intervalId)
+  }
+
+  async canPlay(_from) {
+    debug("Can the dummy play?")
+
+    const playerElement = document.querySelector("#player")
+
+    if(!playerElement.dataset.restriction) {
+      return Promise.resolve()
+    } else {
+      return Promise.reject(playerElement.dataset.restrictionMessage)
+    }
   }
 
   static async create(params) {
