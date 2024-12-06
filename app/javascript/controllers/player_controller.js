@@ -14,7 +14,8 @@ export default class extends Controller {
     start: Number,
     end: Number,
     videoId: String,
-    edit: Boolean
+    edit: Boolean,
+    userId: Number
   }
 
   /** @property {YoutubePlayer} PlayerController.player */
@@ -277,6 +278,7 @@ export default class extends Controller {
       onLoadError: () => {
         this.dispatch("videoLoadFailed")
       },
+      userId: this.userIdValue,
     }
   }
 
