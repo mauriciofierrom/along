@@ -1,5 +1,6 @@
 import LoopManager from "../../../../app/javascript/controllers/player/loop_manager"
 import YoutubePlayer from "../../../../app/javascript/controllers/player/youtube_player"
+import DummyPlayer from "../../../../app/javascript/controllers/player/dummy_player"
 
 const mockPlay = jest.fn()
 
@@ -11,6 +12,7 @@ jest.mock("../../../../app/javascript/controllers/player/youtube_player", () => 
       play: mockPlay,
       load: () => {},
       pause: () => {},
+      canPlay: () => { Promise.resolve() }
     }
   })
 })
@@ -62,6 +64,31 @@ describe("LoopManager", () => {
       await loopManager.clear()
 
       await expect(loop).rejects.toMatch("Cancelled manually")
+    })
+  })
+
+  describe("canLoop", () => {
+    describe("when the player has an unmet restriction", () => {
+      it("returns a reject promise with the reason playback was restricted", () => {
+        document.head.innerHTML = "<script></script>"
+        document.body.innerHTML = ` <div data-controller="player" id="player" data-restriction="user_manual_action" data-restriction-message="User must do the thing">
+        </div>
+        `
+
+        let loopManager = new LoopManager(new DummyPlayer({}))
+        expect(loopManager.loop(12, 23, 2)).rejects.toMatch("User must do the thing")
+      })
+    })
+
+    describe("whent he player has no unmet restrictions", () => {
+      it("performs the loop normaly and resolves", () => {
+        document.head.innerHTML = "<script></script>"
+        document.body.innerHTML = ` <div data-controller="player" id="player">
+        </div>
+        `
+        let loopManager = new LoopManager(new DummyPlayer({}))
+        expect(loopManager.loop(12, 34, 2)).resolves
+      })
     })
   })
 

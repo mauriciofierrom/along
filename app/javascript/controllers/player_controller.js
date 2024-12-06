@@ -5,6 +5,7 @@ import { PlayingState, ReadyState, EditingState, PickingPointState } from "contr
 import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player";
 import DummyPlayer from "controllers/player/dummy_player";
+import { PlayerRestriction } from "controllers/player/player";
 import { debug, debounce, show, Env } from "controllers/util";
 import { ZoomType } from "controllers/zoom"
 
@@ -90,6 +91,7 @@ export default class extends Controller {
    */
   load({detail: { url }}) {
     try {
+      this.videoUrlValue = url
       this.player.load(url)
       show(this.element.children[0])
       this.state = this.readyState
@@ -107,7 +109,8 @@ export default class extends Controller {
    * @param {number} end - The ending value
    */
   async loop(start, end) {
-    this.state.loop(start, end)
+    return this.state.loop(start, end)
+      .catch(this.#handlePlayerRestrictions)
   }
 
   /**
@@ -177,6 +180,16 @@ export default class extends Controller {
 
       this.loop(start, end)
     })
+  }
+
+  #handlePlayerRestrictions(error) {
+    console.log("We got player restriction", error)
+    const err = JSON.parse(error)
+    switch(err.restriction) {
+      case PlayerRestriction.UserActionRequired:
+        alert(err.message)
+      break
+    }
   }
 
   /**
@@ -266,6 +279,11 @@ export default class extends Controller {
       // youtube player starts replaying/looping. Duration is only guaranteed
       // to be available when video metadata is loaded, which happens on first
       // play only.
+      onCue: () => {
+        if(this.hasDurationTarget) {
+          this.durationTarget.value = parseInt(this.player.duration)
+        }
+      },
       onPlaying: () => {
         // Dispatch to the lesson controller (if connected) that we've
         // successfully loaded and played the video
@@ -274,6 +292,8 @@ export default class extends Controller {
         if(this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration)
         }
+
+
       },
       onLoadError: () => {
         this.dispatch("videoLoadFailed")
