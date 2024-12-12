@@ -1,21 +1,21 @@
-import { Controller } from "@hotwired/stimulus";
-import { debug, show, hide, disable, enable } from "controllers/util";
+import { Controller } from "@hotwired/stimulus"
+import { debug, show, hide, disable, enable } from "controllers/util"
 
 /** Controller for zoom actions */
 export default class extends Controller {
-  static targets = [ "zoomIn", "zoomOut", "zoomStart", "zoomEnd", "zoomDuration" ]
+  static targets = ["zoomIn", "zoomOut", "zoomStart", "zoomEnd", "zoomDuration"]
 
   /**
    * Sets up the initial state when a zoom level exists
    */
-  ready({detail: { duration, currentZoomLevel, isEdit }}) {
+  ready({ detail: { duration, currentZoomLevel, isEdit } }) {
     this.#setDuration(duration)
 
-    if(isEdit) {
+    if (isEdit) {
       show(this.zoomInTarget)
     }
 
-    if(currentZoomLevel > 0) {
+    if (currentZoomLevel > 0) {
       show(this.zoomOutTarget)
     }
   }
@@ -23,7 +23,7 @@ export default class extends Controller {
   /*
    * Actions when we finish with section edition
    */
-  zoomCancelled(_) {
+  zoomCancelled() {
     debug("cancelled")
     hide(this.zoomInTarget)
     hide(this.zoomOutTarget)
@@ -33,13 +33,12 @@ export default class extends Controller {
   /*
    * Set the current range selection as the potential zoom
    */
-  rangeUpdated({detail: { start, end, max }}) {
-    console.log("Setting point", start, end)
+  rangeUpdated({ detail: { start, end, max } }) {
+    debug("Setting point", start, end)
     this.zoomStartTarget.value = start
     this.zoomEndTarget.value = end
 
-    // TODO: There might be an issue with the rangeUpdated function
-    if(start !== 0 || end !== max) {
+    if (start !== 0 || end !== max) {
       enable(this.zoomInTarget)
       show(this.zoomInTarget)
     }
@@ -54,9 +53,9 @@ export default class extends Controller {
    * it would be redundant to zoom-into the already zoomed-into portion of the
    * video.
    */
-  zoomLevelAdded({detail: { zoomLevel }}) {
+  zoomLevelAdded({ detail: { zoomLevel } }) {
     debug("zoom level added")
-    if(zoomLevel === 1) {
+    if (zoomLevel === 1) {
       show(this.zoomOutTarget)
     }
     disable(this.zoomInTarget)
@@ -72,13 +71,13 @@ export default class extends Controller {
    */
   zoomLevelRemoved({ detail: { zoomLevel, isEdit } }) {
     debug(`ZoomLevel: ${zoomLevel}. isEdit: ${isEdit}`)
-    if(zoomLevel > 0 && zoomLevel < 3) {
+    if (zoomLevel > 0 && zoomLevel < 3) {
       show(this.zoomOutTarget)
     }
 
-    if(zoomLevel === 0) {
+    if (zoomLevel === 0) {
       hide(this.zoomOutTarget)
-      if(isEdit) {
+      if (isEdit) {
         show(this.zoomInTarget)
         enable(this.zoomInTarget)
       } else {
@@ -94,7 +93,7 @@ export default class extends Controller {
    * @param {number} duration - The duration in seconds
    */
   #setDuration(duration) {
-    if(this.hasZoomDurationTarget) {
+    if (this.hasZoomDurationTarget) {
       this.zoomDurationTarget.value = duration
     }
   }

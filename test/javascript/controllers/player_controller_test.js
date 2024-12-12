@@ -1,13 +1,13 @@
 import { Application } from "@hotwired/stimulus"
+
+import { ReadyState, PlayingState, EditingState } from "../../../app/javascript/controllers/player/state"
 import PlayerController from "../../../app/javascript/controllers/player_controller"
 import LoopManager from "../../../app/javascript/controllers/player/loop_manager"
-import { ReadyState, PlayingState, EditingState } from "../../../app/javascript/controllers/player/state"
 
 jest.mock("../../../app/javascript/controllers/player/loop_manager", () => {
   return jest.fn().mockImplementation(() => {
     return {
       loop: jest.fn(),
-      clear: async () => {}
     }
   })
 })
@@ -20,7 +20,7 @@ describe("PlayerController", () => {
   // TODO: There seems to be an error with jest-dom or whatever that prevents me
   // from creating and sharing the playerController/Element from the beforeEach.
   // That would help simplify the tests.
-  beforeEach(async () => {
+  beforeEach(() => {
     LoopManager.mockClear()
 
     document.head.innerHTML = "<script></script>"

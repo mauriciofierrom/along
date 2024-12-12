@@ -1,13 +1,15 @@
 export function debounce(callback, delay) {
   let timeout
-  return function() {
+  return function (...restParam) {
     clearTimeout(timeout)
-    timeout = setTimeout(() => callback.apply(this, arguments), delay)
+    // eslint-disable-next-line @babel/no-invalid-this
+    timeout = setTimeout(() => callback.apply(this, restParam), delay)
   }
 }
 
 export function debug(msg, ...options) {
-  if(debugCondition()) {
+  if (debugCondition()) {
+    // eslint-disable-next-line no-console
     console.log(`${extractPrefix()}: ${msg || ""}`, ...options)
   }
 }
@@ -22,7 +24,7 @@ export const Env = {
   Prod: "production",
   Dev: "development",
   Test: "test",
-  Cypress: "CYPRESS"
+  Cypress: "CYPRESS",
 }
 
 /*
@@ -76,10 +78,9 @@ export function disable(element) {
  * Generate a random number between two values
  */
 export function randomBetween(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.random() * (max - min) + min
 }
 
-// FIXME: Parsing depends on the agent (browser)
 function extractPrefix() {
   const stackTrace = Error().stack
   // INFO: This is obviously taking into account the two calls of extractPrefix
@@ -94,14 +95,16 @@ function extractPrefix() {
 function snakeToPascalCase(str) {
   return str
     .toLowerCase()
-    .split('_')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join('');
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join("")
 }
 
 function debugCondition() {
-  return window.rails_env !== undefined &&
+  return (
+    window.rails_env !== undefined &&
     window.rails_env !== null &&
     window.rails_env === "development" &&
     !(window.is_cypress === "true")
+  )
 }

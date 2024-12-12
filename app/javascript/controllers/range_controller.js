@@ -1,13 +1,13 @@
-import { Controller } from "@hotwired/stimulus";
-import { debounce, debug } from "controllers/util";
-import Zoom, { ZoomType } from "controllers/zoom";
+import { Controller } from "@hotwired/stimulus"
+import { debounce, debug } from "controllers/util"
+import Zoom, { ZoomType } from "controllers/zoom"
 
 export default class extends Controller {
-  static targets = [ "min", "max", "slider" ]
-  static outlets = [ "player" ]
+  static targets = ["min", "max", "slider"]
+  static outlets = ["player"]
   static values = {
     minDefault: Number,
-    maxDefault: Number
+    maxDefault: Number,
   }
 
   /**
@@ -15,15 +15,15 @@ export default class extends Controller {
    * @property {number} start - The start of the zoom range
    * @property {number} end - The end of the zoom range
    */
-  zoomLevels = [];
+  zoomLevels = []
 
-  #duration;
+  #duration
 
   connect() {
     debug("setting styles")
     // Set initial style for the slider range
-    let minRange = parseFloat(this.minTarget.value)
-    let maxRange = parseFloat(this.maxTarget.value)
+    const minRange = parseFloat(this.minTarget.value)
+    const maxRange = parseFloat(this.maxTarget.value)
 
     this.#setSliderStyles(minRange, maxRange)
   }
@@ -38,7 +38,7 @@ export default class extends Controller {
     debug("Duration", this.#duration)
 
     // INFO: Initial connection requires loading the correct zoom value if any
-    if(this.zoomLevel > 0) {
+    if (this.zoomLevel > 0) {
       const start = parseFloat(this.minTarget.value)
       const end = parseFloat(this.maxTarget.value)
       const restored = this.activeZoomLevel.restore(start, end)
@@ -47,13 +47,18 @@ export default class extends Controller {
       this.maxTarget.value = restored.end
 
       debug("Restored", restored)
-      detail = { start, end, zoom: ZoomType.In, max: parseFloat(this.maxTarget.max) }
+      detail = {
+        start,
+        end,
+        zoom: ZoomType.In,
+        max: parseFloat(this.maxTarget.max),
+      }
     } else {
       debug("detail", detail)
       detail = {
         start: parseFloat(this.minTarget.value),
         end: parseFloat(this.maxTarget.value),
-        max: parseFloat(this.maxTarget.max)
+        max: parseFloat(this.maxTarget.max),
       }
     }
 
@@ -62,43 +67,46 @@ export default class extends Controller {
     this.dispatch("setPoint", { detail })
 
     // Initialize the zoom controllers
-    this.dispatch("ready", { detail: {
-      duration: parseFloat(this.maxTarget.max),
-      currentZoomLevel: this.zoomLevel,
-      isEdit: this.hasMinDefaultValue && this.hasMaxDefaultValue
-    }})
+    this.dispatch("ready", {
+      detail: {
+        duration: parseFloat(this.maxTarget.max),
+        currentZoomLevel: this.zoomLevel,
+        isEdit: this.hasMinDefaultValue && this.hasMaxDefaultValue,
+      },
+    })
 
     debug("zoom levels after init", this.zoomLevels)
   }
 
-  // TODO: Why can't we separate the events by target change events again?
-  update(e) {
+  update(event) {
     debug(`Min: ${this.minTarget.value} - Max: ${this.maxTarget.value}`)
     const rangeMin = 0
-    let minRange = parseFloat(this.minTarget.value)
-    let maxRange = parseFloat(this.maxTarget.value)
-    var setting = null
-    var detail = null
+    const minRange = parseFloat(this.minTarget.value)
+    const maxRange = parseFloat(this.maxTarget.value)
+    let setting = null
+    let detail = null
 
     debug(`Min: ${minRange} - Max: ${maxRange}`)
 
-    this.dispatch("rangeUpdated", { detail: {
-      start: minRange,
-      end: maxRange,
-      max: parseFloat(this.maxTarget.max),
-    }})
+    this.dispatch("rangeUpdated", {
+      detail: {
+        start: minRange,
+        end: maxRange,
+        max: parseFloat(this.maxTarget.max),
+      },
+    })
 
     if (maxRange - minRange < rangeMin) {
-      if (e.target.className === "min") {
-        this.minTarget.value = maxRange - rangeMin;
+      if (event.target.className === "min") {
+        this.minTarget.value = maxRange - rangeMin
       } else {
-        this.maxTarget.value = minRange + rangeMin;
+        this.maxTarget.value = minRange + rangeMin
       }
     } else {
       this.#setSliderStyles(minRange, maxRange)
     }
 
-    if (e.target.className ==="min") {
+    if (event.target.className === "min") {
       setting = parseFloat(this.minTarget.value)
     } else {
       setting = parseFloat(this.maxTarget.value)
@@ -119,7 +127,7 @@ export default class extends Controller {
    * @param {Zoom} zoom
    *
    */
-  addZoomLevel({detail: {start, end}}) {
+  addZoomLevel({ detail: { start, end } }) {
     debug()
     this.zoomLevels.push(new Zoom(start, end, parseFloat(this.maxTarget.max)))
     this.dispatch("zoomLevelAdded", { detail: { zoomLevel: this.zoomLevel } })
@@ -131,24 +139,24 @@ export default class extends Controller {
   /*
    * Removal of zoom levels will always be a pop
    */
-  removeZoomLevel(_) {
+  removeZoomLevel() {
     let isEdit = false
     this.zoomLevels.pop()
     debug("remove zoom level", this.zoomLevels)
 
-    if(this.zoomLevel > 0) {
+    if (this.zoomLevel > 0) {
       this.resetRange()
-    } else {
-      if(this.hasMinDefaultValue && this.hasMaxDefaultValue) {
-        this.minTarget.value = this.minDefaultValue
-        this.maxTarget.value = this.maxDefaultValue
+    } else if (this.hasMinDefaultValue && this.hasMaxDefaultValue) {
+      this.minTarget.value = this.minDefaultValue
+      this.maxTarget.value = this.maxDefaultValue
 
-        this.#setSliderStyles(this.minDefaultValue, this.maxDefaultValue)
-        isEdit = true
-      }
+      this.#setSliderStyles(this.minDefaultValue, this.maxDefaultValue)
+      isEdit = true
     }
 
-    this.dispatch("zoomLevelRemoved", { detail: { zoomLevel: this.zoomLevel, isEdit } })
+    this.dispatch("zoomLevelRemoved", {
+      detail: { zoomLevel: this.zoomLevel, isEdit },
+    })
 
     // Dispatch with the newly set values to restart loop playing in the
     // controller
@@ -170,12 +178,18 @@ export default class extends Controller {
     this.maxTarget.value = this.maxTarget.max
   }
 
-  convertFields(_) {
-    if(this.zoomLevel > 0) {
-      let { start, end } = this.activeZoomLevel.convert(parseFloat(this.minTarget.value), parseFloat(this.maxTarget.value))
+  convertFields() {
+    if (this.zoomLevel > 0) {
+      const { start, end } = this.activeZoomLevel.convert(
+        parseFloat(this.minTarget.value),
+        parseFloat(this.maxTarget.value),
+      )
       this.minTarget.value = start
       this.maxTarget.value = end
-      debug("Zoom convertion pre-submission", {start: this.minTarget.value, end: this.maxTarget.value})
+      debug("Zoom convertion pre-submission", {
+        start: this.minTarget.value,
+        end: this.maxTarget.value,
+      })
     }
 
     this.dispatch("submitForm")
@@ -184,30 +198,40 @@ export default class extends Controller {
   #initZoomLevels() {
     const prefix = "section_zoom_attributes"
 
-    const starts =
-      Array.from(document.querySelectorAll(`input[id^='${prefix}'][id$='start']`))
-        .sort()
-        .map((e) => parseFloat(e.value))
+    const starts = Array.from(
+      document.querySelectorAll(`input[id^='${prefix}'][id$='start']`),
+    )
+      .sort()
+      .map((element) => parseFloat(element.value))
 
-    const ends =
-      Array.from(document.querySelectorAll(`input[id^='${prefix}'][id$='end']`))
-        .sort()
-        .map((e) => parseFloat(e.value))
+    const ends = Array.from(
+      document.querySelectorAll(`input[id^='${prefix}'][id$='end']`),
+    )
+      .sort()
+      .map((element) => parseFloat(element.value))
 
-    return starts.map((s, i) => new Zoom(s, ends[i], this.#duration))
+    return starts.map((start, i) => new Zoom(start, ends[i], this.#duration))
   }
 
   #setSliderStyles(min, max) {
-    this.sliderTarget.style.left = (min / this.minTarget.max) * 100 + "%";
-    this.sliderTarget.style.right = 100 - (max / this.maxTarget.max) * 100 + "%";
+    this.sliderTarget.style.left = `${(min / this.minTarget.max) * 100}%`
+    this.sliderTarget.style.right = `${100 - (max / this.maxTarget.max) * 100}%`
   }
 
   #dispatchDetail(setting) {
-    debug(`Setting: ${setting}. Min: ${this.minTarget.value}. Max: ${this.maxTarget.value}`)
-    if(this.zoomLevel > 0) {
-      const converted = this.activeZoomLevel.convert(parseFloat(this.minTarget.value), parseFloat(this.maxTarget.value))
+    debug(
+      `Setting: ${setting}. Min: ${this.minTarget.value}. Max: ${this.maxTarget.value}`,
+    )
+    if (this.zoomLevel > 0) {
+      const converted = this.activeZoomLevel.convert(
+        parseFloat(this.minTarget.value),
+        parseFloat(this.maxTarget.value),
+      )
 
-      debug(`Min: ${this.minTarget.value}. Max: ${this.maxTarget.value}`, converted)
+      debug(
+        `Min: ${this.minTarget.value}. Max: ${this.maxTarget.value}`,
+        converted,
+      )
 
       return {
         ...converted,
@@ -218,7 +242,7 @@ export default class extends Controller {
       return {
         start: parseFloat(this.minTarget.value),
         end: parseFloat(this.maxTarget.value),
-        setting
+        setting,
       }
     }
   }

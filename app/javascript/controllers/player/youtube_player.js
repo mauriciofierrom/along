@@ -1,11 +1,12 @@
-import { debug } from "controllers/util";
-import Player, { PlayerRestriction } from "controllers/player/player";
+/* global YT */
+import { debug } from "controllers/util"
+import Player, { PlayerRestriction } from "controllers/player/player"
 
 /** A class to encapsulate the YouTube player */
 export default class extends Player {
   /** @property {Player} player - The Youtube player */
-  #player;
-  #userId;
+  #player
+  #userId
 
   /**
    * @callback OnPlayerReady
@@ -19,7 +20,6 @@ export default class extends Player {
    * @callback OnPlayerPlaying
    */
 
-
   /**
    * @typedef {Object} YoutubePlayerParams
    * @property {number} width - The width of the player
@@ -27,7 +27,6 @@ export default class extends Player {
    * @property {string} videoId - The id of the YouTube video
    * @property {boolean} edit - Whether we're in edition mode
    * @property {OnPlayerReady} onReady - Callback when the player is ready
-   * @property {OnPlayerPause} onPause - Callback when the player is paused
    * @property {OnPlayerPlaying} onPlaying - Callback when the player is playing
    */
 
@@ -44,19 +43,19 @@ export default class extends Player {
     this.onLoadError = params.onLoadError
     this.#userId = params.userId
 
-    this.#player = new YT.Player('player', {
+    this.#player = new YT.Player("player", {
       width: width.toString(),
       height: height.toString(),
-      videoId: params.videoId || '',
+      videoId: params.videoId || "",
       playerVars: {
-        'autoplay': params.edit,
-        'disablekb': 1,
-        'controls': 0,
-        'startValue': 0
+        autoplay: params.edit,
+        disablekb: 1,
+        controls: 0,
+        startValue: 0,
       },
       events: {
-        'onReady': params.onReady,
-        'onStateChange': (evt) => {
+        onReady: params.onReady,
+        onStateChange: (evt) => {
           debug(`Youtube state: ${evt.data}`)
           switch (evt.data) {
             case YT.PlayerState.CUED:
@@ -64,14 +63,11 @@ export default class extends Player {
               debug("duration", this.#player.getDuration())
               params.onCue()
               break
-            case YT.PlayerState.PAUSED:
-              params.onPause()
-              break
             case YT.PlayerState.PLAYING:
               // INFO: If we got to playing that means we went past the
               // restriction to play dynamically, so we set the value in local
               // storage to setup subsequent checks
-              if(!this.#hasPlayedManually()) {
+              if (!this.#hasPlayedManually()) {
                 debug("setting the played manually value")
                 localStorage.setItem(this.#manualPlayKey(), Date.now())
               }
@@ -79,22 +75,22 @@ export default class extends Player {
               break
           }
         },
-        'onError': (evt) => {
+        onError: (evt) => {
           console.error(`error: ${evt.data}`)
-          switch(evt.data) {
+          switch (evt.data) {
             case 101:
               params.onLoadError()
-            break
+              break
             case 150:
               params.onLoadError()
-            break
+              break
             default:
               debug(`Unprocessed error: ${evt.data}`)
           }
-        }
-      }
+        },
+      },
     })
- }
+  }
 
   get duration() {
     return this.#player.getDuration()
@@ -104,10 +100,10 @@ export default class extends Player {
     return this.#player.getCurrentTime()
   }
 
-  async canPlay(from) {
+  canPlay(from) {
     debug("can it play", this.#hasPlayedManually())
     return new Promise((resolve, reject) => {
-      if(this.#hasPlayedManually()) {
+      if (this.#hasPlayedManually()) {
         debug("Has played manually")
         resolve()
       } else {
@@ -115,10 +111,12 @@ export default class extends Player {
         // We seek to the right value so that manual playback for the user still
         // starts at the desired point
         this.#player.seekTo(from, true)
-        reject(JSON.stringify({
-          restriction: PlayerRestriction.UserActionRequired,
-          message: `You must play manually to make it count towards the video creator's view count. <a href="">Learn more</a>`
-        }))
+        reject(
+          JSON.stringify({
+            restriction: PlayerRestriction.UserActionRequired,
+            message: `You must play manually to make it count towards the video creator's view count. <a href="">Learn more</a>`,
+          }),
+        )
       }
     })
   }
@@ -133,7 +131,7 @@ export default class extends Player {
     this.#player.cueVideoByUrl(formattedUrl)
   }
 
-  async play(from) {
+  play(from) {
     this.#player.seekTo(from, true)
     this.#player.playVideo()
   }
@@ -151,20 +149,20 @@ export default class extends Player {
     this.#player.seekTo(0)
   }
 
-  static async create(params) {
-    return new Promise(resolve => {
-      var tag = document.createElement('script')
+  static create(params) {
+    return new Promise((resolve) => {
+      const tag = document.createElement("script")
       let player
-      let newParams = params
+      const newParams = params
       newParams.onReady = () => {
         resolve(player)
       }
 
       tag.src = "https://www.youtube.com/iframe_api"
-      var firstScriptTag = document.getElementsByTagName('script')[0]
+      const firstScriptTag = document.getElementsByTagName("script")[0]
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 
-      if(window && window.YT) {
+      if (window && window.YT) {
         player = new this(newParams)
       } else {
         window.onYouTubeIframeAPIReady = () => {
@@ -185,9 +183,9 @@ export default class extends Player {
   #calculateSize(containerOffsetHeight) {
     const baseWidth = 480
     const baseHeight = 270
-    let targetHeight = containerOffsetHeight
+    const targetHeight = containerOffsetHeight
 
-    return [targetHeight * baseWidth / baseHeight, targetHeight]
+    return [(targetHeight * baseWidth) / baseHeight, targetHeight]
   }
 
   /**
@@ -198,29 +196,30 @@ export default class extends Player {
    * @return {string} The formatted url
    */
   #formatUrl(url) {
-    let baseUrl = "https://youtu.be/v"
-    let parsedUrl = new URL(url)
+    const baseUrl = "https://youtu.be/v"
+    const parsedUrl = new URL(url)
     return `${baseUrl}${parsedUrl.pathname}`
   }
 
-  #manualPlayKey = () => `${this.#player.getVideoUrl()}_${this.#userId}`
+  #manualPlayKey() {
+    return `${this.#player.getVideoUrl()}_${this.#userId}`
+  }
 
   #hasPlayedManually() {
     debug(this.#manualPlayKey())
-    const manualPlayRecord =
-      localStorage.getItem(this.#manualPlayKey())
+    const manualPlayRecord = localStorage.getItem(this.#manualPlayKey())
 
     debug("Manual play record", manualPlayRecord)
 
-    if(!manualPlayRecord) {
-      debug("no manual play record")
-      return false
-    } else {
-      const manuallyPlayedAt = parseInt(manualPlayRecord)
+    if (manualPlayRecord) {
+      const manuallyPlayedAt = parseInt(manualPlayRecord, 10)
       debug("last played manually at", manuallyPlayedAt)
       const now = Date.now()
 
-      return now - manuallyPlayedAt < 3600*3*1000
+      return now - manuallyPlayedAt < 3600 * 3 * 1000
+    } else {
+      debug("no manual play record")
+      return false
     }
   }
 }

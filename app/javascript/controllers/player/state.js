@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars, require-await */
+
 import { debug } from "controllers/util"
 
 /** Abstract class for a PlayerState */
@@ -8,7 +10,7 @@ class PlayerState {
    * @param {PlayerController} context - The context the states operates on
    */
   constructor(context) {
-    if(this.constructor == PlayerState) {
+    if (this.constructor === PlayerState) {
       throw new Error("Abstract class PlayerState cannot be instantiated")
     }
 
@@ -28,7 +30,6 @@ class PlayerState {
    * @param {!number} start - The starting point of the loop
    * @param {!number} end - The ending of the loop
    */
-  // eslint-disable-next-line
   async loop(_start, _end) {
     throw new Error("Abstract method loop must be implemented")
   }
@@ -51,7 +52,6 @@ export class ReadyState extends PlayerState {
 }
 
 export class PlayingState extends PlayerState {
-  // eslint-disable-next-line
   async loop(from, to) {
     return this.context.loopManager.loop(from, to)
   }
@@ -77,12 +77,22 @@ export class EditingState extends PlayerState {
 
 export class PickingPointState extends PlayerState {
   async loop(from, to) {
-    debug("PickingPointState: Looping 3 times", { state: this.constructor.name, from, to })
+    debug("PickingPointState: Looping 3 times", {
+      state: this.constructor.name,
+      from,
+      to,
+    })
     await this.context.loopManager.loop(from, to, 1)
-    debug("PickingPointState: Done point looping. Doing editing loop:", this.context.editState)
+    debug(
+      "PickingPointState: Done point looping. Doing editing loop:",
+      this.context.editState,
+    )
     this.context.state = this.context.editingState
     this.context.editState = { ...this.context.editState, setting: null }
-    return this.context.loop(this.context.editState.start, this.context.editState.end)
+    return this.context.loop(
+      this.context.editState.start,
+      this.context.editState.end,
+    )
   }
 
   reset() {

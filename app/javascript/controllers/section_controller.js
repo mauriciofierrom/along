@@ -1,11 +1,11 @@
-import { Controller } from "@hotwired/stimulus";
+import { Controller } from "@hotwired/stimulus"
 import ScreenLockManager from "controllers/screen_lock_manager"
-import { debug } from "controllers/util";
+import { debug } from "controllers/util"
 
 export default class extends Controller {
-  #screenLockManager;
+  #screenLockManager
 
-  initialize () {
+  initialize() {
     debug("initialize section controller")
     this.#screenLockManager = new ScreenLockManager()
   }
@@ -15,7 +15,7 @@ export default class extends Controller {
     const start = parseFloat(this.element.dataset.start)
     const end = parseFloat(this.element.dataset.end)
 
-    this.dispatch("connect", { detail: {start, end}})
+    this.dispatch("connect", { detail: { start, end } })
     this.#screenLockManager.acquireScreenLock()
   }
 

@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+
 import PlayerController from "../../../../app/javascript/controllers/player_controller"
 import { PlayingState, EditingState } from "../../../../app/javascript/controllers/player/state"
 import LoopManager from "../../../../app/javascript/controllers/player/loop_manager"
@@ -9,7 +10,7 @@ jest.useFakeTimers();
 describe("PlayerState", () => {
   let application;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     document.head.innerHTML = "<script></script>"
     document.body.innerHTML = ` <div data-controller="player" data-player-video-id-value="video-id">
     </div>
@@ -21,7 +22,7 @@ describe("PlayerState", () => {
 
   describe("ReadyState", () => {
     describe("loop", () => {
-      it("loops and transitions to playing state", async () => {
+      it("loops and transitions to playing state", () => {
         const playerElement = document.querySelector('[data-controller="player"]')
         const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
 

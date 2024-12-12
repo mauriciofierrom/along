@@ -1,16 +1,16 @@
-import { Controller } from "@hotwired/stimulus";
-import { show, hide, enable, disable } from "controllers/util";
+import { Controller } from "@hotwired/stimulus"
+import { show, hide, enable, disable } from "controllers/util"
 
 export default class extends Controller {
-  static targets = [ "field", "url", "errorContainer", "errorList" ]
+  static targets = ["field", "url", "errorContainer", "errorList"]
 
   connect() {
     this.urlTarget.focus()
   }
 
-  videoLoadFailed(_e) {
+  videoLoadFailed() {
     // Remove previous errors
-    this.errorListTarget.innerHTML = ''
+    this.errorListTarget.innerHTML = ""
 
     // Create error list item
     const li = document.createElement("li")
@@ -26,13 +26,13 @@ export default class extends Controller {
     show(this.errorContainerTarget)
   }
 
-  videoLoaded(_e) {
-    this.errorListTarget.innerHTML = ''
+  videoLoaded() {
+    this.errorListTarget.innerHTML = ""
     hide(this.errorContainerTarget)
     this.fieldTargets.forEach(enable)
   }
 
-  load(_e) {
+  load() {
     this.dispatch("videoUrlChanged", { detail: { url: this.urlTarget.value } })
   }
 }

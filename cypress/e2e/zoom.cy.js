@@ -1,5 +1,5 @@
 describe("Zoom", () => {
-  it.skip("the zoom option isn't available until we pick a section", () => {
+  it("the zoom option isn't available until we pick a section", () => {
     cy.appFactories([["create", "lesson"]]).then(([lesson]) => {
       cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
       cy.reload()
@@ -7,16 +7,15 @@ describe("Zoom", () => {
       cy.get('[data-name="zoom-in"]').should('not.be.visible')
       cy.get("#section_start_time")
         .invoke('val', 10)
-        .trigger('input', {force: true}).then( _ => {
-          cy.get('[data-name="zoom-in"]').should('be.visible')
-        })
+        .trigger('input', {force: true})
+      cy.get('[data-name="zoom-in"]').should('be.visible')
     })
   })
 
   describe("Zoom in", () => {
     beforeEach(() => {
-      cy.appFactories([["create", "section"]]).then(([s]) => {
-        cy.forceLogin({ redirect_to: `/lessons/${s.lesson_id}` })
+      cy.appFactories([["create", "section"]]).then(([section]) => {
+        cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
         cy.reload()
         cy.get('.fa-pencil-square-o').click({force: true})
         cy.get("#section_start_time")
@@ -67,12 +66,11 @@ describe("Zoom", () => {
         let start
         let end
         beforeEach(() => {
-          cy.appFactories([["create", "zoom"]]).then((_zoom) => {
+          cy.appFactories([["create", "zoom"]]).then(() => {
             cy.forceLogin({ redirect_to: "/lessons"})
             cy.reload()
             cy.get('.video-card > .title').click()
             cy.get('.item').then(([sectionItem]) => {
-              console.log(sectionItem)
               start = parseFloat(sectionItem.dataset.start)
               end = parseFloat(sectionItem.dataset.end)
             })
@@ -94,8 +92,6 @@ describe("Zoom", () => {
         })
 
         it("restores the range to the duration of the section being edited", () => {
-          console.log(start.toFixed(1))
-          console.log(end.toFixed(1))
           cy.get("#section_start_time").should('have.value', start)
           cy.get("#section_end_time").should('have.value', end)
         })

@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars, require-await */
 /** A class to abstract over video players */
 export default class Player {
   constructor() {
-    if(this.constructor == "Player") {
+    if (this.constructor === "Player") {
       throw new Error("Abstract class Player cannot be instantiated")
     }
   }
@@ -37,6 +38,7 @@ export default class Player {
    * Load a video in the player from an URL
    *
    * @param {!string} - The url pointing to the video
+   *
    */
   load(_url) {
     throw new Error("Abstract method load must be implemented")
@@ -78,7 +80,6 @@ export default class Player {
   }
 }
 
-
 export const PlayerRestriction = {
-  UserActionRequired: "user_action_required"
+  UserActionRequired: "user_action_required",
 }

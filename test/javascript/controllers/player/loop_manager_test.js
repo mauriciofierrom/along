@@ -10,9 +10,7 @@ jest.mock("../../../../app/javascript/controllers/player/youtube_player", () => 
       duration: 15,
       currentTime: 7,
       play: mockPlay,
-      load: () => {},
-      pause: () => {},
-      canPlay: () => { Promise.resolve() }
+      canPlay: () => { Promise.resolve().catch((error) => console.error(error)) }
     }
   })
 })
@@ -30,7 +28,7 @@ describe("LoopManager", () => {
 
   describe("bounded loop", () => {
     it("should be stopped after the provided max times", async () => {
-      let loopManager = new LoopManager(player)
+      const loopManager = new LoopManager(player)
 
       loopManager.loop(1, 5, 3)
 
@@ -49,7 +47,7 @@ describe("LoopManager", () => {
 
   describe("unrestricted loop", () => {
     it("should not stop until interrupted", async () => {
-      let loopManager = new LoopManager(player)
+      const loopManager = new LoopManager(player)
 
       const loop = loopManager.loop(1, 5)
 
@@ -69,25 +67,28 @@ describe("LoopManager", () => {
 
   describe("canLoop", () => {
     describe("when the player has an unmet restriction", () => {
-      it("returns a reject promise with the reason playback was restricted", () => {
+      it("returns a reject promise with the reason playback was restricted", async () => {
         document.head.innerHTML = "<script></script>"
         document.body.innerHTML = ` <div data-controller="player" id="player" data-restriction="user_manual_action" data-restriction-message="User must do the thing">
         </div>
         `
 
-        let loopManager = new LoopManager(new DummyPlayer({}))
-        expect(loopManager.loop(12, 23, 2)).rejects.toMatch("User must do the thing")
+        const loopManager = new LoopManager(new DummyPlayer({}))
+        await expect(loopManager.loop(12, 23, 2)).rejects.toMatch("User must do the thing")
       })
     })
 
     describe("whent he player has no unmet restrictions", () => {
-      it("performs the loop normaly and resolves", () => {
+      it("performs the loop normaly and resolves", async () => {
         document.head.innerHTML = "<script></script>"
         document.body.innerHTML = ` <div data-controller="player" id="player">
         </div>
         `
-        let loopManager = new LoopManager(new DummyPlayer({}))
-        expect(loopManager.loop(12, 34, 2)).resolves
+        const loopManager = new LoopManager(new DummyPlayer({}))
+
+        // TODO: Check why this fails if we expect something
+        // eslint-disable-next-line jest/valid-expect
+        await expect(loopManager.loop(12, 34, 2)).resolves
       })
     })
   })
