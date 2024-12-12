@@ -24,10 +24,12 @@ jobs:
           bundle exec rails db:prepare
           bundle exec rails test:all
           bundle exec rspec
+      - name: Install js deps
+        run: yarn install
+      - name: Lint
+        run: yarn eslint .
       - name: JS tests
-        run: |
-          yarn install
-          yarn test
+        run: yarn test
       - name: E2E tests
         run: |
           CYPRESS=1 bin/rails server -p 5017 &> /dev/null &
