@@ -1,4 +1,5 @@
 import { Application } from "@hotwired/stimulus"
+
 import RangeController from "../../../app/javascript/controllers/range_controller"
 import Zoom, { ZoomType } from "../../../app/javascript/controllers/zoom"
 
@@ -148,7 +149,7 @@ describe("RangeController", () => {
 
         jest.runAllTimers()
 
-        expect(rangeController.zoomLevels.length).toEqual(zoomLevelCount - 1)
+        expect(rangeController.zoomLevels).toHaveLength(zoomLevelCount - 1)
       })
     })
   })

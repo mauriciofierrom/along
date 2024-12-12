@@ -1,12 +1,15 @@
-"use strict";
-
-import { Controller } from "@hotwired/stimulus";
-import { PlayingState, ReadyState, EditingState, PickingPointState } from "controllers/player/state";
+import { Controller } from "@hotwired/stimulus"
+import {
+  PlayingState,
+  ReadyState,
+  EditingState,
+  PickingPointState,
+} from "controllers/player/state"
 import LoopManager from "controllers/player/loop_manager"
-import YoutubePlayer from "controllers/player/youtube_player";
-import DummyPlayer from "controllers/player/dummy_player";
-import { PlayerRestriction } from "controllers/player/player";
-import { debug, debounce, show, Env } from "controllers/util";
+import YoutubePlayer from "controllers/player/youtube_player"
+import DummyPlayer from "controllers/player/dummy_player"
+import { PlayerRestriction } from "controllers/player/player"
+import { debug, debounce, show, Env } from "controllers/util"
 import { ZoomType } from "controllers/zoom"
 
 /** Controller for the YouTube player custom functionality */
@@ -16,11 +19,11 @@ export default class extends Controller {
     end: Number,
     videoId: String,
     edit: Boolean,
-    userId: Number
+    userId: Number,
   }
 
   /** @property {YoutubePlayer} PlayerController.player */
-  player;
+  player
 
   /**
    * Edit state definition
@@ -33,51 +36,115 @@ export default class extends Controller {
    */
 
   /** @type {EditState} */
-  editState = { };
+  editState = {}
 
   /** @property {LoopManager} */
-  loopManager;
+  loopManager
 
   /** @property {PlayerState} */
-  state;
+  state
 
   // States
 
   /** @property {ReadyState} */
-  readyState;
+  readyState
 
   /** @propery {PlayingState} */
-  playingState;
+  playingState
 
   /** @propery {EditingState} */
-  editingState;
+  editingState
 
   /** @property {SavingState} */
-  savingState;
+  savingState
 
   /** @property {PickingPointState} */
-  pickingPointState;
+  pickingPointState
 
-  static targets = [ "source", "duration" ]
+  static targets = ["source", "duration"]
+
+  /*
+   * Check if an URL path matches the section edit route
+   *
+   * @param {!string} - The url path
+   * @return {boolean}
+   */
+  #isSectionEditPath = (urlPath) => {
+    debug("path", urlPath)
+    const regex = /\/sections\/\d+\/edit$/
+    return regex.test(urlPath)
+  }
+
+  /*
+   * Check if an URL path matches the section new route
+   *
+   * @param {!string} - The url path
+   * @return {boolean}
+   */
+  #isSectionNewPath = (urlPath) => {
+    debug("path", urlPath)
+    const regex = /\/sections\/new$/
+    return regex.test(urlPath)
+  }
+
+  /*
+   * Callback for the event triggered when section playback/edition is cancelled
+   */
+  #onSectionCancel = (event) => {
+    debug("cancelled", event)
+    if (event.target.id === "sections") {
+      debug("section cancelled")
+
+      if (
+        !this.#isSectionEditPath(event.detail.url.pathname) &&
+        !this.#isSectionNewPath(event.detail.url.pathname)
+      ) {
+        debug("onSectionCancel is being fired and resetting everything", event)
+        this.reset()
+        this.dispatch("zoomCancelled")
+      }
+    }
+  }
+
+  #handlePlayerRestrictions = (error) => {
+    debug("We got player restriction", error)
+    const err = JSON.parse(error)
+    switch (err.restriction) {
+      case PlayerRestriction.UserActionRequired:
+        // eslint-disable-next-line no-alert
+        alert(err.message)
+        break
+    }
+  }
 
   connect() {
     debug("Connect")
-    this.#initPlayer().then(player => {
-      debug("init player", player)
-      // Set the player
-      this.player = player
+    this.#initPlayer()
+      .then((player) => {
+        debug("init player", player)
+        // Set the player
+        this.player = player
 
-      // Init the loop manager
-      this.loopManager = new LoopManager(this.player)
+        // Init the loop manager
+        this.loopManager = new LoopManager(this.player)
 
-      // With the Player and Loop manager initialized we're ready to rumble
-      this.state = this.readyState
-    })
+        // With the Player and Loop manager initialized we're ready to rumble
+        this.state = this.readyState
+      })
+      .catch((error) => {
+        console.error("Player initialization failed", error)
+      })
 
     // INFO: We do our own player-related thing despite the fact that we're
     // reacting to a section turbo-stream event.
-    document.documentElement.addEventListener('turbo:submit-end', this.#onSectionSave)
-    document.documentElement.addEventListener('turbo:before-fetch-request', this.#onSectionCancel)
+    document.documentElement.addEventListener(
+      "turbo:submit-end",
+      this.#onSectionSave,
+    )
+    document.documentElement.addEventListener(
+      "turbo:before-fetch-request",
+      this.#onSectionCancel,
+    )
   }
 
   initialize() {
@@ -89,14 +156,13 @@ export default class extends Controller {
    * Load a video in the youtube player. Used to override the initialization of
    * the player and to show it. Used on Lesson creation.
    */
-  load({detail: { url }}) {
+  load({ detail: { url } }) {
     try {
       this.videoUrlValue = url
       this.player.load(url)
       show(this.element.children[0])
       this.state = this.readyState
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error)
     }
   }
@@ -108,9 +174,8 @@ export default class extends Controller {
    * @param {number} start - The starting value
    * @param {number} end - The ending value
    */
-  async loop(start, end) {
-    return this.state.loop(start, end)
-      .catch(this.#handlePlayerRestrictions)
+  loop(start, end) {
+    return this.state.loop(start, end).catch(this.#handlePlayerRestrictions)
   }
 
   /**
@@ -130,7 +195,7 @@ export default class extends Controller {
   /**
    * Reset the player by delegating to the current state
    */
-  reset () {
+  reset() {
     this.state.reset()
   }
 
@@ -164,38 +229,31 @@ export default class extends Controller {
     this.editState = state
 
     // Disable the fields here and enable them after the clear
-    this.loopManager.clear().then(() => {
-      switch(this.state.zoom) {
-        case ZoomType.In:
-          this.state = this.editingState
-        break;
-        case ZoomType.Out:
-          this.state = this.pickingPointState
-        break;
-        default:
-          this.state = this.pickingPointState
-      }
-      const [start, end] =
-        LoopManager.settingRange(this.editState.start, this.editState.end, this.editState.setting)
+    this.loopManager.clear()
 
-      this.loop(start, end)
-    })
-  }
-
-  #handlePlayerRestrictions(error) {
-    console.log("We got player restriction", error)
-    const err = JSON.parse(error)
-    switch(err.restriction) {
-      case PlayerRestriction.UserActionRequired:
-        alert(err.message)
-      break
+    switch (this.state.zoom) {
+      case ZoomType.In:
+        this.state = this.editingState
+        break
+      case ZoomType.Out:
+        this.state = this.pickingPointState
+        break
+      default:
+        this.state = this.pickingPointState
     }
+    const [start, end] = LoopManager.settingRange(
+      this.editState.start,
+      this.editState.end,
+      this.editState.setting,
+    )
+
+    this.loop(start, end)
   }
 
   /**
    * Initializes the states with the controller as their context
    */
-  #initStates = () => {
+  #initStates() {
     // Initialize states
     this.readyState = new ReadyState(this)
     this.playingState = new PlayingState(this)
@@ -206,34 +264,16 @@ export default class extends Controller {
   /**
    * Callback for the event triggered when a section is saved
    */
-  #onSectionSave = (e) => {
-    switch(e.target.dataset.name) {
+  #onSectionSave(event) {
+    switch (event.target.dataset.name) {
       case "section":
         debug("Section event")
         this.dispatch("zoomCancelled")
         this.reset()
-      break
+        break
       case "zoom-in":
         this.dispatch("resetRange")
-      break;
-    }
-  }
-
-  /*
-   * Callback for the event triggered when section playback/edition is cancelled
-   */
-  #onSectionCancel = (e) => {
-    debug("cancelled", e)
-    if (e.target.id === "sections") {
-      debug("section cancelled")
-      const r = this.#isSectionEditPath(e.detail.url.pathname)
-      debug("is the path?", r)
-
-      if(!this.#isSectionEditPath(e.detail.url.pathname) && !this.#isSectionNewPath(e.detail.url.pathname)) {
-        debug("onSectionCancel is being fired and resetting everything", e)
-        this.reset()
-        this.dispatch("zoomCancelled")
-      }
+        break
     }
   }
 
@@ -249,11 +289,11 @@ export default class extends Controller {
    */
   #initPlayer() {
     debug("env", window.rails_env)
-    switch(window.rails_env) {
+    switch (window.rails_env) {
       case Env.Prod:
         return YoutubePlayer.create(this.#mkPlayerParams())
       case Env.Dev:
-        if(window.is_cypress === "true") {
+        if (window.is_cypress === "true") {
           return DummyPlayer.create(this.#mkPlayerParams())
         } else {
           return YoutubePlayer.create(this.#mkPlayerParams())
@@ -273,15 +313,9 @@ export default class extends Controller {
       videoId: this.videoIdValue,
       edit: this.editValue,
       containerOffsetHeight: this.element.offsetHeight,
-      // WARN: This might not be a good idea
-      onPause: () => {},
-      // FIXME: This should be fired only once but it's firing every time the
-      // youtube player starts replaying/looping. Duration is only guaranteed
-      // to be available when video metadata is loaded, which happens on first
-      // play only.
       onCue: () => {
-        if(this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration)
+        if (this.hasDurationTarget) {
+          this.durationTarget.value = parseInt(this.player.duration, 10)
         }
       },
       onPlaying: () => {
@@ -289,40 +323,14 @@ export default class extends Controller {
         // successfully loaded and played the video
         this.dispatch("videoLoaded")
 
-        if(this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration)
+        if (this.hasDurationTarget) {
+          this.durationTarget.value = parseInt(this.player.duration, 10)
         }
-
-
       },
       onLoadError: () => {
         this.dispatch("videoLoadFailed")
       },
       userId: this.userIdValue,
     }
-  }
-
-  /*
-   * Check if an URL path matches the section edit route
-   *
-   * @param {!string} - The url path
-   * @return {boolean}
-   */
-  #isSectionEditPath = (urlPath) => {
-    debug("path", urlPath)
-    const r = /\/sections\/\d+\/edit$/
-    return r.test(urlPath)
-  }
-
-  /*
-   * Check if an URL path matches the section new route
-   *
-   * @param {!string} - The url path
-   * @return {boolean}
-   */
-  #isSectionNewPath = (urlPath) => {
-    debug("path", urlPath)
-    const r = /\/sections\/new$/
-    return r.test(urlPath)
   }
 }

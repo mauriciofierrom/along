@@ -57,7 +57,6 @@ describe("Lesson", () => {
         it("enables the rest of the fields and the submit button and hides the error message", () => {
           cy.get("#player").then(([player]) => {
             delete player.dataset.error
-            console.log("The dataset", player.dataset)
             cy.findByLabelText("Video link")
               .invoke("val", "https://some-other.com")
               .trigger("input")

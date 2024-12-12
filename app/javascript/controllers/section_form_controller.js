@@ -1,19 +1,18 @@
-import { Controller } from "@hotwired/stimulus";
-import { debug } from "controllers/util";
+import { Controller } from "@hotwired/stimulus"
+import { debug } from "controllers/util"
 
 export default class extends Controller {
   connect() {
     debug("Section Form controller connected")
   }
 
-  submit(e) {
-    console.log("sections controller submit")
-    debug("convert fields dispatch")
-    e.preventDefault()
+  submit(event) {
+    debug("sections controller submit")
+    event.preventDefault()
     this.dispatch("convertFields")
   }
 
-  submitForm(_) {
+  submitForm() {
     debug("Submit form finally")
     this.element.submit()
   }

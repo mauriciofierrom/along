@@ -1,3 +1,4 @@
+/* global global */
 import YoutubePlayer from "../../../../app/javascript/controllers/player/youtube_player"
 import { PlayerRestriction } from "../../../../app/javascript/controllers/player/player"
 
@@ -31,7 +32,7 @@ describe("YoutubePlayer", () => {
 
         localStorage.setItem("https://youtube.com/something_1", threeHoursAgo + 3600)
 
-        await expect(ytPlayer.canPlay()).resolves
+        await expect(ytPlayer.canPlay()).resolves.toBe(undefined)
       })
     })
 

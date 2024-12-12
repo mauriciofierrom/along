@@ -1,15 +1,16 @@
-import { debug } from "controllers/util";
+import { debug } from "controllers/util"
 
 export default class Zoom {
-  start;
-  end;
-  duration;
+  start
+  end
+  duration
 
   constructor(start, end, duration) {
     this.start = start
     this.end = end
     this.duration = duration
   }
+
   /*
    *
    * Convert a point ina sub range to the full range
@@ -17,7 +18,7 @@ export default class Zoom {
    * @param {number} point - The point in time to convert
    */
   convertPoint(point) {
-    return ((point / this.duration) * (this.end - this.start)) + this.start
+    return (point / this.duration) * (this.end - this.start) + this.start
   }
 
   /*
@@ -40,8 +41,10 @@ export default class Zoom {
    */
   convert(start, end) {
     return {
+      // eslint-disable-next-line no-implicit-coercion
       start: +this.convertPoint(start).toFixed(2),
-      end: +this.convertPoint(end).toFixed(2)
+      // eslint-disable-next-line no-implicit-coercion
+      end: +this.convertPoint(end).toFixed(2),
     }
   }
 
@@ -53,8 +56,10 @@ export default class Zoom {
     debug("Start", start)
     debug("End", end)
     return {
+      // eslint-disable-next-line no-implicit-coercion
       start: +this.restorePoint(start).toFixed(2),
-      end: +this.restorePoint(end).toFixed(2)
+      // eslint-disable-next-line no-implicit-coercion
+      end: +this.restorePoint(end).toFixed(2),
     }
   }
 }
@@ -71,4 +76,3 @@ export const ZoomType = {
   /** There are no zooms in play */
   Out: "zoom-out",
 }
-

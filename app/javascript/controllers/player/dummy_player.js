@@ -1,16 +1,22 @@
-import Player from "controllers/player/player";
-import { debug, randomBetween } from "controllers/util";
+/* eslint-disable no-empty-function, no-unused-vars */
+import Player from "controllers/player/player"
+import { debug, randomBetween } from "controllers/util"
 
 /** Dummy Player to use in tests */
 export default class extends Player {
-  #intervalId;
-  #currentTime;
-  #loaded;
-  #duration;
-  #onPlaying;
-  #onLoadError;
+  #intervalId
+  #currentTime
+  #loaded
+  #duration
+  #onPlaying
+  #onLoadError
 
-  constructor({ currentTime = 0, duration = randomBetween(300, 600), onPlaying = () => {}, onLoadError = () => {} }) {
+  constructor({
+    currentTime = 0,
+    duration = randomBetween(300, 600),
+    onPlaying = () => {},
+    onLoadError = () => {},
+  }) {
     super()
 
     debug("dummy player is created")
@@ -36,7 +42,7 @@ export default class extends Player {
   load(_url) {
     const playerElement = document.querySelector("#player")
 
-    if(playerElement.dataset.error !== undefined) {
+    if (playerElement.dataset.error) {
       this.#simulateError(playerElement.dataset.error)
     } else {
       this.#onPlaying()
@@ -56,30 +62,30 @@ export default class extends Player {
     clearInterval(this.#intervalId)
   }
 
-  async canPlay(_from) {
+  canPlay(_from) {
     debug("Can the dummy play?")
 
     const playerElement = document.querySelector("#player")
 
-    if(!playerElement.dataset.restriction) {
-      return Promise.resolve()
-    } else {
+    if (playerElement.dataset.restriction) {
       return Promise.reject(playerElement.dataset.restrictionMessage)
+    } else {
+      return Promise.resolve()
     }
   }
 
-  static async create(params) {
-    return new Promise(resolve => {
+  static create(params) {
+    return new Promise((resolve) => {
       debug("Dummy needs no preparation")
       resolve(new this(params))
     })
   }
 
   #simulateError(error) {
-    switch(error) {
+    switch (error) {
       case "load":
         this.#onLoadError()
-      break
+        break
     }
   }
 }

@@ -12,7 +12,6 @@ describe("Zoom", () => {
   it("reverts a point", () => {
     const zoom = new Zoom(0.0, 72.0, 1273)
 
-    // TODO: Not exact conversion
     expect(parseFloat(zoom.restorePoint(18.28).toFixed(2))).toBe(323.2)
     expect(parseFloat(zoom.restorePoint(30.26).toFixed(2))).toBe(535.01)
   })
