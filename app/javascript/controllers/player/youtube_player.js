@@ -192,6 +192,10 @@ export default class extends Player {
    * Format a YouTube url (probably from the URL in the browser) to create a url
    * to use to load a video in the player
    *
+   * As per the docs it requires "A fully qualified YouTube player URL in the format
+   * http://www.youtube.com/v/VIDEO_ID?version=3". We skip the last part until
+   * it is actually required.
+   *
    * @param {string} url The url to format
    * @return {string} The formatted url
    */
@@ -201,8 +205,21 @@ export default class extends Player {
     return `${baseUrl}${parsedUrl.pathname}`
   }
 
+  /**
+   * The key to store to indicate the restriction for the video and the user.
+   * It's formed from the videoId and the user id concatenated to ensure this
+   * check works only for this particular video and this particular user.
+   *
+   * Since the URL is taken from the youtube player we adhere to its format:
+   *
+   * https://www.youtube.com/watch?t=303&v=bcKgaIQj-uE
+   *
+   * @return {string} An unique identifier for a video and a user
+   */
   #manualPlayKey() {
-    return `${this.#player.getVideoUrl()}_${this.#userId}`
+    const videoId = new URL(this.#player.getVideoUrl()).searchParams.get("v")
+
+    return `${videoId}_${this.#userId}`
   }
 
   #hasPlayedManually() {
