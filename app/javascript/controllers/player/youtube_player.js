@@ -212,7 +212,7 @@ export default class extends Player {
    *
    * Since the URL is taken from the youtube player we adhere to its format:
    *
-   * https://www.youtube.com/watch?t=303&v=bcKgaIQj-uE
+   * https://www.youtube.com/watch?t=1&v=dQw4w9WgXcQ
    *
    * @return {string} An unique identifier for a video and a user
    */
