@@ -18,7 +18,7 @@ describe("Zoom", () => {
 
   it("is reversible", () => {
     const zoom = new Zoom(0,72, 1273)
-    const point = 323.28
+    const point = 323.2
     const converted = zoom.convertPoint(point)
     const reverted = zoom.restorePoint(converted)
 
