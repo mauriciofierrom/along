@@ -33,7 +33,7 @@ export default class extends Controller {
 
     let detail
     debug("connected range controller")
-    this.#duration = this.maxTarget.max
+    this.#duration = parseFloat(this.maxTarget.max)
     this.zoomLevels = this.#initZoomLevels()
     debug("Duration", this.#duration)
 
