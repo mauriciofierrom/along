@@ -226,12 +226,14 @@ export default class extends Controller {
    * to discern between the two
    */
   updatePoints({ detail: state }) {
-    this.editState = state
+    // eslint-disable-next-line no-unused-vars
+    const { zoom: _, ...rest } = state
+    this.editState = rest
 
     // Disable the fields here and enable them after the clear
     this.loopManager.clear()
 
-    switch (this.state.zoom) {
+    switch (state.zoom) {
       case ZoomType.In:
         this.state = this.editingState
         break
@@ -241,6 +243,7 @@ export default class extends Controller {
       default:
         this.state = this.pickingPointState
     }
+
     const [start, end] = LoopManager.settingRange(
       this.editState.start,
       this.editState.end,
