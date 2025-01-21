@@ -124,14 +124,47 @@ export default class extends Controller {
   /*
    * Add a new zoom level to the end of the list
    *
-   * @param {Zoom} zoom
+   * To both dispatch to PlayerController and to add the new zoom level we cover
+   * the following cases:
+   *
+   * - When we're zoomed-in already we need to convert the raw values received in
+   * the event to the current zoom level.
+   *
+   * - On first zoom we use the values as they are.
+   *
+   * @param {Object} obj payload object for the event
+   * @param {Object} obj.detail key that actually has the payload
+   * @param {number} obj.detail.start the starting point directly from the input
+   * @param {number} obj.detail.end the ending point directly from the input
    *
    */
   addZoomLevel({ detail: { start, end } }) {
-    debug()
-    this.zoomLevels.push(new Zoom(start, end, parseFloat(this.maxTarget.max)))
+    let detail
+
+    if (this.zoomLevel > 0) {
+      const { start: convertedStart, end: convertedEnd } =
+        this.activeZoomLevel.convert(start, end)
+
+      detail = {
+        start: convertedStart,
+        end: convertedEnd,
+        zoom: ZoomType.In,
+      }
+
+      this.zoomLevels.push(
+        new Zoom(convertedStart, convertedEnd, parseFloat(this.maxTarget.max)),
+      )
+    } else {
+      detail = {
+        start: parseFloat(this.minTarget.value),
+        end: parseFloat(this.maxTarget.value),
+        zoom: ZoomType.In,
+      }
+
+      this.zoomLevels.push(new Zoom(start, end, parseFloat(this.maxTarget.max)))
+    }
+
     this.dispatch("zoomLevelAdded", { detail: { zoomLevel: this.zoomLevel } })
-    const detail = this.#dispatchDetail()
     this.resetRange()
     this.dispatch("update", { detail })
   }
@@ -222,6 +255,7 @@ export default class extends Controller {
     debug(
       `Setting: ${setting}. Min: ${this.minTarget.value}. Max: ${this.maxTarget.value}`,
     )
+
     if (this.zoomLevel > 0) {
       const converted = this.activeZoomLevel.convert(
         parseFloat(this.minTarget.value),
