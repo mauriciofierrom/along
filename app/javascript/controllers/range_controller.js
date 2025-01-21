@@ -267,17 +267,21 @@ export default class extends Controller {
         converted,
       )
 
+      const convertedSetting = this.activeZoomLevel.convertPoint(setting)
+
+      debug(`Setting: ${setting}. Converted setting: ${convertedSetting}`)
       return {
         ...converted,
-        setting,
-        zoom: ZoomType.In,
+        setting: convertedSetting,
       }
     } else {
-      return {
+      const detail = {
         start: parseFloat(this.minTarget.value),
         end: parseFloat(this.maxTarget.value),
         setting,
       }
+
+      return detail
     }
   }
 
