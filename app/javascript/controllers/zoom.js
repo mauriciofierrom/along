@@ -18,7 +18,11 @@ export default class Zoom {
    * @param {number} point - The point in time to convert
    */
   convertPoint(point) {
-    return (point / this.duration) * (this.end - this.start) + this.start
+    // eslint-disable-next-line no-implicit-coercion
+    return +(
+      (point / this.duration) * (this.end - this.start) +
+      this.start
+    ).toFixed(2)
   }
 
   /*
@@ -27,7 +31,11 @@ export default class Zoom {
    * @param {number} point - The point in time to restore
    */
   restorePoint(point) {
-    return ((point - this.start) * this.duration) / (this.end - this.start)
+    // eslint-disable-next-line no-implicit-coercion
+    return +(
+      ((point - this.start) * this.duration) /
+      (this.end - this.start)
+    ).toFixed(2)
   }
 
   /*
