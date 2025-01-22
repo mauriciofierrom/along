@@ -1,0 +1,27 @@
+.flash {
+    background: repeating-linear-gradient(
+      -45deg,
+      #8cbeb2 0px,
+      #8cbeb2 20px,
+      #cccccc 20px,
+      #cccccc 40px,
+      #d90368 40px,
+      #d90368 60px
+    );
+
+    margin-top: 20px;
+    border-radius: 4px;
+
+    .message {
+      color: var(--primary);
+      text-shadow:
+        1px 1px 0 var(--accent),
+        -1px -1px 0 var(--accent),
+        1px -1px 0 var(--accent),
+        -1px 1px 0 var(--accent),
+        2px 2px 1px var(--accent);
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.10);
+      font-weight: 500;
+    }
+  }

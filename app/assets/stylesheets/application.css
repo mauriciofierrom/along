@@ -16,4 +16,5 @@
  *= require_tree ./form
  *= require lesson
  *= require section
+ *= require flash
  */
