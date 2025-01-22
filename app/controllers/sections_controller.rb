@@ -22,7 +22,8 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       if @section.save
-        format.html { redirect_to lesson_url(@lesson), notice: "Section was successfully created." }
+        flash.now[:notice] = "Section was successfully created."
+        format.html { redirect_to lesson_url(@lesson)}
       else
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -40,7 +41,8 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       if @section.update(updated_params)
-        format.html { redirect_to lesson_url(@lesson), notice: "Section was successfully updated." }
+        flash.now[:notice] = "Section was successfully updated."
+        format.html { redirect_to lesson_url(@lesson) }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -51,7 +53,8 @@ class SectionsController < ApplicationController
     @section.destroy
 
     respond_to do |format|
-      format.html { redirect_to lesson_url(@lesson), notice: "Section was successfully destroyed." }
+      flash.now[:notice] = "Section was successfully destroyed."
+      format.html { redirect_to lesson_url(@lesson) }
       format.turbo_stream
     end
   end
