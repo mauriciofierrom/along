@@ -23,5 +23,6 @@
       padding: 8px 12px;
       background: rgba(255, 255, 255, 0.10);
       font-weight: 500;
+      animation: appear-then-fade 4s both;
     }
   }
