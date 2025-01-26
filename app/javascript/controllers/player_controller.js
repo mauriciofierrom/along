@@ -10,7 +10,7 @@ import YoutubePlayer from "controllers/player/youtube_player"
 import DummyPlayer from "controllers/player/dummy_player"
 import { PlayerRestriction } from "controllers/player/player"
 import { debug, debounce, show, Env } from "controllers/util"
-import { ZoomType } from "controllers/zoom"
+import { ZoomType } from "controllers/zoom/zoom"
 
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {

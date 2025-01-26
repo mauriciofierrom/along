@@ -3,14 +3,14 @@
   data: {
     controller: "range",
     action: [
-      "zoom-field:addZoomLevel@window->range#addZoomLevel",
-      "zoom-field:removeZoomLevel@window->range#removeZoomLevel",
       "player:resetRange@window->range#resetRange",
-      "section-form:convertFields@window->range#convertFields"
+      "section-form:convertFields@window->range#convertFields",
+      "zoom:zoomUpdated@window->range#updateZoomLevel",
     ].join(" "),
     "range-player-outlet" => ".player",
+    "range-zoom-outlet" => ".zoom",
     "range-min-default-value" => section.start_time_second,
-    "range-max-default-value" => section.end_time_second
+    "range-max-default-value" => section.end_time_second,
 } do %>
    <div class="range-slider">
      <span class="range-selected" data-range-target="slider"></span>

@@ -1,21 +1,45 @@
 import { Controller } from "@hotwired/stimulus"
 import { debug, show, hide, disable, enable } from "controllers/util"
+import ZoomManager from "controllers/zoom/zoom_manager"
+import Zoom from "controllers/zoom/zoom"
 
 /** Controller for zoom actions */
 export default class extends Controller {
   static targets = ["zoomIn", "zoomOut", "zoomStart", "zoomEnd", "zoomDuration"]
+  static values = {
+    duration: Number,
+  }
+
+  #zoomManager
+
+  /**
+   * @typedef {Object} Zoom
+   * @property {number} start - The start of the zoom range
+   * @property {number} end - The end of the zoom range
+   */
+
+  initialize() {
+    debug(`Duration: ${this.durationValue}`)
+    this.#zoomManager = new ZoomManager(
+      this.#initZoomLevels(),
+      this.durationValue,
+    )
+  }
+
+  updateZoomState() {
+    debug("updated the zoom state")
+    this.#zoomManager.zoomLevels = this.#initZoomLevels()
+  }
 
   /**
    * Sets up the initial state when a zoom level exists
    */
-  ready({ detail: { duration, currentZoomLevel, isEdit } }) {
-    this.#setDuration(duration)
-
+  rangeInputReady({ detail: { isEdit } }) {
     if (isEdit) {
       show(this.zoomInTarget)
     }
 
-    if (currentZoomLevel > 0) {
+    if (this.isZoomed) {
       show(this.zoomOutTarget)
     }
   }
@@ -33,12 +57,24 @@ export default class extends Controller {
   /*
    * Set the current range selection as the potential zoom
    */
-  rangeUpdated({ detail: { start, end, max } }) {
-    debug("Setting point", start, end)
+  rangeInputUpdated({ detail: { start, end } }) {
     this.zoomStartTarget.value = start
     this.zoomEndTarget.value = end
 
-    if (start !== 0 || end !== max) {
+    let actualStart
+    let actualEnd
+
+    if (this.isZoomed) {
+      const restored = this.activeZoom.restore(start, end)
+
+      actualStart = restored.start
+      actualEnd = restored.end
+    } else {
+      actualStart = start
+      actualEnd = end
+    }
+
+    if (actualStart !== 0 || actualEnd !== this.durationValue) {
       enable(this.zoomInTarget)
       show(this.zoomInTarget)
     }
@@ -53,12 +89,21 @@ export default class extends Controller {
    * it would be redundant to zoom-into the already zoomed-into portion of the
    * video.
    */
-  zoomLevelAdded({ detail: { zoomLevel } }) {
-    debug("zoom level added")
-    if (zoomLevel === 1) {
+  zoomLevelAdded({ detail: { start, end } }) {
+    this.#zoomManager.zoomIn(start, end)
+
+    if (this.#zoomManager.zoomLevel === 1) {
       show(this.zoomOutTarget)
     }
+
     disable(this.zoomInTarget)
+
+    // Dispatch the active zoom to the range controller
+    this.dispatch("zoomUpdated", {
+      detail: {
+        zoom: this.#zoomManager.activeZoom,
+      },
+    })
   }
 
   /*
@@ -69,33 +114,29 @@ export default class extends Controller {
    * original duration of the video. On section edition we fallback to the
    * original section's value
    */
-  zoomLevelRemoved({ detail: { zoomLevel, isEdit } }) {
-    debug(`ZoomLevel: ${zoomLevel}. isEdit: ${isEdit}`)
-    if (zoomLevel > 0 && zoomLevel < 3) {
+  zoomLevelRemoved() {
+    this.#zoomManager.zoomOut()
+
+    if (this.isZoomed) {
       show(this.zoomOutTarget)
     }
 
-    if (zoomLevel === 0) {
+    if (!this.isZoomed) {
       hide(this.zoomOutTarget)
-      if (isEdit) {
-        show(this.zoomInTarget)
-        enable(this.zoomInTarget)
-      } else {
-        disable(this.zoomInTarget)
-      }
+      hide(this.zoomInTarget)
     }
+
+    this.dispatch("zoomUpdated", {
+      detail: { zoom: this.#zoomManager.activeZoom },
+    })
   }
 
-  /*
-   * The duration of the video to calculate various
-   * zoom related translations. To be called via dispatch
-   *
-   * @param {number} duration - The duration in seconds
-   */
-  #setDuration(duration) {
-    if (this.hasZoomDurationTarget) {
-      this.zoomDurationTarget.value = duration
-    }
+  get isZoomed() {
+    return this.#zoomManager.isZoomed
+  }
+
+  get activeZoom() {
+    return this.#zoomManager.activeZoom
   }
 
   /*
@@ -104,5 +145,25 @@ export default class extends Controller {
   #clear() {
     this.zoomStartTarget.value = ""
     this.zoomEndTarget.value = ""
+  }
+
+  #initZoomLevels() {
+    const prefix = "section_zoom_attributes"
+
+    const starts = Array.from(
+      document.querySelectorAll(`input[id^='${prefix}'][id$='start']`),
+    )
+      .sort()
+      .map((element) => parseFloat(element.value))
+
+    const ends = Array.from(
+      document.querySelectorAll(`input[id^='${prefix}'][id$='end']`),
+    )
+      .sort()
+      .map((element) => parseFloat(element.value))
+
+    return starts.map(
+      (start, i) => new Zoom(start, ends[i], this.durationValue),
+    )
   }
 }
