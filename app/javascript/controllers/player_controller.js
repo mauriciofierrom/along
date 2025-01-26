@@ -139,11 +139,11 @@ export default class extends Controller {
     // reacting to a section turbo-stream event.
     document.documentElement.addEventListener(
       "turbo:submit-end",
-      this.#onSectionSave,
+      this.#onSectionSave.bind(this),
     )
     document.documentElement.addEventListener(
       "turbo:before-fetch-request",
-      this.#onSectionCancel,
+      this.#onSectionCancel.bind(this),
     )
   }
 
