@@ -61,14 +61,18 @@ export default class Zoom {
   // we can easily add a function to do the actual rounding of positive numbers
   // to the utils module and use it here (and in convert).
   restore(start, end) {
-    debug("Start", start)
-    debug("End", end)
+    debug(`Start: ${start}, Converted start: ${this.restorePoint(start)}`)
+    debug(`End: ${end}, Converted end: ${this.restorePoint(end)}`)
     return {
       // eslint-disable-next-line no-implicit-coercion
       start: +this.restorePoint(start).toFixed(2),
       // eslint-disable-next-line no-implicit-coercion
       end: +this.restorePoint(end).toFixed(2),
     }
+  }
+
+  get isZoomed() {
+    return true
   }
 }
 
@@ -83,4 +87,26 @@ export const ZoomType = {
   In: "zoom-in",
   /** There are no zooms in play */
   Out: "zoom-out",
+}
+
+export class NoZoom extends Zoom {
+  restore(start, end) {
+    return { start, end }
+  }
+
+  convert(start, end) {
+    return { start, end }
+  }
+
+  convertPoint(point) {
+    return point
+  }
+
+  restorePoint(point) {
+    return point
+  }
+
+  get isZoomed() {
+    return false
+  }
 }

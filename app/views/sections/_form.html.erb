@@ -19,7 +19,7 @@
   <%= turbo_frame_tag "zoom_indicator",
                       class: "zoom-indicators",
                       data: { controller: "zoom-indicator" ,
-                              action: "zoom-field:removeZoomIndicator@window->zoom-indicator#removeZoomIndicator"} do %>
+                              action: "zoom-field:zoomLevelRemoved@window->zoom-indicator#removeZoomIndicator"} do %>
                               <% @section.zoom.each do |zoom| %>
                                 <%= render partial: "zoom_indicator",
                                   locals: { indicator: {

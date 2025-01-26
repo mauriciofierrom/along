@@ -12,20 +12,19 @@
     class: "zoom-actions zoom",
     data: {
       controller: "zoom",
+      "zoom-duration-value" => @lesson.duration_in_seconds,
       action: [
-        "zoom-field:zoomFieldTargetConnected@window->range#addZoomLevel",
-        "zoom-field:zoomFieldTargetDisconnected@window->range#removeZoomLevel",
-        "range:zoomLevelAdded@window->zoom#zoomLevelAdded",
-        "range:zoomLevelRemoved@window->zoom#zoomLevelRemoved",
-        "range:rangeUpdated@window->zoom#rangeUpdated",
-        "range:ready@window->zoom#ready",
+        "zoom-field:zoomLevelAdded@window->zoom#zoomLevelAdded",
+        "zoom-field:zoomLevelRemoved@window->zoom#zoomLevelRemoved",
+        "range:rangeInputUpdated@window->zoom#rangeInputUpdated",
+        "range:rangeInputReady@window->zoom#rangeInputReady",
         "player:zoomCancelled@window->zoom#zoomCancelled",
       ].join(" "),
     } do %>
     <%= form_with url: section_zoom_in_path, data: { name: "zoom-in", "zoom-target" => "zoomIn" }, class: "hidden" do |form| %>
       <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>
       <%= form.hidden_field :end, data: { "zoom-target" => "zoomEnd" } %>
-      <%= form.hidden_field :duration, data: { "zoom-target" => "zoomDuration" } %>
+      <%= form.hidden_field :duration, value: @lesson.duration_in_seconds %>
       <%= button_tag type: "submit" do %>
         <%= fa_icon("search-plus") %>
       <% end %>
@@ -40,7 +39,7 @@
        data-player-edit-value="true"
        data-player-video-url-value="<%= @lesson.video_url %>"
        data-player-user-id-value="<%= current_user.id %>"
-       data-action="range:connect@window->player#triggerEdition range:update@window->player#updatePoints section:connect@window->player#playFromTo section:disconnect@window->player#reset"
+       data-action="range:rangeInputReady@window->player#triggerEdition range:rangeInputUpdated@window->player#updatePoints section:connect@window->player#playFromTo section:disconnect@window->player#reset"
        data-player-video-id-value="<%= video_id(@lesson) %>">
     <div id="player"></div>
   </div>

@@ -1,4 +1,4 @@
-import Zoom from "../../../app/javascript/controllers/zoom"
+import Zoom from "../../../../app/javascript/controllers/zoom/zoom"
 
 describe("Zoom", () => {
   it("converts a point", () => {
@@ -17,7 +17,7 @@ describe("Zoom", () => {
   })
 
   it("is reversible", () => {
-    const zoom = new Zoom(0,72, 1273)
+    const zoom = new Zoom(0, 72, 1273)
     const point = 323.2
     const converted = zoom.convertPoint(point)
     const reverted = zoom.restorePoint(converted)

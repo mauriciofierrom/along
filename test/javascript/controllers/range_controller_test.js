@@ -1,7 +1,8 @@
 import { Application } from "@hotwired/stimulus"
 
 import RangeController from "../../../app/javascript/controllers/range_controller"
-import Zoom, { ZoomType } from "../../../app/javascript/controllers/zoom"
+import ZoomController from "../../../app/javascript/controllers/zoom_controller"
+import Zoom, { ZoomType } from "../../../app/javascript/controllers/zoom/zoom"
 
 jest.useFakeTimers()
 
@@ -45,16 +46,34 @@ describe("RangeController", () => {
     controllerElement.className = "range"
     controllerElement.dataset.controller = "range"
     controllerElement.dataset.action =
-      "zoom-field:addZoomLevel@window->range#addZoomLevel zoom-field:removeZoomLevel@window->range#removeZoomLevel player:resetRange@window->range#resetRange"
-    controllerElement.dataset.rangePlayerOutlet = ".player"
+      "player:resetRange@window->range#resetRange"
+
+    const form = document.createElement("form")
+
+    const startField = document.createElement("input")
+    startField.dataset.zoomTarget = "zoomStart"
+
+    const endField = document.createElement("input")
+    endField.dataset.zoomTarget = "zoomEnd"
+
+    form.appendChild(startField)
+    form.appendChild(endField)
+
+    const zoomControllerElement = document.createElement("div")
+    zoomControllerElement.className = "zoom"
+    zoomControllerElement.dataset.controller = "zoom"
+
+    controllerElement.dataset.rangeZoomOutlet = ".zoom"
 
     controllerElement.appendChild(slider)
     controllerElement.appendChild(rangeInput)
 
+    document.body.appendChild(zoomControllerElement)
     document.body.appendChild(controllerElement)
 
     application = Application.start()
     application.register("range", RangeController)
+    application.register("zoom", ZoomController)
   })
 
   describe("range controller", () => {
@@ -75,11 +94,11 @@ describe("RangeController", () => {
 
       jest.runAllTimers()
 
-      expect(mockDispatch).toHaveBeenCalledWith("connect", {
+      expect(mockDispatch).toHaveBeenCalledWith("rangeInputReady", {
         detail: {
           start: 0.0,
           end: 5.0,
-          max: 290,
+          isEdit: false,
         },
       })
     })
@@ -88,7 +107,10 @@ describe("RangeController", () => {
       it("dispatches to the controller", () => {
         const mockDispatch = jest.spyOn(rangeController, "dispatch")
 
-        rangeController.zoomLevels = [new Zoom(4.0, 33.0, 290)]
+        rangeController.updateZoomLevel({
+          detail: { zoom: new Zoom(4.0, 33.0, 290) },
+        })
+
         rangeController.minTarget.value = "12"
         rangeController.maxTarget.value = "25"
         rangeController.minTarget.dispatchEvent(new InputEvent("input"))
@@ -99,7 +121,7 @@ describe("RangeController", () => {
         const end = 6.5
         const setting = 5.2
 
-        expect(mockDispatch).toHaveBeenCalledWith("update", {
+        expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
           detail: {
             start,
             end,
@@ -121,7 +143,9 @@ describe("RangeController", () => {
       it("resets the range", () => {
         const mockResetRange = jest.spyOn(rangeController, "resetRange")
 
-        rangeController.addZoomLevel({ detail: { start: 4.0, end: 33.0 } })
+        rangeController.updateZoomLevel({
+          detail: { zoom: new Zoom(4.0, 33.0, 290) },
+        })
 
         jest.runAllTimers()
 
@@ -136,70 +160,20 @@ describe("RangeController", () => {
           rangeController.maxTarget.value = "33"
           rangeController.minTarget.value = "12"
 
-          rangeController.addZoomLevel({ detail: { start: 4.0, end: 33.0 } })
+          rangeController.updateZoomLevel({
+            detail: { zoom: new Zoom(12.0, 33.0, 290) },
+          })
 
           jest.runAllTimers()
 
-          expect(mockDispatch).toHaveBeenCalledWith("update", {
+          expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
             detail: {
               start: 12,
               end: 33,
-              setting: undefined,
               zoom: ZoomType.In,
             },
           })
         })
-      })
-
-      describe("when the zoom level is greater than zero", () => {
-        it("dispatches to player controller with the converted value", () => {
-          rangeController.zoomLevels = [new Zoom(4.0, 33.0, 290)]
-
-          const mockDispatch = jest.spyOn(rangeController, "dispatch")
-
-          rangeController.minTarget.value = "12"
-          rangeController.maxTarget.value = "25"
-
-          rangeController.addZoomLevel({ detail: { start: 12.0, end: 25.0 } })
-
-          jest.runAllTimers()
-
-          expect(mockDispatch).toHaveBeenCalledWith("update", {
-            detail: {
-              start: 5.2,
-              end: 6.5,
-              zoom: ZoomType.In,
-            },
-          })
-        })
-
-        it("sets the new zoom to player-based values", () => {
-          rangeController.zoomLevels = [new Zoom(5, 50, 120)]
-
-          rangeController.minTarget.value = "3"
-          rangeController.maxTarget.value = "27"
-          rangeController.maxTarget.max = "120"
-
-          rangeController.addZoomLevel({ detail: { start: 3, end: 27 } })
-
-          jest.runAllTimers()
-
-          const expectedZoom = new Zoom(6.13, 15.13, 120)
-
-          expect(rangeController.activeZoomLevel).toStrictEqual(expectedZoom)
-        })
-      })
-    })
-
-    describe("on removeZoomLevel", () => {
-      it("removes the first element in the zoom levels", () => {
-        rangeController.zoomLevels = [new Zoom(4.0, 33.0, 290)]
-        const zoomLevelCount = rangeController.zoomLevel
-        rangeController.removeZoomLevel()
-
-        jest.runAllTimers()
-
-        expect(rangeController.zoomLevels).toHaveLength(zoomLevelCount - 1)
       })
     })
 
@@ -207,18 +181,25 @@ describe("RangeController", () => {
       it("dispatches to the controller", () => {
         const mockDispatch = jest.spyOn(rangeController, "dispatch")
 
-        rangeController.zoomLevels = [new Zoom(5, 50, 120), new Zoom(6.13, 15.13, 120)]
+        // The two zooms
+        rangeController.updateZoomLevel({
+          detail: { zoom: new Zoom(5, 50, 290) },
+        })
+        rangeController.updateZoomLevel({
+          detail: { zoom: new Zoom(6.13, 15.13, 290) },
+        })
+
         rangeController.minTarget.value = "3"
         rangeController.maxTarget.value = "110"
         rangeController.minTarget.dispatchEvent(new InputEvent("input"))
 
         jest.runAllTimers()
 
-        const start = 6.35
-        const end = 14.38
-        const setting = 6.35
+        const start = 6.22
+        const end = 9.54
+        const setting = 6.22
 
-        expect(mockDispatch).toHaveBeenCalledWith("update", {
+        expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
           detail: {
             start,
             end,

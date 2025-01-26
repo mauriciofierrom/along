@@ -37,16 +37,14 @@ export default class extends Controller {
   }
 
   zoomFieldTargetConnected(el) {
-    debug("zoom field connected?")
+    if (el.dataset.existing === "true") return
 
-    if (el.dataset.existing !== "true") {
-      const start = parseFloat(el.querySelector("input[id$='start']").value)
-      const end = parseFloat(el.querySelector("input[id$='end']").value)
+    const start = parseFloat(el.querySelector("input[id$='start']").value)
+    const end = parseFloat(el.querySelector("input[id$='end']").value)
 
-      debug(`Start: ${start}. End: ${end}`)
+    debug(`Start: ${start}. End: ${end}`)
 
-      this.dispatch("addZoomLevel", { detail: { start, end } })
-    }
+    this.dispatch("zoomLevelAdded", { detail: { start, end } })
   }
 
   /*
@@ -56,8 +54,7 @@ export default class extends Controller {
    */
   zoomFieldTargetDisconnected() {
     debug("Zoom field target disconnected")
-    this.dispatch("removeZoomLevel")
-    this.dispatch("removeZoomIndicator")
+    this.dispatch("zoomLevelRemoved")
   }
 
   /*
@@ -67,8 +64,7 @@ export default class extends Controller {
    */
   zoomDestroyTargetConnected() {
     debug("zoom destroy connected")
-    this.dispatch("removeZoomLevel")
-    this.dispatch("removeZoomIndicator")
+    this.dispatch("zoomLevelRemoved")
   }
 
   #buildDestroyInput(index) {
