@@ -43,9 +43,9 @@
        data-player-video-id-value="<%= video_id(@lesson) %>">
     <div id="player"></div>
   </div>
-
+  
   <%= turbo_frame_tag "sections", class: "sections" do %>
-    <%= link_to "#{t("actions.new")} #{Section.model_name.human}", new_lesson_section_path(@lesson) %>
+    <%= button_to "#{t("actions.new")} #{Section.model_name.human}", new_lesson_section_path(@lesson), id: "new-section", method: :get, class: "button link disabled" %>
     <div class="sections-selector">
       <%= render partial: "sections/section_item", collection: @lesson.sections, as: :section, locals: { lesson: @lesson }%>
     </div>

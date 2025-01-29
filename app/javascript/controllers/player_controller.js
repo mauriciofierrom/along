@@ -9,7 +9,7 @@ import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player"
 import DummyPlayer from "controllers/player/dummy_player"
 import { PlayerRestriction } from "controllers/player/player"
-import { debug, debounce, show, Env } from "controllers/util"
+import { debug, debounce, show, enable, Env } from "controllers/util"
 import { ZoomType } from "controllers/zoom/zoom"
 
 /** Controller for the YouTube player custom functionality */
@@ -130,6 +130,10 @@ export default class extends Controller {
 
         // With the Player and Loop manager initialized we're ready to rumble
         this.state = this.readyState
+
+        // Enable the New Section button
+        const newSectionButton = document.querySelector("#new-section")
+        enable(newSectionButton)
       })
       .catch((error) => {
         console.error("Player initialization failed", error)

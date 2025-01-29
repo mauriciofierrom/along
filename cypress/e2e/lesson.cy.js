@@ -17,7 +17,9 @@ describe("Lesson", () => {
       })
 
       it("doesn't disable fields nor button", () => {
-        cy.findByText("This video is restricted from being embedded").should('not.exist')
+        cy.findByText("This video is restricted from being embedded").should(
+          "not.exist",
+        )
       })
 
       context("and the a new url is used that fails to load", () => {
@@ -50,7 +52,7 @@ describe("Lesson", () => {
       })
 
       it("disables the rest of the fields and the submit button and shows the error message", () => {
-          cy.findByText("This video is restricted from being embedded")
+        cy.findByText("This video is restricted from being embedded")
       })
 
       context("and a new url is used that succeeds to load", () => {
@@ -61,12 +63,31 @@ describe("Lesson", () => {
               .invoke("val", "https://some-other.com")
               .trigger("input")
             cy.findByLabelText("Name").should("not.have.class", "disabled")
-            cy.findByLabelText("Instrument").should("not.have.class", "disabled")
+            cy.findByLabelText("Instrument").should(
+              "not.have.class",
+              "disabled",
+            )
             cy.findByText("Create Lesson").should("not.have.class", "disabled")
-            cy.findByText("This video is restricted from being embedded").should('not.exist')
+            cy.findByText(
+              "This video is restricted from being embedded",
+            ).should("not.exist")
           })
         })
       })
+    })
+  })
+
+  describe("Show", () => {
+    it.only("enables the New Section button after video load", () => {
+      cy.appFactories([["create", "lesson"]]).then(([lesson]) => {
+        cy.window().then((window) => {
+          window.localStorage.setItem("simulateLoad", true)
+        })
+        cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
+      })
+
+      cy.get("#new-section").should("have.class", "disabled")
+      cy.get("#new-section").should("not.have.class", "disabled")
     })
   })
 })
