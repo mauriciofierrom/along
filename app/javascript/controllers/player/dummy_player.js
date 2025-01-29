@@ -76,8 +76,15 @@ export default class extends Player {
 
   static create(params) {
     return new Promise((resolve) => {
-      debug("Dummy needs no preparation")
-      resolve(new this(params))
+      const simulateLoad = window.localStorage.getItem("simulateLoad")
+
+      if (simulateLoad) {
+        setTimeout(() => {
+          resolve(new this(params))
+        }, 1000)
+      } else {
+        resolve(new this(params))
+      }
     })
   }
 
