@@ -78,7 +78,7 @@ describe("Lesson", () => {
   })
 
   describe("Show", () => {
-    it.only("enables the New Section button after video load", () => {
+    it("enables the New Section button after video load", () => {
       cy.appFactories([["create", "lesson"]]).then(([lesson]) => {
         cy.window().then((window) => {
           window.localStorage.setItem("simulateLoad", true)
