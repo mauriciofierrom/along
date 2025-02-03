@@ -133,7 +133,7 @@ export default class extends Controller {
 
         // Enable the New Section button
         const newSectionButton = document.querySelector("#new-section")
-        enable(newSectionButton)
+        if (newSectionButton) enable(newSectionButton)
       })
       .catch((error) => {
         console.error("Player initialization failed", error)

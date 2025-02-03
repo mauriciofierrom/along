@@ -51,10 +51,13 @@ export default class extends Player {
   }
 
   play(from) {
-    this.#currentTime = from
-    this.pause()
-    this.#intervalId = setInterval(() => {
-      this.#currentTime += 1
+    setTimeout(() => {
+      this.#onPlaying()
+      this.#currentTime = from
+      this.pause()
+      this.#intervalId = setInterval(() => {
+        this.#currentTime += 1
+      }, 1000)
     }, 1000)
   }
 

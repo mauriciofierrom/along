@@ -17,6 +17,8 @@ class SectionsTest < ApplicationSystemTestCase
     click_on "New Section"
 
     fill_in "Name", with: "Part 4"
+    page.execute_script("document.querySelector('#section_start_time').disabled = false")
+    page.execute_script("document.querySelector('#section_end_time').disabled = false")
     page.execute_script("document.querySelector('#section_start_time').value = 123.2")
     page.execute_script("document.querySelector('#section_end_time').value = 323.2")
     find(".switch").click
