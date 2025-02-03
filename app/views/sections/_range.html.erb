@@ -6,6 +6,7 @@
       "player:resetRange@window->range#resetRange",
       "section-form:convertFields@window->range#convertFields",
       "zoom:zoomUpdated@window->range#updateZoomLevel",
+      "player:videoLoaded@window->range#videoLoaded"
     ].join(" "),
     "range-player-outlet" => ".player",
     "range-zoom-outlet" => ".zoom",
@@ -18,17 +19,19 @@
    <div class="range-input">
      <%= form.range_field :start_time,
        value: unless section.start_time_second.nil? then section.start_time.to_i.to_f else 0.0 end,
-       class: "min",
+       class: "min disabled",
        min: 0.0,
        max: lesson.duration_in_seconds,
        step: 0.01,
+       disabled: true,
        data: { action: "input->range#update", "range-target" => "min" } %>
      <%= form.range_field :end_time,
        value: unless section.end_time_second.nil? then section.end_time.to_i.to_f else lesson.duration_in_seconds.to_i.to_f end,
-       class: "max",
+       class: "max disabled",
        min: 0.04,
        max: lesson.duration_in_seconds,
        step: 0.01,
+       disabled: true,
        data: { action: "input->range#update", "range-target" => "max" } %>
    </div>
 <% end %>

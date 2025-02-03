@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { debounce, debug } from "controllers/util"
+import { debounce, debug, enable } from "controllers/util"
 import { ZoomType } from "controllers/zoom/zoom"
 
 export default class extends Controller {
@@ -11,6 +11,7 @@ export default class extends Controller {
   }
 
   #activeZoom
+  #hasPlayed
   #duration
 
   connect() {
@@ -150,6 +151,21 @@ export default class extends Controller {
     }
 
     this.dispatch("submitForm")
+  }
+
+  videoLoaded() {
+    if (this.#hasPlayed) return
+
+    // We use the disabled attribute here in adition to the helper functions
+    // because the CSS property pointer-events:none isn't working for the range
+    // inputs despite being active
+    this.minTarget.disabled = false
+    this.maxTarget.disabled = false
+
+    enable(this.minTarget)
+    enable(this.maxTarget)
+
+    this.#hasPlayed = true
   }
 
   #setSliderStyles(min, max) {
