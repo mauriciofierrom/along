@@ -235,7 +235,9 @@ export default class extends Controller {
     this.editState = rest
 
     // Disable the fields here and enable them after the clear
+    this.dispatch("loopClearStarted")
     this.loopManager.clear()
+    this.dispatch("loopClearFinished")
 
     switch (state.zoom) {
       case ZoomType.In:

@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { debounce, debug, enable } from "controllers/util"
+import { debounce, debug, enable, disable } from "controllers/util"
 import { ZoomType } from "controllers/zoom/zoom"
 
 export default class extends Controller {
@@ -156,14 +156,7 @@ export default class extends Controller {
   videoLoaded() {
     if (this.#hasPlayed) return
 
-    // We use the disabled attribute here in adition to the helper functions
-    // because the CSS property pointer-events:none isn't working for the range
-    // inputs despite being active
-    this.minTarget.disabled = false
-    this.maxTarget.disabled = false
-
-    enable(this.minTarget)
-    enable(this.maxTarget)
+    this.enableInputs()
 
     this.#hasPlayed = true
   }
@@ -191,5 +184,27 @@ export default class extends Controller {
 
   #isZoomed() {
     return this.#activeZoom.isZoomed
+  }
+
+  enableInputs() {
+    // We use the disabled attribute here in adition to the helper functions
+    // because the CSS property pointer-events:none isn't working for the range
+    // inputs despite being active
+    this.minTarget.disabled = false
+    this.maxTarget.disabled = false
+
+    enable(this.minTarget)
+    enable(this.maxTarget)
+  }
+
+  disableInputs() {
+    // We use the disabled attribute here in adition to the helper functions
+    // because the CSS property pointer-events:none isn't working for the range
+    // inputs despite being active
+    this.minTarget.disabled = true
+    this.maxTarget.disabled = true
+
+    disable(this.minTarget)
+    disable(this.maxTarget)
   }
 }
