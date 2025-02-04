@@ -1,6 +1,10 @@
 import { Application } from "@hotwired/stimulus"
 
-import { ReadyState, PlayingState, EditingState } from "../../../app/javascript/controllers/player/state"
+import {
+  ReadyState,
+  PlayingState,
+  EditingState,
+} from "../../../app/javascript/controllers/player/state"
 import PlayerController from "../../../app/javascript/controllers/player_controller"
 import LoopManager from "../../../app/javascript/controllers/player/loop_manager"
 
@@ -8,14 +12,18 @@ jest.mock("../../../app/javascript/controllers/player/loop_manager", () => {
   return jest.fn().mockImplementation(() => {
     return {
       loop: jest.fn(),
+      clear: jest.fn(),
+      settingRange: jest.fn(),
     }
   })
 })
 
-jest.useFakeTimers();
+LoopManager.settingRange = (start, end) => [start, end]
+
+jest.useFakeTimers()
 
 describe("PlayerController", () => {
-  let application;
+  let application
 
   // TODO: There seems to be an error with jest-dom or whatever that prevents me
   // from creating and sharing the playerController/Element from the beforeEach.
@@ -34,7 +42,10 @@ describe("PlayerController", () => {
 
   it("initialized", () => {
     const playerElement = document.querySelector('[data-controller="player"]')
-    const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+    const playerController = application.getControllerForElementAndIdentifier(
+      playerElement,
+      "player",
+    )
 
     expect(playerController.state).toBeInstanceOf(ReadyState)
   })
@@ -42,20 +53,26 @@ describe("PlayerController", () => {
   describe("playFromTo", () => {
     it("sets the state to playing", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
-      const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+      const playerController = application.getControllerForElementAndIdentifier(
+        playerElement,
+        "player",
+      )
 
-      playerController.playFromTo({detail: {start: 13, end: 43}})
+      playerController.playFromTo({ detail: { start: 13, end: 43 } })
 
       expect(playerController.state).toBeInstanceOf(PlayingState)
     })
 
     it("calls the loop manager with the right parameters", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
-      const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+      const playerController = application.getControllerForElementAndIdentifier(
+        playerElement,
+        "player",
+      )
 
       const mockLoop = jest.spyOn(playerController, "loop")
 
-      playerController.playFromTo({detail: {start: 13, end: 43}})
+      playerController.playFromTo({ detail: { start: 13, end: 43 } })
 
       expect(mockLoop).toHaveBeenCalledWith(13, 43)
     })
@@ -64,22 +81,49 @@ describe("PlayerController", () => {
   describe("triggerEdition", () => {
     it("sets the state to editing", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
-      const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+      const playerController = application.getControllerForElementAndIdentifier(
+        playerElement,
+        "player",
+      )
 
-      playerController.triggerEdition({detail: { start: 34, end: 56 }})
+      playerController.triggerEdition({ detail: { start: 34, end: 56 } })
 
       expect(playerController.state).toBeInstanceOf(EditingState)
     })
 
     it("calls the loop manager with the right parameters", () => {
       const playerElement = document.querySelector('[data-controller="player"]')
-      const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+      const playerController = application.getControllerForElementAndIdentifier(
+        playerElement,
+        "player",
+      )
 
       const mockLoop = jest.spyOn(playerController, "loop")
 
-      playerController.triggerEdition({detail: { start: 43, end: 65 }})
+      playerController.triggerEdition({ detail: { start: 43, end: 65 } })
 
       expect(mockLoop).toHaveBeenCalledWith(43, 65)
+    })
+  })
+
+  describe("updatePoints", () => {
+    it("dispatches to enable/disable range inputs around clear method", () => {
+      const playerElement = document.querySelector('[data-controller="player"]')
+      const playerController = application.getControllerForElementAndIdentifier(
+        playerElement,
+        "player",
+      )
+
+      const mockDispatch = jest.spyOn(playerController, "dispatch")
+
+      playerController.updatePoints({
+        detail: { start: 43, end: 65 },
+      })
+
+      jest.runAllTimers()
+
+      expect(mockDispatch.mock.calls[0][0]).toBe("loopClearStarted")
+      expect(mockDispatch.mock.calls[1][0]).toBe("loopClearFinished")
     })
   })
 })
