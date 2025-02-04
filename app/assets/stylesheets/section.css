@@ -4,8 +4,11 @@
   margin-bottom: 10px;
   display: flex;
   flex-flow: column nowrap;
-  align-items: start;
 
+  .action {
+    align-self: start;
+  }
+  
   form {
     display: flex;
     flex-flow: row wrap;
