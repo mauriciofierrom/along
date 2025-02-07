@@ -18,6 +18,7 @@
    <div class="range-slider">
      <span class="range-selected" data-range-target="slider"></span>
    </div>
+   <%= render "ticks", lesson: lesson %>
    <div class="range-input">
      <%= form.range_field :start_time,
        value: unless section.start_time_second.nil? then section.start_time.to_i.to_f else 0.0 end,
@@ -26,6 +27,7 @@
        max: lesson.duration_in_seconds,
        step: 0.01,
        disabled: true,
+       list: "ticks-#{lesson.id}",
        data: { action: "input->range#update", "range-target" => "min" } %>
      <%= form.range_field :end_time,
        value: unless section.end_time_second.nil? then section.end_time.to_i.to_f else lesson.duration_in_seconds.to_i.to_f end,

@@ -1,0 +1,5 @@
+<%= tag.datalist id: "ticks-#{lesson.id}" do %>
+  <% ticks(lesson).each do |tick| %>
+    <%= tick_tag(tick) %>
+  <% end %>
+<% end %>

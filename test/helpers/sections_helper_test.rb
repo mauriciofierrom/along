@@ -42,4 +42,19 @@ class SectionsHelperTest < ActionView::TestCase
     section = sections(:two)
     assert_equal loop_img(section), PLAY_ONCE_IMG
   end
+
+  test "#ticks includes only half-minute or whole-minute values" do
+    lesson = lessons(:layla)
+
+    ticks = ticks(lesson)
+
+    assert ticks.all? {|tick, _| tick % 60 == 0 || tick % 30 == 0}
+  end
+
+  test "#ticks includes a maximum of 10 items to be labeled" do
+    lesson = lessons(:layla)
+    ticks = ticks(lesson)
+
+    assert_operator ticks.count {|_, labeled| labeled }, :<=, 10
+  end
 end
