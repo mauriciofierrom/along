@@ -66,10 +66,10 @@ module SectionsHelper
   def format_tick(tick)
     duration = ActiveSupport::Duration.build(tick).parts
 
-    return "%2d:%2d" % [ duration.fetch(:minutes, 0),
+    return "%02d:%02d" % [ duration.fetch(:minutes, 0),
                          duration.fetch(:seconds, 0)
                        ] if tick.seconds.in_hours < 1
     
-    "%2d:%2d:%2d" % [duration.fetch(:hours, 0), duration.fetch(:minutes, 0), duration.fetch(:seconds, 0)]
+    "%02d:%02d:%02d" % [duration.fetch(:hours, 0), duration.fetch(:minutes, 0), duration.fetch(:seconds, 0)]
   end  
 end

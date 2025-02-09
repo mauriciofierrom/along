@@ -20,6 +20,7 @@
 .range-input {
   position: relative;
 }
+
 .range-input input {
   position: absolute;
   width: 100%;
