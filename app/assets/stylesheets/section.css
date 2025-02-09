@@ -110,7 +110,8 @@
 
   .item-actions {
     order: 1;
-    margin-left: 5px;
+    margin-left: auto;
+    float: left;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
