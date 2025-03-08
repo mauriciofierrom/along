@@ -33,6 +33,13 @@ class PlayerState {
   async loop(_start, _end) {
     throw new Error("Abstract method loop must be implemented")
   }
+
+  /**
+   * What to do when the player starts playing
+   */
+  onPlaying() {
+    throw new Error("Abstract method onPlaying must be implemented")
+  }
 }
 
 /**
@@ -49,6 +56,11 @@ export class ReadyState extends PlayerState {
   reset() {
     debug("ReadyState: Nothing to reset")
   }
+
+  onPlaying() {
+    this.context.player.pause()
+    this.context.loop(0, this.context.player.duration)
+  }
 }
 
 export class PlayingState extends PlayerState {
@@ -61,6 +73,10 @@ export class PlayingState extends PlayerState {
     this.context.player.pause()
     this.context.state = this.context.readyState
   }
+
+  onPlaying() {
+    debug("Already playing")
+  }
 }
 
 export class EditingState extends PlayerState {
@@ -72,6 +88,10 @@ export class EditingState extends PlayerState {
     this.context.loopManager.clear()
     this.context.player.pause()
     this.context.state = this.context.readyState
+  }
+
+  onPlaying() {
+    debug("Alrady playing in edit state")
   }
 }
 
@@ -99,5 +119,32 @@ export class PickingPointState extends PlayerState {
     this.context.loopManager.clear()
     this.context.player.pause()
     this.context.state = this.context.readyState
+  }
+
+  onPlaying() {
+    debug("Already playing in picking point state")
+  }
+}
+
+export class UserActionRequiredState extends PlayerState {
+  async loop(from, to) {
+    await this.context.loopManager.loop(from, to)
+    this.context.state = this.context.playingState
+  }
+
+  reset() {
+    this.context.loopManager.clear()
+    this.context.player.pause()
+    this.context.state = this.context.readyState
+  }
+
+  onPlaying() {
+    this.context.player.pause()
+    this.context.loop(
+      this.context.pendingLoop.start,
+      this.context.pendingLoop.end,
+    )
+    this.context.pendingLoop = null
+    this.context.state = this.context.playingState
   }
 }
