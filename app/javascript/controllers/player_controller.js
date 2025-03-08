@@ -4,6 +4,7 @@ import {
   ReadyState,
   EditingState,
   PickingPointState,
+  UserActionRequiredState,
 } from "controllers/player/state"
 import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player"
@@ -38,6 +39,17 @@ export default class extends Controller {
   /** @type {EditState} */
   editState = {}
 
+  /**
+   * Pending loop definition
+   * 
+   * @typedef {Object} PendingLoop
+   * @property {!number} start
+   * @property {!number} end
+   * /
+  
+  /** @property {PendingLoop} */
+  pendingLoop
+
   /** @property {LoopManager} */
   loopManager
 
@@ -60,6 +72,8 @@ export default class extends Controller {
 
   /** @property {PickingPointState} */
   pickingPointState
+
+  /** @property {UserActionRequiredState} */
 
   static targets = ["source", "duration"]
 
@@ -109,6 +123,7 @@ export default class extends Controller {
   #handlePlayerRestrictions = (error) => {
     debug("We got player restriction", error)
     const err = JSON.parse(error)
+
     switch (err.restriction) {
       case PlayerRestriction.UserActionRequired:
         // eslint-disable-next-line no-alert
@@ -179,7 +194,11 @@ export default class extends Controller {
    * @param {number} end - The ending value
    */
   loop(start, end) {
-    return this.state.loop(start, end).catch(this.#handlePlayerRestrictions)
+    return this.state.loop(start, end).catch((error) => {
+      this.pendingLoop = { start, end }
+      this.state = this.userActionRequiredState
+      this.#handlePlayerRestrictions(error)
+    })
   }
 
   /**
@@ -268,6 +287,7 @@ export default class extends Controller {
     this.playingState = new PlayingState(this)
     this.editingState = new EditingState(this)
     this.pickingPointState = new PickingPointState(this)
+    this.userActionRequiredState = new UserActionRequiredState(this)
   }
 
   /**
@@ -335,6 +355,8 @@ export default class extends Controller {
         if (this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration, 10)
         }
+
+        this.state.onPlaying()
       },
       onLoadError: () => {
         this.dispatch("videoLoadFailed")
