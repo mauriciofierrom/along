@@ -36,14 +36,13 @@
 
   <div class="video-player player"
        data-controller="player"
-       data-player-edit-value="true"
        data-player-video-url-value="<%= @lesson.video_url %>"
        data-player-user-id-value="<%= current_user.id %>"
        data-action="range:rangeInputReady@window->player#triggerEdition range:rangeInputUpdated@window->player#updatePoints section:connect@window->player#playFromTo section:disconnect@window->player#reset"
        data-player-video-id-value="<%= video_id(@lesson) %>">
     <div id="player"></div>
   </div>
-  
+
   <%= turbo_frame_tag "sections", class: "sections" do %>
     <div class="action">
       <%= button_to "#{t("actions.new")} #{Section.model_name.human}", new_lesson_section_path(@lesson), id: "new-section", method: :get, class: "button link disabled" %>

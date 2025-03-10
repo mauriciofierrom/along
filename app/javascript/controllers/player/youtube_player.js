@@ -48,7 +48,7 @@ export default class extends Player {
       height: height.toString(),
       videoId: params.videoId || "",
       playerVars: {
-        autoplay: params.edit,
+        autoplay: false,
         disablekb: 1,
         controls: 0,
         startValue: 0,

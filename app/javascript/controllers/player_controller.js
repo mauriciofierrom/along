@@ -340,7 +340,6 @@ export default class extends Controller {
   #mkPlayerParams() {
     return {
       videoId: this.videoIdValue,
-      edit: this.editValue,
       containerOffsetHeight: this.element.offsetHeight,
       onCue: () => {
         if (this.hasDurationTarget) {
