@@ -51,6 +51,16 @@ export default class LoopManager {
     const signal = this.#abortController.signal
 
     return new Promise((resolve, reject) => {
+      signal.addEventListener("abort", () => {
+        if (this.#aborted) {
+          return
+        }
+
+        this.#aborted = true
+        clearInterval(this.#intervalId)
+        reject(signal.reason)
+      })
+
       this.#intervalId = setInterval(() => {
         if (this.#player.currentTime >= to) {
           this.#player.play(from)
@@ -59,16 +69,6 @@ export default class LoopManager {
             this.#times++
           }
         }
-
-        signal.addEventListener("abort", () => {
-          if (this.#aborted) {
-            return
-          }
-
-          this.#aborted = true
-          clearInterval(this.#intervalId)
-          reject(signal.reason)
-        })
 
         if (max !== null && max !== undefined && this.#times >= max) {
           this.#times = 0
