@@ -70,7 +70,9 @@ export default class extends Player {
               if (!this.#hasPlayedManually()) {
                 debug("setting the played manually value")
                 localStorage.setItem(this.#manualPlayKey(), Date.now())
+                params.onRestrictionLifted()
               }
+
               params.onPlaying()
               break
           }
@@ -100,17 +102,13 @@ export default class extends Player {
     return this.#player.getCurrentTime()
   }
 
-  canPlay(from) {
+  canPlay() {
     debug("can it play", this.#hasPlayedManually())
     return new Promise((resolve, reject) => {
       if (this.#hasPlayedManually()) {
         debug("Has played manually")
         resolve()
       } else {
-        debug("hasn't played manually, rejecting")
-        // We seek to the right value so that manual playback for the user still
-        // starts at the desired point
-        this.#player.seekTo(from, true)
         reject(
           JSON.stringify({
             restriction: PlayerRestriction.UserActionRequired,

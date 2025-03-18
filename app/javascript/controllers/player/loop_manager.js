@@ -23,8 +23,8 @@ export default class LoopManager {
     this.#player = player
   }
 
-  #canLoop(from) {
-    return this.#player.canPlay(from)
+  #canLoop() {
+    return this.#player.canPlay()
   }
 
   /**
@@ -40,7 +40,7 @@ export default class LoopManager {
    * loop
    */
   async loop(from, to, max = null) {
-    await this.#canLoop(from)
+    await this.#canLoop()
 
     // We need to stop any previous loop before we start a new one
     this.clear()

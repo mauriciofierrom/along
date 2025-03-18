@@ -139,12 +139,21 @@ export class UserActionRequiredState extends PlayerState {
   }
 
   onPlaying() {
+    // Stop manual play so we can turn playback into a loop
     this.context.player.pause()
-    this.context.loop(
-      this.context.pendingLoop.start,
-      this.context.pendingLoop.end,
-    )
+
+    // Restore the state before restriction
+    this.context.state = this.context.pendingState || this.context.playingState
+
+    // Clear pending loop and state
+    // eslint-disable-next-line no-warning-comments
+    // TODO: This should be unified early perhaps
+    this.context.pendingState = null
+
+    // We loop in the state we were before we were interrupted by some invariant
+    const { start, end } = this.context.pendingLoop
     this.context.pendingLoop = null
-    this.context.state = this.context.playingState
+
+    this.context.loop(start, end)
   }
 }

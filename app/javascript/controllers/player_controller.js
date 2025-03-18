@@ -41,14 +41,17 @@ export default class extends Controller {
 
   /**
    * Pending loop definition
-   * 
+   *
    * @typedef {Object} PendingLoop
    * @property {!number} start
    * @property {!number} end
    * /
-  
+
   /** @property {PendingLoop} */
   pendingLoop
+
+  /** @property {PlayerState} */
+  pendingState
 
   /** @property {LoopManager} */
   loopManager
@@ -116,6 +119,8 @@ export default class extends Controller {
         debug("onSectionCancel is being fired and resetting everything", event)
         this.reset()
         this.dispatch("zoomCancelled")
+        this.pendingState = null
+        this.pendingLoop = null
       }
     }
   }
@@ -196,6 +201,7 @@ export default class extends Controller {
   loop(start, end) {
     return this.state.loop(start, end).catch((error) => {
       this.pendingLoop = { start, end }
+      this.pendingState = this.state
       this.state = this.userActionRequiredState
       this.#handlePlayerRestrictions(error)
     })
@@ -354,7 +360,8 @@ export default class extends Controller {
         if (this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration, 10)
         }
-
+      },
+      onRestrictionLifted: () => {
         this.state.onPlaying()
       },
       onLoadError: () => {
