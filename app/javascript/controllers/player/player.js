@@ -65,7 +65,7 @@ export default class Player {
    * Can play
    *
    */
-  async canPlay(from) {
+  async canPlay() {
     throw new Error("Abstract method canPlay must be implemented")
   }
 

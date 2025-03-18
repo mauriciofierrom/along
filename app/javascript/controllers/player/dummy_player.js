@@ -65,7 +65,7 @@ export default class extends Player {
     clearInterval(this.#intervalId)
   }
 
-  canPlay(_from) {
+  canPlay() {
     debug("Can the dummy play?")
 
     const playerElement = document.querySelector("#player")
