@@ -1,5 +1,4 @@
 .sections {
-  /* border: 2px solid blue; */
   grid-area: sections;
   margin-bottom: 10px;
   display: flex;
@@ -8,7 +7,7 @@
   .action {
     align-self: start;
   }
-  
+
   form {
     display: flex;
     flex-flow: row wrap;
@@ -19,6 +18,35 @@
 
     .range {
       flex-basis: 100%;
+
+      datalist {
+        display: flex;
+        justify-content: space-between;
+
+        width: 100%;
+
+        option::before {
+          content: '';
+          display: block;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 2px;
+          height: 4px;
+          background: var(--primary);
+          top: 2.5px;
+        }
+
+        option::after {
+          content: attr(label);
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          top: 5px;
+          font-size: 12px;
+          color: var(--primary);
+        }
+      }
     }
 
     .action-buttons {
