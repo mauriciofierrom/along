@@ -62,4 +62,12 @@ class Section < ApplicationRecord
   def zoom_level
     @section.zoom.maximum(:level)
   end
+
+  def timeline
+    @timeline ||= Timeline.new(*operation_range)
+  end
+
+  def operation_range
+    zoom.present? ? [zoom.last.start, zoom.last.end] : [0, lesson_duration_in_seconds]
+  end
 end
