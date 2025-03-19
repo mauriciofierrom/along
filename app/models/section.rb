@@ -2,6 +2,7 @@ class Section < ApplicationRecord
   belongs_to :lesson, counter_cache: true
   has_many :zoom
   accepts_nested_attributes_for :zoom, allow_destroy: true
+  delegate :duration_in_seconds, to: :lesson, prefix: true
 
   composed_of :start_time,
     class_name: "VideoPoint",
