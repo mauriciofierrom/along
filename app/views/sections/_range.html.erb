@@ -26,6 +26,7 @@
        max: lesson.duration_in_seconds,
        step: 0.01,
        disabled: true,
+       list: "ticks-#{lesson.id}",
        data: { action: "input->range#update", "range-target" => "min" } %>
      <%= form.range_field :end_time,
        value: unless section.end_time_second.nil? then section.end_time.to_i.to_f else lesson.duration_in_seconds.to_i.to_f end,
@@ -36,4 +37,7 @@
        disabled: true,
        data: { action: "input->range#update", "range-target" => "max" } %>
    </div>
+   <% if Flipper.enabled?(:timeline, current_user) %>
+     <%= render "ticks", section: section %>
+   <% end %>
 <% end %>
