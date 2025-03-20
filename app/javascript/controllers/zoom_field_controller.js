@@ -1,43 +1,62 @@
 import { Controller } from "@hotwired/stimulus"
-import { debug } from "controllers/util"
+import { debug, wrapInTurboFrame } from "controllers/util"
 
 export default class extends Controller {
-  static targets = ["zoomField", "zoomDestroy"]
+  static targets = ["zoomField", "zoomDestroy", "lastZoomField"]
 
   initialize() {
     debug("init zoom field controller")
   }
 
-  connect() {
-    const zoomOutButton = document.querySelector("#zoom-out")
-    zoomOutButton.addEventListener("click", () => {
-      debug("zoom out click")
-      if (this.hasZoomFieldTarget) {
-        debug("has zoom field")
-        const nonRemovedTargets = this.zoomFieldTargets.filter(
-          (t) => t.querySelector("input[name$='[_destroy]']") === null,
-        )
+  // connect() {
+  //   const zoomOutButton = document.querySelector("#zoom-out")
+  //   zoomOutButton.addEventListener("click", () => {
+  //     debug("zoom out click")
+  //     if (this.hasZoomFieldTarget) {
+  //       debug("has zoom field")
+  //       const nonRemovedTargets = this.zoomFieldTargets.filter(
+  //         (t) => t.querySelector("input[name$='[_destroy]']") === null,
+  //       )
 
-        if (nonRemovedTargets.length > 0) {
-          const toRemove = nonRemovedTargets[nonRemovedTargets.length - 1]
-          const isPersisted = toRemove.querySelector("input[id$='id']")
+  //       if (nonRemovedTargets.length > 0) {
+  //         const toRemove = nonRemovedTargets.at(-1)
+  //         const isPersisted = toRemove.querySelector("input[id$='id']")
 
-          if (isPersisted) {
-            debug("Is persisted")
-            const nameAttr = toRemove.querySelector("input").name
-            const index = nameAttr.match(/\[(\d+)\]/)[1]
-            const destroyInput = this.#buildDestroyInput(index)
-            toRemove.appendChild(destroyInput)
-          } else {
-            toRemove.remove()
-          }
-        }
-      }
-    })
-  }
+  //         if (isPersisted) {
+  //           debug("Is persisted")
+  //           const nameAttr = toRemove.querySelector("input").name
+  //           const index = nameAttr.match(/\[(\d+)\]/)[1]
+  //           const destroyInput = this.#buildDestroyInput(index)
+  //           toRemove.appendChild(destroyInput)
+  //         } else {
+  //           toRemove.remove()
+  //         }
+  //       }
+  //     }
+  //   })
+  // }
 
+  /*
+   * We do an early return for targets that are connecting that already exist
+   * because this event fires even after first load so we need to not do
+   * anything then.
+   */
   zoomFieldTargetConnected(el) {
-    if (el.dataset.existing === "true") return
+    const toDeleteIdField = document.querySelector("#to_delete_id")
+
+    if (el.dataset.existing === "true") {
+      const idInput = el.querySelector("input[id$='id']")
+      const id = idInput.name.match(/\[(\d+)\]/)[1]
+
+      debug("the id input", idInput)
+      debug("the parsed id", id)
+
+      toDeleteIdField.value = id
+
+      return
+    }
+
+    toDeleteIdField.value = ""
 
     const start = parseFloat(el.querySelector("input[id$='start']").value)
     const end = parseFloat(el.querySelector("input[id$='end']").value)
@@ -54,6 +73,8 @@ export default class extends Controller {
    */
   zoomFieldTargetDisconnected() {
     debug("Zoom field target disconnected")
+    // We wrap the last field in a turbo frame
+    wrapInTurboFrame(this.#lastZoomField(), "last_zoom_field")
     this.dispatch("zoomLevelRemoved")
   }
 
@@ -75,5 +96,12 @@ export default class extends Controller {
     destroyInput.dataset.zoomFieldTarget = "zoomDestroy"
 
     return destroyInput
+  }
+
+  #lastZoomField() {
+    const nonRemovedTargets = this.zoomFieldTargets.filter(
+      (t) => t.querySelector("input[name$='[_destroy]']") === null,
+    )
+    return nonRemovedTargets.at(-1)
   }
 }

@@ -1,0 +1,10 @@
+<%= turbo_stream.remove "last_zoom_field" %>
+<%= turbo_stream.remove "last_zoom_indicator" %>
+<%= turbo_stream.replace "timeline" do %>
+  <%= render "sections/ticks", locals: {timeline: @timeline} %>
+<% end %>
+<% if @to_delete %>
+  <%= turbo_stream.append "zoom_fields" do %>
+    <%= hidden_field_tag "section[zoom_attributes][#{@to_delete}][_destroy] %>
+  <% end %>
+<% end %>

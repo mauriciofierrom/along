@@ -9,6 +9,7 @@ class Timeline
     @init = round_down_to_half_minute(init.seconds.in_minutes).minutes.in_seconds
     @final = final
     @duration = final - init
+
     @ticks = build_ticks
   end
 
@@ -19,7 +20,7 @@ class Timeline
   private
 
   def build_ticks
-    period = calculate_unlabeled_period(calculate_labeled_period)
+    period = calculate_unlabeled_period(calculate_labeled_period).to_f
 
     (@init.to_f..@final.to_f).step(period).with_index.map do |value, index|
       if index == 0 || index % 5 == 0

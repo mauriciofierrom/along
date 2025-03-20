@@ -21,6 +21,7 @@
         "player:zoomCancelled@window->zoom#zoomCancelled",
       ].join(" "),
     } do %>
+
     <%= form_with url: section_zoom_in_path, data: { name: "zoom-in", "zoom-target" => "zoomIn" }, class: "hidden" do |form| %>
       <%= form.hidden_field :start, data: { "zoom-target" => "zoomStart" } %>
       <%= form.hidden_field :end, data: { "zoom-target" => "zoomEnd" } %>
@@ -29,9 +30,15 @@
         <%= fa_icon("search-plus") %>
       <% end %>
     <% end %>
-    <button id="zoom-out" class="hidden" data-zoom-target="zoomOut">
-      <%= fa_icon("search-minus") %>
-    </button>
+
+    <%= form_with url: section_zoom_out_path, class: "hidden", data: { "zoom-target" => "zoomOut" } do |form| %>
+      <%= form.hidden_field :to_delete_id, data: { "zoom-target" => "lastZoom" } %>
+      <%= form.hidden_field :start %>
+      <%= form.hidden_field :end %>
+      <%= button_tag type: "submit" do %>
+        <%= fa_icon("search-minus") %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <div class="video-player player"

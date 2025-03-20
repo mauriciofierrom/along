@@ -13,24 +13,14 @@ class SectionsHelperTest < ActionView::TestCase
     assert_equal format_playback_speed(playback_speed), 2
   end
 
-  test ".format_time for time without hour component" do
-    time = VideoPoint.new(0, 12, 23)
-    assert_equal format_time(time), "12:23"
+  test ".format_time for time less than an hour" do
+    time = 1116
+    assert_equal format_time(time), "18:36"
   end
 
-  test ".format_time for time with hour component" do
-    time = VideoPoint.new(2, 12, 23)
+  test ".format_time for time an hour or more" do
+    time = 7943
     assert_equal format_time(time), "02:12:23"
-  end
-
-  test ".format_time for values < 10" do
-    time = VideoPoint.new(1, 1, 1)
-    assert_equal format_time(time), "01:01:01"
-  end
-
-  test ".format_time for values < 10 without hour component" do
-    time = VideoPoint.new(0, 1, 1)
-    assert_equal format_time(time), "01:01"
   end
 
   test "loop img for section set to loop" do

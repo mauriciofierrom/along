@@ -19,7 +19,7 @@ export default class ZoomManager {
 
   get activeZoom() {
     if (this.isZoomed) {
-      return this.zoomLevels[this.zoomLevels.length - 1]
+      return this.zoomLevels.at(-1)
     } else {
       return new NoZoom()
     }

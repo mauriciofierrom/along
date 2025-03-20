@@ -108,3 +108,13 @@ function debugCondition() {
     !(window.is_cypress === "true")
   )
 }
+
+function addToTurboFrame(element, id) {
+  const turboTag = document.createElement("turbo-frame")
+  turboTag.id = id
+  return turboTag.appendChild(element)
+}
+
+export function wrapInTurboFrame(field, id) {
+  field.parentNode.replaceChild(field, addToTurboFrame(field, id))
+}

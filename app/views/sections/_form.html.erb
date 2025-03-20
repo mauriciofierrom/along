@@ -20,14 +20,25 @@
                       class: "zoom-indicators",
                       data: { controller: "zoom-indicator" ,
                               action: "zoom-field:zoomLevelRemoved@window->zoom-indicator#removeZoomIndicator"} do %>
-                              <% @section.zoom.each do |zoom| %>
-                                <%= render partial: "zoom_indicator",
-                                  locals: { indicator: {
-                                    left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
-                                    width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds)
-                                  }}
-                                %>
-                              <% end %>
+    <% @section.zoom.each do |zoom| %>
+      <% if zoom == @section.zoom.last %>
+        <% turbo_frame_tag "last_zoom_indicator" do %>
+          <%= render partial: "zoom_indicator",
+            locals: { indicator: {
+              left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
+              width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds)
+            }}
+          %>
+        <% end %>
+      <% else %>
+        <%= render partial: "zoom_indicator",
+          locals: { indicator: {
+            left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
+            width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds)
+          }}
+        %>
+      <% end %>
+    <% end %>
   <% end %>
 
   <div class="range">
@@ -36,11 +47,20 @@
 
   <%= turbo_frame_tag "zoom_fields", data: { controller: "zoom-field" } do %>
     <%= form.fields_for :zoom do |zoom_fields| %>
-      <div data-zoom-field-target="zoomField" data-existing="true">
-        <%= zoom_fields.hidden_field :start %>
-        <%= zoom_fields.hidden_field :end %>
-        <%= zoom_fields.hidden_field :id %>
-      </div>
+      <% unless zoom_fields.object == @section.zoom.last %>
+        <div data-zoom-field-target="zoomField" data-existing="true">
+          <%= zoom_fields.hidden_field :start %>
+          <%= zoom_fields.hidden_field :end %>
+          <%= zoom_fields.hidden_field :id %>
+        </div>
+      <% else %>
+        <%= turbo_frame_tag "last_zoom_field",
+            data: { "zoom-field-target" => "zoomField", existing: true } do %>
+          <%= zoom_fields.hidden_field :start %>
+          <%= zoom_fields.hidden_field :end %>
+          <%= zoom_fields.hidden_field :id %>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
 

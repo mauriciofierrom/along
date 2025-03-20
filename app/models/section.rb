@@ -4,34 +4,7 @@ class Section < ApplicationRecord
   accepts_nested_attributes_for :zoom, allow_destroy: true
   delegate :duration_in_seconds, to: :lesson, prefix: true
 
-  composed_of :start_time,
-    class_name: "VideoPoint",
-    mapping: [ %w(start_time_hour hour), %w(start_time_minute minute), %w(start_time_second second) ]
-  composed_of :end_time,
-    class_name: "VideoPoint",
-    mapping: [ %w(end_time_hour hour), %w(end_time_minute minute), %w(end_time_second second) ]
-
   validates :name, presence: true, uniqueness: { scope: :lesson_id }
-
-  validates :start_time_hour, :start_time_minute, :start_time_second,
-    presence: true,
-    numericality: {
-      only_integer: true,
-      greater_than_or_equal_to: 0
-    }
-
-  validates :end_time_hour,
-    presence: true,
-    numericality: {
-      only_integer: true,
-    }
-
-  validates :end_time_minute, :end_time_second,
-    presence: true,
-    numericality: {
-      only_integer: true,
-      less_than_or_equal_to: 59
-    }
 
   # Due to this issue in shoulda matchers library we'll have to add a default max value
   # https://github.com/thoughtbot/shoulda-matchers/issues/1435

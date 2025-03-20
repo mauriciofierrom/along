@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_action :set_lesson, except: %i[ zoom_in ]
+  before_action :set_lesson, except: %i[ zoom_in, zoom_out ]
   before_action :set_section, only: %i[ show edit update destroy ]
 
   def new
@@ -10,15 +10,7 @@ class SectionsController < ApplicationController
   end
 
   def create
-    start_time = VideoPoint.from_seconds(section_params[:start_time].to_i)
-    end_time = VideoPoint.from_seconds(section_params[:end_time].to_i)
-
-    updated_params = section_params
-
-    updated_params[:start_time] = start_time
-    updated_params[:end_time] = end_time
-
-    @section = @lesson.sections.build(updated_params)
+    @section = @lesson.sections.build(section_params)
 
     respond_to do |format|
       if @section.save
@@ -31,16 +23,8 @@ class SectionsController < ApplicationController
   end
 
   def update
-    start_time = VideoPoint.from_seconds(section_params[:start_time].to_i)
-    end_time = VideoPoint.from_seconds(section_params[:end_time].to_i)
-
-    updated_params = section_params
-
-    updated_params[:start_time] = start_time
-    updated_params[:end_time] = end_time
-
     respond_to do |format|
-      if @section.update(updated_params)
+      if @section.update(section_params)
         flash.now[:notice] = "Section was successfully updated."
         format.html { redirect_to lesson_url(@lesson) }
       else
@@ -69,10 +53,23 @@ class SectionsController < ApplicationController
   # the levels.
   def zoom_in
     @indicator = {
-      left_margin: Zoom.left_margin(zoom_params[:start].to_i, zoom_params[:duration].to_i),
-      width: Zoom.width(zoom_params[:start].to_i, zoom_params[:end].to_i, zoom_params[:duration].to_i)
+      left_margin: Zoom.left_margin(zoom_params[:start].to_f, zoom_params[:duration].to_f),
+      width: Zoom.width(zoom_params[:start].to_f, zoom_params[:end].to_f, zoom_params[:duration].to_f)
     }
+
     @zoom = Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def zoom_out
+    starting = zoom_params[:start].to_f
+    ending = zoom_params[:end].to_f
+
+    @timeline = !starting.nil? && !ending.nil? ? Timeline.new(starting, ending) : section.timeline
+    @to_delete = zoom_params[:to_delete_id].to_i
 
     respond_to do |format|
       format.turbo_stream
@@ -109,7 +106,8 @@ class SectionsController < ApplicationController
                 :duration,
                 :button,
                 :authenticity_token,
-                :commit
+                :commit,
+                :to_delete_id
                )
     end
 end
