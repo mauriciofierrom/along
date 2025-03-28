@@ -1,0 +1,11 @@
+<%= turbo_stream.remove "last_zoom_indicator" %>
+<%= turbo_stream.replace "ticks-#{@lesson.id}" do %>
+  <%= render "sections/ticks", timeline: @timeline, lesson_id: @lesson.id %>
+<% end %>
+<%= turbo_stream.remove "last_zoom_field" %>
+<% if !@to_delete.nil? && !@to_delete_id.nil? %>
+  <%= turbo_stream.prepend "zoom_fields" do %>
+    <%= hidden_field_tag "section[zoom_attributes][#{@to_delete}][_destroy]", 1 %>
+    <%= hidden_field_tag "section[zoom_attributes][#{@to_delete}][id]", @to_delete_id %>
+  <% end %>
+<% end %>

@@ -6,23 +6,23 @@ describe("Zoom", () => {
       cy.findByText("New Section").click()
       cy.get('[data-name="zoom-in"]').should("not.be.visible")
       cy.get("#section_start_time")
-        .invoke("val", 10)
+        .invoke("val", 10.0)
         .trigger("input", { force: true })
       cy.get('[data-name="zoom-in"]').should("be.visible")
     })
   })
 
-  describe("Zoom in", () => {
+  describe.only("Zoom in", () => {
     beforeEach(() => {
       cy.appFactories([["create", "section"]]).then(([section]) => {
         cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
         cy.reload()
         cy.get(".fa-pencil-square-o").click({ force: true })
         cy.get("#section_start_time")
-          .invoke("val", 10)
+          .invoke("val", 10.0)
           .trigger("input", { force: true })
         cy.get("#section_end_time")
-          .invoke("val", 20)
+          .invoke("val", 20.0)
           .trigger("input", { force: true })
         cy.get(".fa-search-plus").click({ force: true })
       })
@@ -33,7 +33,7 @@ describe("Zoom", () => {
     })
 
     it("shows the zoom out button", () => {
-      cy.get("#zoom-out").should("exist").and("be.visible")
+      cy.get('[data-name="zoom-out"]').should("exist").and("be.visible")
     })
 
     it("resets the range", () => {
@@ -46,16 +46,7 @@ describe("Zoom", () => {
       })
     })
 
-    /*
-     * Most of the examples are working only due to the nature of the checks around zoom.
-     * Either they are present or not and that drives a lot of the effects that the
-     * tests check. However, the input events for the range inputs are not being triggered
-     * -AT ALL- and we depend on that event now to dispatch the values to set in the zoom-in
-     * form, which dictates the value of the zoom to be added. This results in Zooms with
-     * start/end values NaN which obviously makes the specific checks for zoom-in disabling
-     * (not being 0 - duration) fail espectacularly.
-     */
-    it.skip("the zoom in button is disabled", () => {
+    it("the zoom in button is disabled", () => {
       cy.get('[data-name="zoom-in"]').should("have.class", "disabled")
     })
 
@@ -78,7 +69,7 @@ describe("Zoom", () => {
             cy.reload()
             cy.get(".video-card > .title").click()
             cy.get(".fa-pencil-square-o").click({ force: true })
-            cy.get("#zoom-out").click()
+            cy.get('[data-name="zoom-out"]').click()
           })
         })
 
@@ -87,7 +78,7 @@ describe("Zoom", () => {
         })
 
         it("removes the zoom out button", () => {
-          cy.get("#zoom-out").should("not.be.visible")
+          cy.get('[data-name="zoom-out"]').should("not.be.visible")
         })
       })
 
@@ -99,7 +90,7 @@ describe("Zoom", () => {
           // FIXME: This should be changed to use factories once we swap the
           // section start/end times to seconds
           cy.get(".fa-pencil-square-o").click()
-          cy.get("#zoom-out").click({ force: true })
+          cy.get('[data-name="zoom-out"]').click({ force: true })
           cy.get("#section_start_time").should("have.value", 0)
           cy.get("#section_end_time").then((endTime) => {
             const max = parseFloat(endTime.attr("max"))
@@ -118,10 +109,10 @@ describe("Zoom", () => {
           cy.reload()
           cy.findByText("New Section").click()
           cy.get("#section_start_time")
-            .invoke("val", 10)
+            .invoke("val", 10.0)
             .trigger("input", { force: true })
           cy.get("#section_end_time")
-            .invoke("val", 20)
+            .invoke("val", 20.0)
             .trigger("input", { force: true })
           cy.get(".fa-search-plus").click()
         })
@@ -133,7 +124,7 @@ describe("Zoom", () => {
         })
 
         it("shows the zoom out button", () => {
-          cy.get("#zoom-out").should("exist").and("be.visible")
+          cy.get('[data-name="zoom-out"]').should("exist").and("be.visible")
         })
 
         it("resets the range", () => {
@@ -154,13 +145,13 @@ describe("Zoom", () => {
       context("and there are more zooms", () => {
         beforeEach(() => {
           cy.get("#section_start_time")
-            .invoke("val", 13)
+            .invoke("val", 13.0)
             .trigger("input", { force: true })
           cy.get("#section_end_time")
-            .invoke("val", 18)
+            .invoke("val", 18.0)
             .trigger("input", { force: true })
           cy.get(".fa-search-plus").click({ force: true })
-          cy.get("#zoom-out").click({ force: true })
+          cy.get('[data-name="zoom-out"]').click({ force: true })
         })
 
         it("resets the range", () => {

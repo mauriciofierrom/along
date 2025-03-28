@@ -4,16 +4,17 @@ import { debug } from "controllers/util"
 export default class extends Controller {
   static targets = ["zoomIndicator"]
 
-  /*
-   * Event to be dispatched from other controllers to trigger removal of a zoom
-   * indicator, if any.
-   */
-  removeZoomIndicator() {
-    debug("Remove field indicator")
-    if (this.hasZoomIndicatorTarget) {
-      const toRemove =
-        this.zoomIndicatorTargets[this.zoomIndicatorTargets.length - 1]
-      toRemove.remove()
-    }
+  zoomIndicatorTargetDisconnected() {
+    const lastZoomIndicator = this.zoomIndicatorTargets.at(-1)
+    debug("last zoom indicator after disconnecting one", lastZoomIndicator)
+
+    if (lastZoomIndicator) lastZoomIndicator.id = "last_zoom_indicator"
+  }
+
+  zoomIndicatorTargetConnected(newIndicator) {
+    debug("new zoom indicator connected, updating last")
+    const penultimateZoomIndicator = this.zoomIndicatorTargets.at(-2)
+    if (penultimateZoomIndicator) penultimateZoomIndicator.id = ""
+    newIndicator.id = "last_zoom_indicator"
   }
 }
