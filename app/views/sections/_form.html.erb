@@ -16,31 +16,38 @@
     </div>
   <% end %>
 
-  <%= turbo_frame_tag "zoom_indicator",
-                      class: "zoom-indicators",
-                      data: { controller: "zoom-indicator" ,
-                              action: "zoom-field:zoomLevelRemoved@window->zoom-indicator#removeZoomIndicator"} do %>
-                              <% @section.zoom.each do |zoom| %>
-                                <%= render partial: "zoom_indicator",
-                                  locals: { indicator: {
-                                    left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
-                                    width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds)
-                                  }}
-                                %>
-                              <% end %>
+  <%= content_tag :div,
+        id: "zoom_indicators",
+        class: "zoom-indicators",
+        data: { controller: "zoom-indicator" } do %>
+    <% @section.zoom.each do |zoom| %>
+        <%= render partial: "zoom_indicator",
+          locals: { indicator: {
+            left_margin: Zoom.left_margin(zoom.start, @section.lesson.duration_in_seconds),
+            width: Zoom.width(zoom.start, zoom.end, @section.lesson.duration_in_seconds),
+          },
+          last: zoom == @section.zoom.last
+          }
+        %>
+    <% end %>
   <% end %>
 
   <div class="range">
     <%= render "range", section: @section, lesson: @lesson, form: form %>
   </div>
 
-  <%= turbo_frame_tag "zoom_fields", data: { controller: "zoom-field" } do %>
+  <%= content_tag :div, data: { controller: "zoom-field" }, id: "zoom_fields" do %>
     <%= form.fields_for :zoom do |zoom_fields| %>
-      <div data-zoom-field-target="zoomField" data-existing="true">
+      <%= content_tag :div,
+            data: {
+              "zoom-field-target" => "zoomField",
+              existing: true,
+            },
+            id: (zoom_fields.object == @section.zoom.last ? "last_zoom_field" : "") do %>
         <%= zoom_fields.hidden_field :start %>
         <%= zoom_fields.hidden_field :end %>
         <%= zoom_fields.hidden_field :id %>
-      </div>
+      <% end %>
     <% end %>
   <% end %>
 

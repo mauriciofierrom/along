@@ -1,6 +1,13 @@
-<%= turbo_stream.append "zoom_indicator" do %>
-  <%= render partial: "zoom_indicator", locals: { indicator: @indicator } %>
+<%= turbo_stream.append "zoom_indicators" do %>
+  <% # We know we are inserting the new "last" indicator but if we render the id based on this `last`
+     # argument to the partial it will make this append turbo stream replace the element. This is normal
+     # according to the documentation.
+  %>
+  <%= render partial: "zoom_indicator", locals: { indicator: @indicator, last: false } %>
 <% end %>
 <%= turbo_stream.append "zoom_fields" do %>
   <%= render "sections/zoom_field", locals: { zoom: @zoom } %>
+<% end %>
+<%= turbo_stream.replace "ticks-#{@lesson.id}" do %>
+  <%= render "sections/ticks", timeline: @timeline, lesson_id: @lesson.id %>
 <% end %>

@@ -2,47 +2,33 @@ import { Controller } from "@hotwired/stimulus"
 import { debug } from "controllers/util"
 
 export default class extends Controller {
-  static targets = ["zoomField", "zoomDestroy"]
+  static targets = ["zoomField"]
 
   initialize() {
     debug("init zoom field controller")
   }
 
-  connect() {
-    const zoomOutButton = document.querySelector("#zoom-out")
-    zoomOutButton.addEventListener("click", () => {
-      debug("zoom out click")
-      if (this.hasZoomFieldTarget) {
-        debug("has zoom field")
-        const nonRemovedTargets = this.zoomFieldTargets.filter(
-          (t) => t.querySelector("input[name$='[_destroy]']") === null,
-        )
-
-        if (nonRemovedTargets.length > 0) {
-          const toRemove = nonRemovedTargets[nonRemovedTargets.length - 1]
-          const isPersisted = toRemove.querySelector("input[id$='id']")
-
-          if (isPersisted) {
-            debug("Is persisted")
-            const nameAttr = toRemove.querySelector("input").name
-            const index = nameAttr.match(/\[(\d+)\]/)[1]
-            const destroyInput = this.#buildDestroyInput(index)
-            toRemove.appendChild(destroyInput)
-          } else {
-            toRemove.remove()
-          }
-        }
-      }
-    })
-  }
-
+  /*
+   * We do an early return for targets that are connecting that already exist
+   * because this event fires even after first load so we need to not do
+   * anything then.
+   */
   zoomFieldTargetConnected(el) {
+    debug("connected field", el)
+
     if (el.dataset.existing === "true") return
 
     const start = parseFloat(el.querySelector("input[id$='start']").value)
     const end = parseFloat(el.querySelector("input[id$='end']").value)
 
     debug(`Start: ${start}. End: ${end}`)
+
+    const penultimateZoomField = this.zoomFieldTargets.at(-2)
+
+    // eslint-disable-next-line no-warning-comments
+    // TODO: Check enabling the optional chaining operator in eslint
+    if (penultimateZoomField) penultimateZoomField.id = ""
+    el.id = "last_zoom_field"
 
     this.dispatch("zoomLevelAdded", { detail: { start, end } })
   }
@@ -54,26 +40,23 @@ export default class extends Controller {
    */
   zoomFieldTargetDisconnected() {
     debug("Zoom field target disconnected")
+
+    const lastZoomField = this.#lastZoomField()
+
+    if (lastZoomField) {
+      lastZoomField.id = "last_zoom_field"
+    }
+
     this.dispatch("zoomLevelRemoved")
   }
 
-  /*
-   * We also trigger the removal of a zoom events for persisted zoom fields,
-   * which means that we react to the destroy hidden input being added to the
-   * fields in the form to mark the destruction of the zoom record on submit
-   */
-  zoomDestroyTargetConnected() {
-    debug("zoom destroy connected")
-    this.dispatch("zoomLevelRemoved")
+  #activeZoomFields() {
+    return this.zoomFieldTargets.filter(
+      (t) => t.querySelector("input[name$='[_destroy]']") === null,
+    )
   }
 
-  #buildDestroyInput(index) {
-    const destroyInput = document.createElement("input")
-    destroyInput.type = "hidden"
-    destroyInput.name = `section[zoom_attributes][${index}][_destroy]`
-    destroyInput.value = "1"
-    destroyInput.dataset.zoomFieldTarget = "zoomDestroy"
-
-    return destroyInput
+  #lastZoomField() {
+    return this.#activeZoomFields().at(-1)
   }
 }

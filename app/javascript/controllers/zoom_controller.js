@@ -6,6 +6,7 @@ import Zoom from "controllers/zoom/zoom"
 /** Controller for zoom actions */
 export default class extends Controller {
   static targets = ["zoomIn", "zoomOut", "zoomStart", "zoomEnd", "zoomDuration"]
+
   static values = {
     duration: Number,
   }
@@ -20,15 +21,15 @@ export default class extends Controller {
 
   initialize() {
     debug(`Duration: ${this.durationValue}`)
-    this.#zoomManager = new ZoomManager(
-      this.#initZoomLevels(),
-      this.durationValue,
-    )
+    this.#zoomManager = new ZoomManager([], this.durationValue)
   }
 
   updateZoomState() {
     debug("updated the zoom state")
-    this.#zoomManager.zoomLevels = this.#initZoomLevels()
+    const zoomLevels = this.#initZoomLevels()
+    debug("zoomLevels", zoomLevels)
+    this.#zoomManager.zoomLevels = zoomLevels
+    this.dispatch("zoomsLoaded")
   }
 
   /**
@@ -51,16 +52,12 @@ export default class extends Controller {
     debug("cancelled")
     hide(this.zoomInTarget)
     hide(this.zoomOutTarget)
-    this.#clear()
   }
 
   /*
    * Set the current range selection as the potential zoom
    */
   rangeInputUpdated({ detail: { start, end } }) {
-    this.zoomStartTarget.value = start
-    this.zoomEndTarget.value = end
-
     let actualStart
     let actualEnd
 
@@ -137,14 +134,6 @@ export default class extends Controller {
 
   get activeZoom() {
     return this.#zoomManager.activeZoom
-  }
-
-  /*
-   * Clear the zoom-in form's values
-   */
-  #clear() {
-    this.zoomStartTarget.value = ""
-    this.zoomEndTarget.value = ""
   }
 
   #initZoomLevels() {

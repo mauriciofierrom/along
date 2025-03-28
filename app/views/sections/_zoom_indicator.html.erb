@@ -1,4 +1,5 @@
-<div class="zoom-indicator"
-     style="width: <%= indicator[:width].floor %>%; margin-left:<%= indicator[:left_margin].floor %>%;"
-     data-zoom-indicator-target="zoomIndicator">
+<div id="<%= (last ? "last_zoom_indicator" : "") %>"
+     class="zoom-indicator"
+     data-zoom-indicator-target="zoomIndicator"
+     style="width: <%= indicator[:width].floor %>%; margin-left:<%= indicator[:left_margin].floor %>%;">
 </div>

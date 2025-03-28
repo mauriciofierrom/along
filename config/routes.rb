@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   end
 
   post "section/zoom_in", to: "sections#zoom_in"
-  delete "section/zoom_out", to: "sections#zoom_out"
+  post "section/zoom_out", to: "sections#zoom_out"
 
   authenticated :user do
     root "lessons#index", as: :authenticated_root

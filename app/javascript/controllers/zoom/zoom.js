@@ -1,14 +1,16 @@
 import { debug } from "controllers/util"
 
 export default class Zoom {
+  #id
   start
   end
   duration
 
-  constructor(start, end, duration) {
+  constructor(start, end, duration, id = null) {
     this.start = start
     this.end = end
     this.duration = duration
+    this.#id = id
   }
 
   /*
@@ -74,6 +76,10 @@ export default class Zoom {
   get isZoomed() {
     return true
   }
+
+  get id() {
+    return this.#id
+  }
 }
 
 /*
@@ -108,5 +114,9 @@ export class NoZoom extends Zoom {
 
   get isZoomed() {
     return false
+  }
+
+  get id() {
+    return null
   }
 }
