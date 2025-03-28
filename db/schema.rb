@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_10_132808) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_20_043030) do
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", null: false
@@ -53,12 +53,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_10_132808) do
 
   create_table "sections", force: :cascade do |t|
     t.string "name", limit: 25
-    t.integer "start_time_hour", default: 0, null: false
-    t.integer "start_time_minute", null: false
-    t.integer "start_time_second", null: false
-    t.integer "end_time_hour", default: 0, null: false
-    t.integer "end_time_minute", null: false
-    t.integer "end_time_second", null: false
     t.decimal "playback_speed", precision: 2, scale: 1, default: "1.0"
     t.boolean "finished", default: false, null: false
     t.boolean "current", default: false, null: false
@@ -66,6 +60,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_10_132808) do
     t.integer "lesson_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "start_time", precision: 6, scale: 2
+    t.decimal "end_time", precision: 6, scale: 2
     t.index ["lesson_id"], name: "index_sections_on_lesson_id"
     t.index ["name", "lesson_id"], name: "index_sections_on_name_and_lesson_id", unique: true
   end

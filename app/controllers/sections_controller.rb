@@ -10,15 +10,7 @@ class SectionsController < ApplicationController
   end
 
   def create
-    start_time = VideoPoint.from_seconds(section_params[:start_time].to_i)
-    end_time = VideoPoint.from_seconds(section_params[:end_time].to_i)
-
-    updated_params = section_params
-
-    updated_params[:start_time] = start_time
-    updated_params[:end_time] = end_time
-
-    @section = @lesson.sections.build(updated_params)
+    @section = @lesson.sections.build(section_params)
 
     respond_to do |format|
       if @section.save
@@ -31,16 +23,8 @@ class SectionsController < ApplicationController
   end
 
   def update
-    start_time = VideoPoint.from_seconds(section_params[:start_time].to_i)
-    end_time = VideoPoint.from_seconds(section_params[:end_time].to_i)
-
-    updated_params = section_params
-
-    updated_params[:start_time] = start_time
-    updated_params[:end_time] = end_time
-
     respond_to do |format|
-      if @section.update(updated_params)
+      if @section.update(section_params)
         flash.now[:notice] = "Section was successfully updated."
         format.html { redirect_to lesson_url(@lesson) }
       else
