@@ -12,15 +12,15 @@
     ].join(" "),
     "range-player-outlet" => ".player",
     "range-zoom-outlet" => ".zoom",
-    "range-min-default-value" => section.start_time_second,
-    "range-max-default-value" => section.end_time_second,
+    "range-min-default-value" => section.start_time,
+    "range-max-default-value" => section.end_time,
 } do %>
    <div class="range-slider">
      <span class="range-selected" data-range-target="slider"></span>
    </div>
    <div class="range-input">
      <%= form.range_field :start_time,
-       value: unless section.start_time_second.nil? then section.start_time.to_i.to_f else 0.0 end,
+       value: section.start_time || 0.0,
        class: "min disabled",
        min: 0.0,
        max: lesson.duration_in_seconds,
@@ -29,7 +29,7 @@
        list: "ticks-#{lesson.id}",
        data: { action: "input->range#update", "range-target" => "min" } %>
      <%= form.range_field :end_time,
-       value: unless section.end_time_second.nil? then section.end_time.to_i.to_f else lesson.duration_in_seconds.to_i.to_f end,
+       value: section.end_time || lesson.duration_in_seconds.to_f,
        class: "max disabled",
        min: 0.04,
        max: lesson.duration_in_seconds,

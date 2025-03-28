@@ -2,12 +2,8 @@
 
 one:
   name: Intro
-  start_time_hour: 0
-  start_time_minute: 1
-  start_time_second: 23
-  end_time_hour: 0
-  end_time_minute: 2
-  end_time_second: 45
+  start_time: 83
+  end_time: 165
   playback_speed: 1.0
   finished: false
   current: false
@@ -16,12 +12,8 @@ one:
 
 two:
   name: Signature riff
-  start_time_hour: 0
-  start_time_minute: 1
-  start_time_second: 23
-  end_time_hour: 0
-  end_time_minute: 2
-  end_time_second: 45
+  start_time: 83
+  end_time: 165
   playback_speed: 1.5
   finished: false
   current: false
