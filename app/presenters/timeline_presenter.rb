@@ -1,6 +1,6 @@
 class TimelinePresenter
-  def initialize(section, template)
-    @section = section
+  def initialize(timeline, template)
+    @timeline = timeline
     @template = template
   end
 
@@ -9,7 +9,7 @@ class TimelinePresenter
   end
 
   def timeline
-    @section.timeline.ticks
+    @timeline.ticks
   end
 
   private
