@@ -39,9 +39,7 @@
        disabled: true,
        data: { action: "input->range#update", "range-target" => "max" } %>
    </div>
-   <% if Flipper.enabled?(:timeline, current_user) %>
-     <%= content_tag :div, id: "timeline" do %>
-       <%= render "ticks", timeline: section.timeline, lesson_id: lesson.id %>
-     <% end %>
+   <%= content_tag :div, id: "timeline" do %>
+     <%= render "ticks", timeline: section.timeline, lesson_id: lesson.id %>
    <% end %>
 <% end %>
