@@ -97,16 +97,6 @@ export default class extends Controller {
     // Reset the active zoom
     this.#activeZoom = zoom
 
-    // Dispatch the event that the range values have been updated
-    this.dispatch("rangeInputUpdated", {
-      detail: {
-        ...(firstZoom
-          ? { start: this.#activeZoom.start, end: this.#activeZoom.end }
-          : this.#preparePoints()),
-        ...(firstZoom ? { zoom: ZoomType.In } : {}),
-      },
-    })
-
     // If we're zoomed-in we need to reset the range regardless of whether we're
     // first zooming in or not
     if (this.#isZoomed()) {
@@ -121,6 +111,16 @@ export default class extends Controller {
       const maxRange = parseFloat(this.maxTarget.value)
       this.#setSliderStyles(minRange, maxRange)
     }
+
+    // Dispatch the event that the range values have been updated
+    this.dispatch("rangeInputUpdated", {
+      detail: {
+        ...(firstZoom
+          ? { start: this.#activeZoom.start, end: this.#activeZoom.end }
+          : this.#preparePoints()),
+        ...(firstZoom ? { zoom: ZoomType.In } : {}),
+      },
+    })
   }
 
   /*

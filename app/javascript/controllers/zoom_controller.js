@@ -116,9 +116,8 @@ export default class extends Controller {
 
     if (this.isZoomed) {
       show(this.zoomOutTarget)
-    }
-
-    if (!this.isZoomed) {
+      hide(this.zoomInTarget)
+    } else {
       hide(this.zoomOutTarget)
       hide(this.zoomInTarget)
     }
@@ -136,6 +135,10 @@ export default class extends Controller {
     return this.#zoomManager.activeZoom
   }
 
+  get zoomLevels() {
+    return this.#zoomManager.zoomLevels
+  }
+
   #initZoomLevels() {
     const prefix = "section_zoom_attributes"
 
@@ -151,8 +154,14 @@ export default class extends Controller {
       .sort()
       .map((element) => parseFloat(element.value))
 
+    const ids = Array.from(
+      document.querySelectorAll(`input[id^='${prefix}'][id$='id']`),
+    )
+      .sort()
+      .map((element) => parseInt(element.value, 10))
+
     return starts.map(
-      (start, i) => new Zoom(start, ends[i], this.durationValue),
+      (start, i) => new Zoom(start, ends[i], this.durationValue, ids[i]),
     )
   }
 }

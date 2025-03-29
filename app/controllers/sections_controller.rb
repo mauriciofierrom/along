@@ -99,7 +99,8 @@ class SectionsController < ApplicationController
                 :finished,
                 :loop,
                 :lesson_id,
-                zoom_attributes: {})
+                zoom_attributes: [:start, :end, :id, :_destroy]
+                )
     end
 
     def zoom_params
