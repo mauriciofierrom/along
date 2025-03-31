@@ -1,5 +1,5 @@
 describe("Zoom", () => {
-  it.skip("the zoom option isn't available until we pick a section", () => {
+  it("the zoom option isn't available until we pick a section", () => {
     cy.appFactories([["create", "lesson"]]).then(([lesson]) => {
       cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
       cy.reload()
@@ -12,7 +12,7 @@ describe("Zoom", () => {
     })
   })
 
-  describe.only("Zoom in", () => {
+  describe("Zoom in", () => {
     beforeEach(() => {
       cy.appFactories([["create", "section"]]).then(([section]) => {
         cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
