@@ -12,6 +12,8 @@ export default class extends Controller {
 
   #activeZoom
   #hasPlayed
+  // Indicates if the pick will be the first pick in a full range
+  #firstPick = !this.#isEditMode()
   #duration
 
   connect() {
@@ -88,6 +90,8 @@ export default class extends Controller {
     this.dispatch("rangeInputUpdated", {
       detail: { ...preparedPoints },
     })
+
+    this.#firstPick = false
   }
 
   updateZoomLevel({ detail: { zoom } }) {
@@ -121,6 +125,8 @@ export default class extends Controller {
         ...(firstZoom ? { zoom: ZoomType.In } : {}),
       },
     })
+
+    this.#firstPick = true
   }
 
   /*
@@ -167,8 +173,21 @@ export default class extends Controller {
   }
 
   #preparePoints(pointToSet) {
-    const start = parseFloat(this.minTarget.value)
-    const end = parseFloat(this.maxTarget.value)
+    const rawStart = parseFloat(this.minTarget.value)
+    const rawEnd = parseFloat(this.maxTarget.value)
+    const { start, end } = this.#firstPick
+      ? this.#optimalCurrentRange(pointToSet)
+      : { start: rawStart, end: rawEnd }
+
+    if (this.#firstPick) {
+      if (pointToSet === rawStart) {
+        this.maxTarget.value = end
+      } else {
+        this.minTarget.value = start
+      }
+
+      this.#setSliderStyles(start, end)
+    }
 
     return {
       ...this.#activeZoom.convert(start, end),
@@ -184,6 +203,25 @@ export default class extends Controller {
 
   #isZoomed() {
     return this.#activeZoom.isZoomed
+  }
+
+  #optimalDiff() {
+    const percentage = 0.1
+
+    return this.#duration * percentage
+  }
+
+  #optimalCurrentRange(pointToSet) {
+    const start = parseFloat(this.minTarget.value)
+    const end = parseFloat(this.maxTarget.value)
+    const optimalDiff = this.#optimalDiff()
+    const optimalStart = Math.max(0, end - optimalDiff)
+    const optimalEnd = Math.min(this.#duration, start + optimalDiff)
+
+    return {
+      start: start === pointToSet ? start : optimalStart,
+      end: end === pointToSet ? end : optimalEnd,
+    }
   }
 
   enableInputs() {
