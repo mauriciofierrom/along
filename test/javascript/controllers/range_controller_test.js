@@ -112,13 +112,12 @@ describe("RangeController", () => {
         })
 
         rangeController.minTarget.value = "12"
-        rangeController.maxTarget.value = "25"
         rangeController.minTarget.dispatchEvent(new InputEvent("input"))
 
         jest.runAllTimers()
 
         const start = 5.2
-        const end = 6.5
+        const end = 8.1
         const setting = 5.2
 
         expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
@@ -178,7 +177,7 @@ describe("RangeController", () => {
     })
 
     describe("when the point is changed with two zooms in", () => {
-      it("dispatches to the controller", () => {
+      it("dispatches to the controller the converted full-range values", () => {
         const mockDispatch = jest.spyOn(rangeController, "dispatch")
 
         // The two zooms
@@ -189,15 +188,14 @@ describe("RangeController", () => {
           detail: { zoom: new Zoom(6.13, 15.13, 290) },
         })
 
-        rangeController.minTarget.value = "3"
-        rangeController.maxTarget.value = "110"
+        rangeController.minTarget.value = "7"
         rangeController.minTarget.dispatchEvent(new InputEvent("input"))
 
         jest.runAllTimers()
 
-        const start = 6.22
-        const end = 9.54
-        const setting = 6.22
+        const start = 6.35
+        const end = 7.25
+        const setting = 6.35
 
         expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
           detail: {
