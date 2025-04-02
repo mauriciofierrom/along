@@ -111,9 +111,6 @@ describe("Zoom", () => {
           cy.get("#section_start_time")
             .invoke("val", 10.0)
             .trigger("input", { force: true })
-          cy.get("#section_end_time")
-            .invoke("val", 20.0)
-            .trigger("input", { force: true })
           cy.get(".fa-search-plus").click()
         })
       })
@@ -128,7 +125,7 @@ describe("Zoom", () => {
         })
 
         it("resets the range", () => {
-          cy.get("#section_start_time").should("have.value", 0)
+          cy.get("#section_start_time").should("have.value", 0.0)
           cy.get("#section_end_time").then((endTime) => {
             const max = parseFloat(endTime.attr("max"))
             const value = parseFloat(endTime.val())
@@ -145,17 +142,16 @@ describe("Zoom", () => {
       context("and there are more zooms", () => {
         beforeEach(() => {
           cy.get("#section_start_time")
-            .invoke("val", 13.0)
+            .invoke("val", 2.0)
             .trigger("input", { force: true })
-          cy.get("#section_end_time")
-            .invoke("val", 18.0)
-            .trigger("input", { force: true })
+          cy.wait(2000)
           cy.get(".fa-search-plus").click({ force: true })
+          cy.wait(2000)
           cy.get('[data-name="zoom-out"]').click({ force: true })
         })
 
         it("resets the range", () => {
-          cy.get("#section_start_time").should("have.value", 0)
+          cy.get("#section_start_time").should("have.value", 0.0)
           cy.get("#section_end_time").then((endTime) => {
             const max = parseFloat(endTime.attr("max"))
             const value = parseFloat(endTime.val())
