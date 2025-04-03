@@ -4,8 +4,8 @@ section = CypressOnRails::SmartFactoryWrapper.create(:section, name: "Section 1"
 # FIXME: This depends on lesson/section values to have enough duration/end time
 zoom1 = Zoom.create!(
   section: section,
-  start: section.start_time.to_i.to_f + 2,
-  "end" => section.end_time.to_i.to_f - 2
+  start: section.start_time + 2.0,
+  "end" => section.end_time - 2.0
 )
 
 zoom2 = Zoom.create!(
@@ -14,7 +14,7 @@ zoom2 = Zoom.create!(
   "end" => zoom1.end - 2
 )
 
-zoom3 = Zoom.create!(
+Zoom.create!(
   section: section,
   start: zoom2.start + 2,
   "end" => zoom2.end - 2

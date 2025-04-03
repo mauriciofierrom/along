@@ -1,7 +1,7 @@
 <%= turbo_frame_tag section, class: "section" do %>
   <div class="item"
-       data-start="<%= section.start_time.to_i.to_f %>"
-       data-end="<%= section.end_time.to_i.to_f %>"
+       data-start="<%= section.start_time %>"
+       data-end="<%= section.end_time %>"
        data-loop="<%= section.loop %>"
        data-playback-speed="<%= section.playback_speed %>">
     <div class="item-top">
