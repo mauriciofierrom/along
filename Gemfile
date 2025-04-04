@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -37,7 +39,7 @@ gem "redis", "~> 4.0"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -49,7 +51,7 @@ gem "kaminari"
 gem "font-awesome-rails"
 
 # Get locale from http header
-gem 'http_accept_language', '~> 2.1', '>= 2.1.1'
+gem "http_accept_language", "~> 2.1", ">= 2.1.1"
 
 gem "devise", "~> 4.9"
 
@@ -65,11 +67,11 @@ gem "flipper-ui", ">= 1.3"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug", platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 6.0.0"
   gem "cypress-on-rails", "~> 1.15.0"
   gem "faker", "~> 3.2.2"
-  gem 'database_cleaner-active_record'
+  gem "database_cleaner-active_record"
 end
 
 group :development do
@@ -84,9 +86,11 @@ group :development do
 
   # Linting
   gem "rubocop", require: false
+  gem "rubocop-shopify", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
-  gem 'rubocop-performance', require: false
+  gem "rubocop-rspec_rails", require: false
+  gem "rubocop-performance", require: false
   gem "reek", require: false
   gem "flog", require: false
   gem "guard-rspec", require: false
@@ -102,4 +106,3 @@ group :test do
   gem "factory_bot_rails", "~> 6.4.3"
   gem "shoulda-matchers", "~> 5.0"
 end
-
