@@ -6,7 +6,7 @@ class Lesson < ApplicationRecord
 
   belongs_to :instrument
   belongs_to :user
-  has_many :sections, dependent: :destroy
+  has_many :sections, -> { order(order: :desc) }, dependent: :destroy
 
   validates :name, :instrument_id, presence: true
   validates :duration_in_seconds,
