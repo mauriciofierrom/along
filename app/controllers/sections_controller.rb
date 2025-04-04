@@ -1,6 +1,14 @@
+# frozen_string_literal: true
+
 class SectionsController < ApplicationController
   before_action :set_lesson, except: :swap_order
-  before_action :set_section, only: %i[ show edit update destroy ]
+  before_action :set_section, only: [:show, :edit, :update, :destroy]
+
+  def show
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
 
   def new
     @section = @lesson.sections.build
@@ -14,10 +22,10 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       if @section.save
-        flash.now[:notice] = "Section was successfully created."
-        format.html { redirect_to lesson_url(@lesson)}
+        flash.now[:notice] = t(".success")
+        format.html { redirect_to(lesson_url(@lesson)) }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render(:new, status: :unprocessable_entity) }
       end
     end
   end
@@ -25,10 +33,10 @@ class SectionsController < ApplicationController
   def update
     respond_to do |format|
       if @section.update(section_params)
-        flash.now[:notice] = "Section was successfully updated."
-        format.html { redirect_to lesson_url(@lesson) }
+        flash.now[:notice] = t(".success")
+        format.html { redirect_to(lesson_url(@lesson)) }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render(:edit, status: :unprocessable_entity) }
       end
     end
   end
@@ -37,14 +45,8 @@ class SectionsController < ApplicationController
     @section.destroy
 
     respond_to do |format|
-      flash.now[:notice] = "Section was successfully destroyed."
-      format.html { redirect_to lesson_url(@lesson) }
-      format.turbo_stream
-    end
-  end
-
-  def show
-    respond_to do |format|
+      flash.now[:notice] = t(".success")
+      format.html { redirect_to(lesson_url(@lesson)) }
       format.turbo_stream
     end
   end
@@ -54,7 +56,7 @@ class SectionsController < ApplicationController
   def zoom_in
     @indicator = {
       left_margin: Zoom.left_margin(zoom_params[:start].to_f, zoom_params[:duration].to_f),
-      width: Zoom.width(zoom_params[:start].to_f, zoom_params[:end].to_f, zoom_params[:duration].to_f)
+      width: Zoom.width(zoom_params[:start].to_f, zoom_params[:end].to_f, zoom_params[:duration].to_f),
     }
 
     @zoom = Zoom.new(start: zoom_params[:start], end: zoom_params[:end])
@@ -85,50 +87,49 @@ class SectionsController < ApplicationController
     dragged = Section.find(payload["dragged_id"].to_i)
     dropped = Section.find(payload["dropped_id"].to_i)
 
-    draggedOrder = dragged.order
+    dragged_order = dragged.order
 
     Section.transaction do
       dragged.update!(order: dropped.order)
-      dropped.update!(order: draggedOrder)
+      dropped.update!(order: dragged_order)
     end
   end
 
   private
-    def set_section
-      @section = @lesson.sections.find(params[:id])
-    end
 
-    def set_lesson
-      @lesson = Lesson.find(params[:lesson_id])
-    end
+  def set_section
+    @section = @lesson.sections.find(params[:id])
+  end
 
-    def section_params
-      params
-        .require(:section)
-        .permit(:name,
-                :start_time,
-                :end_time,
-                :playback_speed,
-                :current,
-                :finished,
-                :loop,
-                :lesson_id,
-                zoom_attributes: [:start, :end, :id, :_destroy]
-                )
-    end
+  def set_lesson
+    @lesson = Lesson.find(params[:lesson_id])
+  end
 
-    def zoom_params
-      params
-        .permit(:start,
-                :end,
-                :duration,
-                :button,
-                :authenticity_token,
-                :commit,
-                :zoom_out_start,
-                :zoom_out_end,
-                :zoom_out_id,
-                :lesson_id
-               )
-    end
+  def section_params
+    params
+      .require(:section)
+      .permit(:name,
+        :start_time,
+        :end_time,
+        :playback_speed,
+        :current,
+        :finished,
+        :loop,
+        :lesson_id,
+        zoom_attributes: [:start, :end, :id, :_destroy])
+  end
+
+  def zoom_params
+    params
+      .permit(:start,
+        :end,
+        :duration,
+        :button,
+        :authenticity_token,
+        :commit,
+        :zoom_out_start,
+        :zoom_out_end,
+        :zoom_out_id,
+        :lesson_id)
+  end
 end

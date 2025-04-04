@@ -1,4 +1,6 @@
-require 'tick'
+# frozen_string_literal: true
+
+require "tick"
 
 class Timeline
   MIN_LABELS = 10.0

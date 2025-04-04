@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include HttpAcceptLanguage::AutoLocale
   before_action :authenticate_user!, unless: :devise_controller?

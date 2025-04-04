@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined?(CypressOnRails)
   CypressOnRails.configure do |c|
     c.api_prefix = ""

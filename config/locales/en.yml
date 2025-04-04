@@ -57,3 +57,17 @@ en:
               host_not_allowed: "Host is not allowed"
               https_only: "Only secure links are allowed (HTTPS)"
               invalid: "Invalid link"
+  lessons:
+    create:
+      success: "Lesson created"
+    update:
+      success: "Lesson updated"
+    destroy:
+      success: "Lesson removed"
+  sections:
+    create:
+      success: "Section created"
+    update:
+      success: "Section updated"
+    destroy:
+      success: "Section removed"

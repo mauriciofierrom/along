@@ -47,3 +47,17 @@ es:
               host_not_allowed: "El nombre de sitio no es permitido"
               https_only: "Solo se acepta enlaces seguros (HTTPS)"
               invalid: "Enlace no válido"
+  lessons:
+    create:
+      success: "Lección creada"
+    update:
+      success: "Lección actualizada"
+    destroy:
+      success: "Lección eliminada"
+  sections:
+    create:
+      success: "Sección creada"
+    update:
+      success: "Sección actualizada"
+    destroy:
+      success: "Sección eliminada"

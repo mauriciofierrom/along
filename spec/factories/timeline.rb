@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :timeline do
     initialize_with { new(0, Faker::Number.between(from: 10.minutes.in_seconds, to: 20.minutes.in_seconds)) }

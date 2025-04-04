@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class LessonsControllerTest < ActionDispatch::IntegrationTest
@@ -47,11 +49,19 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update lesson" do
-    patch lesson_url(@lesson), params: { lesson: { instrument_id: @lesson.instrument_id, name: "Updated Lesson", order: @lesson.order + 2, video_url: "https://youtu.be/another" } }
+    patch lesson_url(@lesson),
+      params: {
+        lesson: {
+          instrument_id: @lesson.instrument_id,
+          name: "Updated Lesson",
+          order: @lesson.order + 2,
+          video_url: "https://youtu.be/another",
+        },
+      }
     assert_redirected_to lesson_url(@lesson)
   end
 
-  #FIXME: Seemx to be failing, no idea why
+  # FIXME: Seemx to be failing, no idea why
   # test "should destroy lesson" do
   #   pp Lesson.count
   #   assert_difference("Lesson.count", -1) do

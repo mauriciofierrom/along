@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class SectionsControllerTest < ActionDispatch::IntegrationTest
@@ -39,7 +41,8 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update section" do
     patch lesson_section_url(@lesson, @section),
-        params: { section: {
+      params: {
+        section: {
           current: true,
           start_time: 12.2,
           end_time: 23.4,
@@ -47,7 +50,8 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
           loop: false,
           name: "White Room",
           playback_speed: 0.5,
-        }}
+        },
+      }
     assert_redirected_to lesson_url(@lesson)
   end
 

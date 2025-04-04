@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
 class SectionsTest < ApplicationSystemTestCase
@@ -53,13 +55,13 @@ class SectionsTest < ApplicationSystemTestCase
     assert_text "Part 3"
   end
 
-   test "should destroy Section" do
-     visit lesson_url(@lesson)
+  test "should destroy Section" do
+    visit lesson_url(@lesson)
 
-     assert_text @section.name
+    assert_text @section.name
 
-     find(".item", text: @section.name).find(".fa-trash").click
+    find(".item", text: @section.name).find(".fa-trash").click
 
-     assert_no_text @section.name
-   end
+    assert_no_text @section.name
+  end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LessonsHelper
   def video_id(lesson)
     uri = URI.parse(lesson.video_url)

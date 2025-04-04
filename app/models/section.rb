@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Section < ApplicationRecord
   belongs_to :lesson, counter_cache: true
-  has_many :zoom
+  has_many :zoom, dependent: :destroy
   accepts_nested_attributes_for :zoom, allow_destroy: true
   delegate :duration_in_seconds, to: :lesson, prefix: true
 
@@ -11,22 +13,22 @@ class Section < ApplicationRecord
   # https://github.com/thoughtbot/shoulda-matchers/issues/1435
   validates :start_time,
     numericality: {
-      less_than:  -> (section) { section.lesson&.duration_in_seconds || 9999.0 },
-      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" },
-      allow_nil: true
+      less_than: ->(section) { section.lesson&.duration_in_seconds || 9999.0 },
+      message: ->(object, _data) { "must be less than #{object.lesson.duration_in_seconds}" },
+      allow_nil: true,
     }
 
   # Due to this issue in shoulda matchers library we'll have to add a default max value
   # https://github.com/thoughtbot/shoulda-matchers/issues/1435
   validates :end_time,
     numericality: {
-      less_than_or_equal_to: -> (section) { section.lesson&.duration_in_seconds || 9999.0 },
-      message: -> (object, data) { "must be less than #{object.lesson.duration_in_seconds}" },
+      less_than_or_equal_to: ->(section) { section.lesson&.duration_in_seconds || 9999.0 },
+      message: ->(object, _data) { "must be less than #{object.lesson.duration_in_seconds}" },
     }
 
   validates :end_time,
     numericality: {
-      greater_than: :start_time
+      greater_than: :start_time,
     }
 
   validates :playback_speed,
@@ -48,8 +50,9 @@ class Section < ApplicationRecord
   end
 
   private
-    def set_order
-      maximum_order = Section.where(lesson_id: self.lesson_id).maximum(:order) || 0
-      self.order = maximum_order + 1
-    end
+
+  def set_order
+    maximum_order = Section.where(lesson_id: lesson_id).maximum(:order) || 0
+    self.order = maximum_order + 1
+  end
 end

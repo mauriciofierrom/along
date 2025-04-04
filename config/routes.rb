@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :users
   resources :lessons do
@@ -13,7 +15,7 @@ Rails.application.routes.draw do
   end
 
   constraints CanAccessFlipperUI do
-    mount Flipper::UI.app(Flipper) => '/flipper'
+    mount Flipper::UI.app(Flipper) => "/flipper"
   end
 
   # Defines the root path route ("/")
@@ -21,8 +23,8 @@ Rails.application.routes.draw do
 
   # Cypress login
   unless Rails.env.production?
-    scope path: "/__cypress__", controller: 'cypress' do
-      post "forceLogin", action: 'force_login'
+    scope path: "/__cypress__", controller: "cypress" do
+      post "forceLogin", action: "force_login"
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "application_system_test_case"
 
 class LessonsTest < ApplicationSystemTestCase
@@ -18,7 +20,7 @@ class LessonsTest < ApplicationSystemTestCase
     select "Guitar", from: "Instrument"
     fill_in "Name", with: "Wild Blue"
     fill_in "Video link", with: "https://youtube.com/something2"
-    page.execute_script("document.querySelector('#lesson_duration_in_seconds').value = 123");
+    page.execute_script("document.querySelector('#lesson_duration_in_seconds').value = 123")
 
     click_on "Create Lesson"
 
