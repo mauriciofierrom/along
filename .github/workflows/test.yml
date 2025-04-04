@@ -26,7 +26,9 @@ jobs:
           bundle exec rspec
       - name: Install js deps
         run: yarn install
-      - name: Lint
+      - name: Lint Ruby
+        run: bundle exec rubocop
+      - name: Lint JS
         run: yarn eslint .
       - name: JS tests
         run: yarn test
