@@ -1,5 +1,9 @@
 <%= turbo_frame_tag section, class: "section" do %>
   <div class="item"
+       draggable="true"
+       data-section-id="<%= section.id %>"
+       data-controller="section-item"
+       data-action="dragstart->section-item#dragStart drop->section-item#onDrop:prevent:stop dragover->section-item#onDragOver:prevent:stop dragend->section-item#onDragEnd"
        data-start="<%= section.start_time %>"
        data-end="<%= section.end_time %>"
        data-loop="<%= section.loop %>"
