@@ -9,6 +9,7 @@ one:
   current: false
   loop: true
   lesson: layla
+  order: 1
 
 two:
   name: Signature riff
@@ -19,3 +20,4 @@ two:
   current: false
   loop: false
   lesson: layla
+  order: 2
