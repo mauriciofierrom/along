@@ -33,6 +33,8 @@ class Section < ApplicationRecord
     presence: true,
     inclusion: { in: 0.5.step(by: 0.5, to: 2.0) }
 
+  before_create :set_order
+
   def zoom_level
     @section.zoom.maximum(:level)
   end
@@ -44,4 +46,10 @@ class Section < ApplicationRecord
   def operation_range
     zoom.present? ? [zoom.last.start, zoom.last.end] : [0, lesson_duration_in_seconds]
   end
+
+  private
+    def set_order
+      maximum_order = Section.where(lesson_id: self.lesson_id).maximum(:order) || 0
+      self.order = maximum_order + 1
+    end
 end
