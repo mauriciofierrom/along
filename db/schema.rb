@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_20_043030) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_03_071616) do
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", null: false
@@ -62,6 +62,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_20_043030) do
     t.datetime "updated_at", null: false
     t.decimal "start_time", precision: 6, scale: 2
     t.decimal "end_time", precision: 6, scale: 2
+    t.integer "order"
+    t.index ["lesson_id", "order"], name: "index_sections_on_lesson_id_and_order", unique: true
     t.index ["lesson_id"], name: "index_sections_on_lesson_id"
     t.index ["name", "lesson_id"], name: "index_sections_on_name_and_lesson_id", unique: true
   end
