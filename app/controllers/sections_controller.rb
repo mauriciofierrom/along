@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_action :set_lesson
+  before_action :set_lesson, except: :swap_order
   before_action :set_section, only: %i[ show edit update destroy ]
 
   def new
@@ -76,6 +76,20 @@ class SectionsController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream
+    end
+  end
+
+  def swap_order
+    payload = JSON.parse(request.body.read)
+
+    dragged = Section.find(payload["dragged_id"].to_i)
+    dropped = Section.find(payload["dropped_id"].to_i)
+
+    draggedOrder = dragged.order
+
+    Section.transaction do
+      dragged.update!(order: dropped.order)
+      dropped.update!(order: draggedOrder)
     end
   end
 
