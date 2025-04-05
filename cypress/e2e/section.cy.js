@@ -50,14 +50,38 @@ describe("Section", () => {
     })
   })
 
-  describe.only("On drag-n-drop re-order", () => {
+  /**
+   * Due to the way stimulus augments events we have to re-implement a lot of
+   * stuff which is not good. Still, it helps make sure that the swap happens,
+   * but I wouldn't feel too bad removing this one.
+   */
+  describe("On drag-n-drop re-order", () => {
     beforeEach(() => {
       cy.appScenario("multiple_sections")
       cy.forceLogin({ redirect_to: "/lessons" })
       cy.get(".video-card > .title").click()
       cy.get(".item").eq(1).findByText("Section 2")
-      cy.get(".item").first().trigger("dragstart")
-      cy.get(".item").last().trigger("drop")
+      cy.get(".item")
+        .last()
+        .then(($lastItem) => {
+          cy.wrap($lastItem).trigger("dragstart", {
+            dataTransfer: new DataTransfer(),
+          })
+          cy.get(".item")
+            .first()
+            .then(($firstItem) => {
+              const data = new DataTransfer()
+              data.setData(
+                "application/section-id",
+                $lastItem.data("sectionId"),
+              )
+              data.dropEffect = "move"
+              cy.wrap($firstItem).trigger("drop", {
+                dataTransfer: data,
+                currentTarget: $lastItem.get(0),
+              })
+            })
+        })
     })
 
     it("swaps the places of the sections", () => {
