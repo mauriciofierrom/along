@@ -8,7 +8,7 @@ class Lesson < ApplicationRecord
 
   belongs_to :instrument
   belongs_to :user
-  has_many :sections, -> { order(order: :desc) }, dependent: :destroy, inverse_of: :lesson
+  has_many :sections, -> { order(order: :asc) }, dependent: :destroy, inverse_of: :lesson
 
   validates :name, presence: true
   validates :duration_in_seconds,
