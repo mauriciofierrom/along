@@ -51,8 +51,10 @@ export default class extends Controller {
     fetch(`/section/swap_order/`, {
       method: "POST",
       body: JSON.stringify({
-        dragged_id: draggedSectionItemId,
-        dropped_id: droppedSectionItemId,
+        swap_params: {
+          dragged_id: draggedSectionItemId,
+          dropped_id: droppedSectionItemId,
+        },
       }),
       headers: {
         "Content-Type": "application/json",

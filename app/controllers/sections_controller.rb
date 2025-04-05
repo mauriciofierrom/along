@@ -82,16 +82,17 @@ class SectionsController < ApplicationController
   end
 
   def swap_order
-    payload = JSON.parse(request.body.read)
-
-    dragged = Section.find(payload["dragged_id"].to_i)
-    dropped = Section.find(payload["dropped_id"].to_i)
+    dragged = Section.find(swap_params[:dragged_id].to_i)
+    dropped = Section.find(swap_params[:dropped_id].to_i)
 
     dragged_order = dragged.order
 
     Section.transaction do
-      dragged.update!(order: dropped.order)
-      dropped.update!(order: dragged_order)
+      dragged.order = dropped.order
+      dropped.order = dragged_order
+
+      dropped.save!(validate: false)
+      dragged.save!(validate: false)
     end
   end
 
@@ -131,5 +132,9 @@ class SectionsController < ApplicationController
         :zoom_out_end,
         :zoom_out_id,
         :lesson_id)
+  end
+
+  def swap_params
+    params.require(:swap_params)
   end
 end
