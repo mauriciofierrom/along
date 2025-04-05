@@ -7,7 +7,9 @@ class Section < ApplicationRecord
   delegate :duration_in_seconds, to: :lesson, prefix: true
 
   validates :name, presence: true, uniqueness: { scope: :lesson_id }
+  # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :order, uniqueness: { scope: :lesson_id }
+  # rubocop:enable Rails/UniqueValidationWithoutIndex
 
   # Due to this issue in shoulda matchers library we'll have to add a default max value
   # https://github.com/thoughtbot/shoulda-matchers/issues/1435
