@@ -52,6 +52,8 @@ input[type="password"] {
     border-color: var(--secondary);
   }
 
+
+
   &:required {
     &:invalid {
       &:hover,
@@ -155,4 +157,37 @@ input[type="button"] {
   align-items: center;
   column-gap: 20px;
   margin-bottom: 20px;
+}
+
+.invalid {
+  border: 4px solid transparent;
+  border-image: repeating-linear-gradient(
+    45deg,
+    #ffdd00,
+    #ffdd00 10px,
+    #000 10px,
+    #000 20px
+  ) 4;
+  animation: scroll-border 1s linear infinite;
+}
+
+@keyframes scroll-border {
+  0% {
+    border-image: repeating-linear-gradient(
+      45deg,
+      #ffdd00,
+      #ffdd00 10px,
+      #000 10px,
+      #000 20px
+    ) 4;
+  }
+  100% {
+    border-image: repeating-linear-gradient(
+      45deg,
+      #000,
+      #000 10px,
+      #ffdd00 10px,
+      #ffdd00 20px
+    ) 4;
+  }
 }
