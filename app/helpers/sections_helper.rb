@@ -23,6 +23,13 @@ module SectionsHelper
     PLAY_ONCE_IMG
   end
 
+
+  def error_style(field, errors)
+    return "" if !errors || errors.exclude?(field)
+
+    "invalid"
+  end
+
   private
 
   def pad_time(time)
