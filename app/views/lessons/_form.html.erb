@@ -19,13 +19,13 @@
   </div>
 
   <%= form.label :name %>
-  <%= form.text_field :name, class: "large", required: true, data: { "lesson-form-target" => "field" } %>
+  <%= form.text_field :name, class: "large #{error_style(:name, lesson.errors)}", data: { "lesson-form-target" => "field" } %>
 
   <%= form.label :video_url %>
   <%= form.text_field :video_url,
     data: { action: "input->lesson-form#load", "lesson-form-target" =>  "url" },
-    class: "large",
-    required: true %>
+    class: "large #{error_style(:video_url, lesson.errors)}"
+    %>
 
   <%= form.label :instrument_id, Instrument.model_name.human %>
   <%= form.select(
