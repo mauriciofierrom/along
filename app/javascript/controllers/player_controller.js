@@ -81,48 +81,31 @@ export default class extends Controller {
   static targets = ["source", "duration"]
 
   /*
-   * Check if an URL path matches the section edit route
+   * Check if an URL path matches the lesson's show path
    *
    * @param {!string} - The url path
    * @return {boolean}
    */
-  #isSectionEditPath = (urlPath) => {
+  #isLessonTarget = (urlPath) => {
     debug("path", urlPath)
-    const regex = /\/sections\/\d+\/edit$/
+    const regex = /^\/lessons\/\d+$/
     return regex.test(urlPath)
   }
 
-  /*
-   * Check if an URL path matches the section new route
-   *
-   * @param {!string} - The url path
-   * @return {boolean}
-   */
-  #isSectionNewPath = (urlPath) => {
-    debug("path", urlPath)
-    const regex = /\/sections\/new$/
-    return regex.test(urlPath)
-  }
-
-  /*
-   * Callback for the event triggered when section playback/edition is cancelled
-   */
   #onSectionCancel = (event) => {
-    debug("cancelled", event)
-    if (event.target.id === "sections") {
-      debug("section cancelled")
+    if (
+      !(
+        event.target.id === "sections" &&
+        this.#isLessonTarget(event.detail.url.pathname)
+      )
+    )
+      return
 
-      if (
-        !this.#isSectionEditPath(event.detail.url.pathname) &&
-        !this.#isSectionNewPath(event.detail.url.pathname)
-      ) {
-        debug("onSectionCancel is being fired and resetting everything", event)
-        this.reset()
-        this.dispatch("zoomCancelled")
-        this.pendingState = null
-        this.pendingLoop = null
-      }
-    }
+    debug("onSectionCancel is being fired and resetting everything", event)
+    this.reset()
+    this.dispatch("zoomCancelled")
+    this.pendingState = null
+    this.pendingLoop = null
   }
 
   #handlePlayerRestrictions = (error) => {
@@ -300,6 +283,8 @@ export default class extends Controller {
    * Callback for the event triggered when a section is saved
    */
   #onSectionSave(event) {
+    if (!event.detail.success) return
+
     switch (event.target.dataset.name) {
       case "section":
         debug("Section event")
