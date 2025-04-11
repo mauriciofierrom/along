@@ -24,8 +24,10 @@ class SectionsController < ApplicationController
       if @section.save
         flash.now[:notice] = t(".success")
         format.html { redirect_to(lesson_url(@lesson)) }
+        format.turbo_stream { redirect_to(lesson_url(@lesson)) }
       else
         format.html { render(:new, status: :unprocessable_entity) }
+        format.turbo_stream { render("errors", status: :unprocessable_entity) }
       end
     end
   end
@@ -37,6 +39,7 @@ class SectionsController < ApplicationController
         format.html { redirect_to(lesson_url(@lesson)) }
       else
         format.html { render(:edit, status: :unprocessable_entity) }
+        format.turbo_stream { render("errors", status: :unprocessable_entity) }
       end
     end
   end

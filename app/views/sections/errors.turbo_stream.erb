@@ -1,0 +1,5 @@
+<% inline_validate.each do |field| %>
+  <%= turbo_stream.replace "#{field}_errors" do %>
+    <%= field_error(field, @section.errors) %>
+  <% end %>
+<% end %>
