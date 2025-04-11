@@ -23,6 +23,19 @@ module SectionsHelper
     PLAY_ONCE_IMG
   end
 
+  def field_error(field, errors)
+    return content_tag(:div, nil, id: field) if !errors || errors.exclude?(field)
+
+    content_tag(
+      :div,
+      nil,
+      id: "#{field}_errors",
+      data: {
+        "section-form-target" => "error",
+        message: errors[field].join(" "),
+      },
+    )
+  end
 
   def error_style(field, errors)
     return "" if !errors || errors.exclude?(field)
@@ -36,5 +49,9 @@ module SectionsHelper
     time
       .to_s
       .rjust(2, "0")
+  end
+
+  def inline_validate
+    [:name, :range]
   end
 end
