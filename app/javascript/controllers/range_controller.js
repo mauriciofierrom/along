@@ -143,20 +143,30 @@ export default class extends Controller {
   }
 
   convertFields() {
-    if (this.#isZoomed()) {
-      const { start, end } = this.#activeZoom.convert(
-        parseFloat(this.minTarget.value),
-        parseFloat(this.maxTarget.value),
-      )
-      this.minTarget.value = start
-      this.maxTarget.value = end
-      debug("Zoom convertion pre-submission", {
-        start: this.minTarget.value,
-        end: this.maxTarget.value,
-      })
-    }
+    const start = parseFloat(this.minTarget.value)
+    const end = parseFloat(this.maxTarget.value)
 
-    this.dispatch("submitForm")
+    if (this.#isZoomed()) {
+      const conversion = this.#activeZoom.convert(start, end)
+
+      this.minTarget.value = conversion.start
+      this.maxTarget.value = conversion.end
+
+      this.dispatch("submitForm", { detail: { restore: { start, end } } })
+    } else {
+      this.dispatch("submitForm")
+    }
+  }
+
+  restoreRange({
+    detail: {
+      restore: { start, end },
+    },
+  }) {
+    debug("restoring to", { start, end })
+
+    this.minTarget.value = start
+    this.maxTarget.value = end
   }
 
   videoLoaded() {
