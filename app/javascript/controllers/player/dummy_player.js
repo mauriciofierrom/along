@@ -66,12 +66,12 @@ export default class extends Player {
   }
 
   canPlay() {
-    debug("Can the dummy play?")
-
     const playerElement = document.querySelector("#player")
 
     if (playerElement.dataset.restriction) {
-      return Promise.reject(playerElement.dataset.restrictionMessage)
+      return Promise.reject(
+        JSON.stringify({ restriction: playerElement.dataset.restriction }),
+      )
     } else {
       return Promise.resolve()
     }
