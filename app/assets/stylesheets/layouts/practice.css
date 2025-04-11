@@ -64,6 +64,7 @@ a {
 }
 
 .video-player {
+  position: relative;
   display: flex;
   flex-flow: row no-wrap;
   justify-content: center;
