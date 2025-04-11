@@ -10,7 +10,7 @@ import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player"
 import DummyPlayer from "controllers/player/dummy_player"
 import { PlayerRestriction } from "controllers/player/player"
-import { debug, debounce, show, enable, Env } from "controllers/util"
+import { debug, debounce, show, hide, enable, Env } from "controllers/util"
 import { ZoomType } from "controllers/zoom/zoom"
 
 /** Controller for the YouTube player custom functionality */
@@ -78,7 +78,7 @@ export default class extends Controller {
 
   /** @property {UserActionRequiredState} */
 
-  static targets = ["source", "duration"]
+  static targets = ["source", "duration", "restriction"]
 
   /*
    * Check if an URL path matches the lesson's show path
@@ -114,8 +114,7 @@ export default class extends Controller {
 
     switch (err.restriction) {
       case PlayerRestriction.UserActionRequired:
-        // eslint-disable-next-line no-alert
-        alert(err.message)
+        show(this.restrictionTarget)
         break
     }
   }
@@ -347,6 +346,7 @@ export default class extends Controller {
         }
       },
       onRestrictionLifted: () => {
+        hide(this.restrictionTarget)
         this.state.onPlaying()
       },
       onLoadError: () => {
