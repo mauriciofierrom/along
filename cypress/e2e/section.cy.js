@@ -26,6 +26,33 @@ describe("Section", () => {
           .should("not.be.disabled")
       })
     })
+
+    describe("on validation error", () => {
+      beforeEach(() => {
+        cy.appFactories([["create", "section", { name: "My Section" }]]).then(
+          ([section]) => {
+            cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
+            cy.reload()
+            cy.findByText("New Section").click()
+            cy.get("#section_name").type("My Section")
+            cy.findByText("Create").click()
+          },
+        )
+      })
+
+      it("sets custom validity with the validation error message", () => {
+        cy.get("#section_name").should(($field) => {
+          expect($field.get(0).checkValidity()).to.equal(false)
+          expect($field.get(0).validationMessage).to.equal(
+            "has already been taken",
+          )
+        })
+      })
+
+      it("sets the invalid class on the element", () => {
+        cy.get("#section_name").should("have.class", "invalid")
+      })
+    })
   })
 
   describe("On edit", () => {
@@ -46,6 +73,41 @@ describe("Section", () => {
         cy.get("#section_end_time")
           .should("not.have.class", "disabled")
           .should("not.be.disabled")
+      })
+    })
+
+    describe("on validation error", () => {
+      beforeEach(() => {
+        cy.appFactories([["create", "section", { name: "My Section" }]]).then(
+          ([section]) => {
+            cy.appFactories([
+              [
+                "create",
+                "section",
+                { name: "Other Section", lesson_id: section.lesson_id },
+              ],
+            ]).then(() => {
+              cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
+              cy.reload()
+              cy.get(".fa-pencil-square-o").eq(1).click({ force: true })
+              cy.get("#section_name").clear().type("My Section")
+              cy.findByText("Create").click()
+            })
+          },
+        )
+      })
+
+      it("sets custom validity with the validation error message", () => {
+        cy.get("#section_name").should(($field) => {
+          expect($field.get(0).checkValidity()).to.equal(false)
+          expect($field.get(0).validationMessage).to.equal(
+            "has already been taken",
+          )
+        })
+      })
+
+      it("sets the invalid class on the element", () => {
+        cy.get("#section_name").should("have.class", "invalid")
       })
     })
   })
