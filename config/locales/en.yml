@@ -36,6 +36,8 @@ en:
   forgot_password: "Forgot your password?"
   no_confirmation: "Didn't receive confirmation instructions?"
   no_unlock: "Didn't receive unlock instructions"
+  player_restriction_title: "Playback Restriction"
+  manual_playback: "In order for YouTube to count our use as a view, please click the play button. We won't ask again for 3 hours"
   cancel: "Cancel"
   actions:
     new: "New"

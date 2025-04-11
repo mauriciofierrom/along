@@ -6,6 +6,8 @@ es:
   forgot_password: "¿Olvidaste tu contraseña?"
   no_confirmation: "¿No recibiste las instrucciones de confirmación?"
   no_unlock: "¿No recibiste las instrucciones de desbloqueo?"
+  player_restriction_title: "Restricción de Reproducción"
+  manual_playback: "Para que YouTube cuente este uso como una vista, por favor haz click en el botón de play. No te pediremos de nuevo por 3 horas"
   actions:
     new: "Agregar"
     edit: "Editar"
