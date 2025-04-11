@@ -161,4 +161,24 @@ describe("Section", () => {
       cy.get(".item").eq(1).findByText("Section 2")
     })
   })
+
+  describe("On playback", () => {
+    describe("on player restriction", () => {
+      it("should show the player restriction popover", () => {
+        cy.appFactories([
+          ["create", "section", { name: "Restriction Section" }],
+        ]).then(([section]) => {
+          cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
+          cy.reload()
+          cy.get("#player-restriction").should("have.class", "hidden")
+          cy.get("#player").then(([player]) => {
+            player.dataset.restriction = "user_action_required"
+            cy.findByText("Restriction Section").click({ force: true })
+            cy.get("#player-restriction").should("not.have.class", "hidden")
+            cy.findByText("Playback Restriction")
+          })
+        })
+      })
+    })
+  })
 })
