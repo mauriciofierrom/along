@@ -1,24 +1,30 @@
 import LoopManager from "../../../../app/javascript/controllers/player/loop_manager"
 import YoutubePlayer from "../../../../app/javascript/controllers/player/youtube_player"
 import DummyPlayer from "../../../../app/javascript/controllers/player/dummy_player"
+import { PlayerRestriction } from "../../../../app/javascript/controllers/player/player"
 
 const mockPlay = jest.fn()
 
-jest.mock("../../../../app/javascript/controllers/player/youtube_player", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      duration: 15,
-      currentTime: 7,
-      play: mockPlay,
-      canPlay: () => { Promise.resolve().catch((error) => console.error(error)) }
-    }
-  })
-})
+jest.mock(
+  "../../../../app/javascript/controllers/player/youtube_player",
+  () => {
+    return jest.fn().mockImplementation(() => {
+      return {
+        duration: 15,
+        currentTime: 7,
+        play: mockPlay,
+        canPlay: () => {
+          Promise.resolve().catch((error) => console.error(error))
+        },
+      }
+    })
+  },
+)
 
-jest.useFakeTimers();
+jest.useFakeTimers()
 
 describe("LoopManager", () => {
-  let player;
+  let player
 
   beforeEach(() => {
     YoutubePlayer.mockClear()
@@ -37,7 +43,7 @@ describe("LoopManager", () => {
       // FIXME: Extremely hacky and I don't completely understand why this works
       // nor have the time. For now and for this test I'll leave it until I read
       // more about it.
-      await new Promise(jest.requireActual("timers").setImmediate);
+      await new Promise(jest.requireActual("timers").setImmediate)
 
       jest.runAllTimers()
 
@@ -56,7 +62,7 @@ describe("LoopManager", () => {
       // FIXME: Extremely hacky and I don't completely understand why this works
       // nor have the time. For now and for this test I'll leave it until I read
       // more about it.
-      await new Promise(jest.requireActual("timers").setImmediate);
+      await new Promise(jest.requireActual("timers").setImmediate)
 
       jest.advanceTimersByTime(500)
       await loopManager.clear()
@@ -69,12 +75,14 @@ describe("LoopManager", () => {
     describe("when the player has an unmet restriction", () => {
       it("returns a reject promise with the reason playback was restricted", async () => {
         document.head.innerHTML = "<script></script>"
-        document.body.innerHTML = ` <div data-controller="player" id="player" data-restriction="user_manual_action" data-restriction-message="User must do the thing">
+        document.body.innerHTML = ` <div data-controller="player" id="player" data-restriction="user_action_required">
         </div>
         `
 
         const loopManager = new LoopManager(new DummyPlayer({}))
-        await expect(loopManager.loop(12, 23, 2)).rejects.toMatch("User must do the thing")
+        await expect(loopManager.loop(12, 23, 2)).rejects.toMatch(
+          JSON.stringify({ restriction: PlayerRestriction.UserActionRequired }),
+        )
       })
     })
 
@@ -109,7 +117,7 @@ describe("LoopManager", () => {
 
       describe("when 3 seoncs before the end is greater than the start", () => {
         it("should be between the 3 seconds before the end and the end", () => {
-          expect(LoopManager.settingRange(4.0, 7.0, 7.0)).toEqual([4.0,7.0])
+          expect(LoopManager.settingRange(4.0, 7.0, 7.0)).toEqual([4.0, 7.0])
         })
       })
     })
