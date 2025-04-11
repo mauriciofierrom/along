@@ -30,6 +30,8 @@ export default class extends Controller {
     this.errorListTarget.innerHTML = ""
     hide(this.errorContainerTarget)
     this.fieldTargets.forEach(enable)
+
+    this.fieldTargets[0].focus()
   }
 
   load() {

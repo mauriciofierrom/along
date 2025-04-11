@@ -332,13 +332,13 @@ export default class extends Controller {
       videoId: this.videoIdValue,
       containerOffsetHeight: this.element.offsetHeight,
       onCue: () => {
+        this.dispatch("videoLoaded")
+
         if (this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration, 10)
         }
       },
       onPlaying: () => {
-        // Dispatch to the lesson controller (if connected) that we've
-        // successfully loaded and played the video
         this.dispatch("videoLoaded")
 
         if (this.hasDurationTarget) {
