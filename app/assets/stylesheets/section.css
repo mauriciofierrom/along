@@ -49,16 +49,6 @@
       }
     }
 
-    .action-buttons {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-flow: row wrap;
-      width: 100%;
-      justify-content: right;
-      gap: 10px;
-    }
-
     .zoom-indicators {
       display: flex;
       justify-content: flex-start;

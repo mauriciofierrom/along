@@ -65,8 +65,6 @@
     <span class="slider round"></span>
   </label>
 
-  <div class="action-buttons">
-    <%= form.submit :Create, data: { action: "click->section-form#submit:prevent"} %>
-    <%= link_to t(:cancel), lesson_path(@lesson) %>
-  </div>
+  <%= form.submit :Create, data: { action: "click->section-form#submit:prevent"} %>
+  <%= link_to t(:cancel), lesson_path(@lesson) %>
 <% end %>
