@@ -1,8 +1,7 @@
 <h1>New lesson</h1>
 
 <%= turbo_frame_tag @lesson do %>
-  <div data-controller="player" data-action="lesson-form:videoUrlChanged@window->player#load" data-player-user-id-value="<%= current_user.id %>">
-    <div id="player" class="hidden"></div>
+  <%= render "player", lesson: @lesson, actions: new_player_actions, hidden: true do %>
     <%= render "form", lesson: @lesson %>
-  </div>
+  <% end %>
 <% end %>
