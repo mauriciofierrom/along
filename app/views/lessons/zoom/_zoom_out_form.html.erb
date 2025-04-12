@@ -1,0 +1,18 @@
+<%= form_with url: section_zoom_out_path, class: "hidden",
+  data: { "zoom-target" => "zoomOut",
+          name: "zoom-out",
+          controller: "zoom-out",
+          "zoom-out-zoom-outlet": ".zoom",
+          action: [
+            "zoom:zoomUpdated@window->zoom-out#zoomUpdated",
+            "zoom:zoomsLoaded@window->zoom-out#zoomsLoaded",
+          ].join(" ")
+        } do |form| %>
+  <%= form.hidden_field :zoom_out_start, data: { "zoom-out-target" => "start" } %>
+  <%= form.hidden_field :zoom_out_end, data: { "zoom-out-target" => "end" } %>
+  <%= form.hidden_field :zoom_out_id, data: { "zoom-out-target" => "id" } %>
+  <%= form.hidden_field :lesson_id, value: lesson.id %>
+  <%= button_tag type: "submit" do %>
+    <%= fa_icon("search-minus") %>
+  <% end %>
+<% end %>

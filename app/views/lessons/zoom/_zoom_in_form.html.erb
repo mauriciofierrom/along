@@ -1,0 +1,20 @@
+<%= form_with url: section_zoom_in_path,
+  data: { name: "zoom-in",
+          "zoom-in-zoom-outlet": ".zoom",
+          controller: "zoom-in",
+          "zoom-target" => "zoomIn",
+          action: [
+            "range:rangeInputReady@window->zoom-in#rangeInputReady",
+            "range:rangeInputUpdated@window->zoom-in#rangeInputUpdated",
+            "player:zoomCancelled@window->zoom-in#zoomCancelled",
+          ].join(" ")
+        },
+  class: "hidden" do |form| %>
+  <%= form.hidden_field :start, data: { "zoom-in-target" => "start" } %>
+  <%= form.hidden_field :end, data: { "zoom-in-target" => "end" } %>
+  <%= form.hidden_field :duration, value: lesson.duration_in_seconds %>
+  <%= form.hidden_field :lesson_id, value: lesson.id %>
+  <%= button_tag type: "submit" do %>
+    <%= fa_icon("search-plus") %>
+  <% end %>
+<% end %>

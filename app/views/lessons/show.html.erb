@@ -8,60 +8,7 @@
     </div>
   </div>
 
-  <%= content_tag :div,
-    class: "zoom-actions zoom",
-    data: {
-      controller: "zoom",
-      "zoom-duration-value" => @lesson.duration_in_seconds,
-      action: [
-        "zoom-field:zoomLevelAdded@window->zoom#zoomLevelAdded",
-        "zoom-field:zoomLevelRemoved@window->zoom#zoomLevelRemoved",
-        "range:rangeInputUpdated@window->zoom#rangeInputUpdated",
-        "range:rangeInputReady@window->zoom#rangeInputReady",
-        "player:zoomCancelled@window->zoom#zoomCancelled",
-      ].join(" "),
-    } do %>
-
-    <%= form_with url: section_zoom_in_path,
-      data: { name: "zoom-in",
-              "zoom-in-zoom-outlet": ".zoom",
-              controller: "zoom-in",
-              "zoom-target" => "zoomIn",
-              action: [
-                "range:rangeInputReady@window->zoom-in#rangeInputReady",
-                "range:rangeInputUpdated@window->zoom-in#rangeInputUpdated",
-                "player:zoomCancelled@window->zoom-in#zoomCancelled",
-              ].join(" ")
-            },
-      class: "hidden" do |form| %>
-      <%= form.hidden_field :start, data: { "zoom-in-target" => "start" } %>
-      <%= form.hidden_field :end, data: { "zoom-in-target" => "end" } %>
-      <%= form.hidden_field :duration, value: @lesson.duration_in_seconds %>
-      <%= form.hidden_field :lesson_id, value: @lesson.id %>
-      <%= button_tag type: "submit" do %>
-        <%= fa_icon("search-plus") %>
-      <% end %>
-    <% end %>
-
-    <%= form_with url: section_zoom_out_path, class: "hidden",
-      data: { "zoom-target" => "zoomOut",
-              name: "zoom-out",
-              controller: "zoom-out",
-              "zoom-out-zoom-outlet": ".zoom",
-              action: [
-                "zoom:zoomUpdated@window->zoom-out#zoomUpdated",
-                "zoom:zoomsLoaded@window->zoom-out#zoomsLoaded",
-              ].join(" ")
-            } do |form| %>
-      <%= form.hidden_field :zoom_out_start, data: { "zoom-out-target" => "start" } %>
-      <%= form.hidden_field :zoom_out_end, data: { "zoom-out-target" => "end" } %>
-      <%= form.hidden_field :zoom_out_id, data: { "zoom-out-target" => "id" } %>
-      <%= form.hidden_field :lesson_id, value: @lesson.id %>
-      <%= button_tag type: "submit" do %>
-        <%= fa_icon("search-minus") %>
-      <% end %>
-    <% end %>
-  <% end %>
+  <%= render partial: "lessons/zoom/actions", locals: {lesson: @lesson} %>
 
   <div class="video-player player"
        data-controller="player"
