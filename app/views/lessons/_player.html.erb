@@ -1,0 +1,22 @@
+<%=
+  content_tag :div,
+    class: "player",
+    data: {
+      controller: "player",
+      "player-user-id-value" => current_user.id,
+      action: actions,
+    }
+      .merge(!lesson.video_url.nil? ? {"player-video-url-value" => lesson.video_url } : {})
+      .merge(!lesson.video_url.nil? ? {"player-video-id-value" => video_id(lesson)} : {}) do
+%>
+  <div id="player" class="<%= hidden ? "hidden" : "" %>"></div>
+  <div id="player-restriction" class="popover hidden" data-player-target="restriction">
+    <div class="arrow"></div>
+    <h1><%= t("player_restriction_title") %></h1>
+    <p>
+    <%= t("manual_playback") %>
+    </p>
+    <a href="https://developers.google.com/youtube/iframe_api_reference#playing-a-video" target="_blank">Learn more...</a>
+  </div>
+  <%= yield %>
+<% end %>

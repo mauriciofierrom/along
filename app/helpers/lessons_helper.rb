@@ -20,4 +20,17 @@ module LessonsHelper
       "🎹"
     end
   end
+
+  def edit_player_actions
+    [
+      "range:rangeInputReady@window->player#triggerEdition",
+      "range:rangeInputUpdated@window->player#updatePoints",
+      "section:connect@window->player#playFromTo",
+      "section:disconnect@window->player#reset",
+    ].join(" ")
+  end
+
+  def new_player_actions
+    "lesson-form:videoUrlChanged@window->player#load"
+  end
 end

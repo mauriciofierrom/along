@@ -332,7 +332,7 @@ export default class extends Controller {
   #mkPlayerParams() {
     return {
       videoId: this.videoIdValue,
-      containerOffsetHeight: this.element.offsetHeight,
+      containerOffsetHeight: this.element.parentNode.offsetHeight,
       onCue: () => {
         this.dispatch("videoLoaded")
 
