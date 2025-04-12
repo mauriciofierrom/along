@@ -106,6 +106,7 @@ export default class extends Controller {
     this.dispatch("zoomCancelled")
     this.pendingState = null
     this.pendingLoop = null
+    hide(this.restrictionTarget)
   }
 
   #handlePlayerRestrictions = (error) => {
@@ -207,6 +208,7 @@ export default class extends Controller {
    * Reset the player by delegating to the current state
    */
   reset() {
+    debug("current state", this.state)
     this.state.reset()
   }
 
