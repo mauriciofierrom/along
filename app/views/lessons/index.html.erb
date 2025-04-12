@@ -15,7 +15,7 @@
   <%= turbo_frame_tag Lesson.new %>
 
   <%= turbo_frame_tag "lessons", class: "list" do %>
-    <%= render @lessons %>
+    <%= render partial: "lesson", collection: @lessons, cached: true %>
   <% end %>
 
   <%= paginate @lessons %>
