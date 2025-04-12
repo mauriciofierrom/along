@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Zoom < ApplicationRecord
-  belongs_to :section
+  belongs_to :section, touch: true
 
   default_scope { order(level: :asc) }
 
