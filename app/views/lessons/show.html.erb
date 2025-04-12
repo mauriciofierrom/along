@@ -19,7 +19,7 @@
       <%= button_to "#{t("actions.new")} #{Section.model_name.human}", new_lesson_section_path(@lesson), id: "new-section", method: :get, class: "button link disabled" %>
     </div>
     <div class="sections-selector">
-      <%= render partial: "sections/section_item", collection: @lesson.sections, as: :section, locals: { lesson: @lesson }%>
+      <%= render partial: "sections/section_item", collection: @lesson.sections, as: :section, locals: { lesson: @lesson }, cached: true %>
     </div>
   <% end %>
 </div>
