@@ -2,6 +2,9 @@ import LoopManager from "../../../../app/javascript/controllers/player/loop_mana
 import YoutubePlayer from "../../../../app/javascript/controllers/player/youtube_player"
 import DummyPlayer from "../../../../app/javascript/controllers/player/dummy_player"
 import { PlayerRestriction } from "../../../../app/javascript/controllers/player/player"
+import PlayerController from "../../../../app/javascript/controllers/player_controller"
+
+jest.mock("../../../../app/javascript/controllers/player_controller")
 
 const mockPlay = jest.fn()
 
@@ -34,7 +37,7 @@ describe("LoopManager", () => {
 
   describe("bounded loop", () => {
     it("should be stopped after the provided max times", async () => {
-      const loopManager = new LoopManager(player)
+      const loopManager = new LoopManager(player, new PlayerController())
 
       loopManager.loop(1, 5, 3)
 
@@ -53,7 +56,7 @@ describe("LoopManager", () => {
 
   describe("unrestricted loop", () => {
     it("should not stop until interrupted", async () => {
-      const loopManager = new LoopManager(player)
+      const loopManager = new LoopManager(player, new PlayerController())
 
       const loop = loopManager.loop(1, 5)
 
