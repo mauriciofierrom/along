@@ -5,6 +5,14 @@
   border-radius: 2px;
 }
 
+.range-progress {
+  height: 5px;
+  position: absolute;
+  background: red;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
 .range-selected {
   height: 100%;
   position: absolute;
