@@ -9,7 +9,8 @@
       "zoom:zoomUpdated@window->range#updateZoomLevel",
       "player:videoLoaded@window->range#videoLoaded",
       "player:loopClearStarted@window->range#disableInputs",
-      "player:loopClearFinished@window->range#enableInputs"
+      "player:loopClearFinished@window->range#enableInputs",
+      "player:reportProgress@window->range#reportProgress"
     ].join(" "),
     "range-player-outlet" => ".player",
     "range-zoom-outlet" => ".zoom",

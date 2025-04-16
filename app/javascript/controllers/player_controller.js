@@ -129,7 +129,7 @@ export default class extends Controller {
         this.player = player
 
         // Init the loop manager
-        this.loopManager = new LoopManager(this.player)
+        this.loopManager = new LoopManager(this.player, this)
 
         // With the Player and Loop manager initialized we're ready to rumble
         this.state = this.readyState

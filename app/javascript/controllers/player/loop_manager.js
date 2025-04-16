@@ -13,14 +13,16 @@ export default class LoopManager {
   /** @property {AbortController} abortController - A controller to abort the
    * promise that wraps the interval that drives the loop repetition */
   #abortController
+  #element
 
   /**
    * Create a loop manager
    *
    * @param {YoutubePlayer} player - The player wrapper object to loop with
    */
-  constructor(player) {
+  constructor(player, element) {
     this.#player = player
+    this.#element = element
   }
 
   #canLoop() {
@@ -75,6 +77,10 @@ export default class LoopManager {
           clearInterval(this.#intervalId)
           resolve()
         }
+
+        this.#element.dispatch("reportProgress", {
+          detail: { from, end: this.#player.currentTime },
+        })
       }, 200)
     })
   }
