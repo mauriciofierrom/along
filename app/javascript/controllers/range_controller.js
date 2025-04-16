@@ -3,7 +3,7 @@ import { debounce, debug, enable, disable } from "controllers/util"
 import { ZoomType } from "controllers/zoom/zoom"
 
 export default class extends Controller {
-  static targets = ["min", "max", "slider"]
+  static targets = ["min", "max", "slider", "progress"]
   static outlets = ["zoom"]
   static values = {
     minDefault: Number,
@@ -232,6 +232,16 @@ export default class extends Controller {
       start: start === pointToSet ? start : optimalStart,
       end: end === pointToSet ? end : optimalEnd,
     }
+  }
+
+  #setProgress({ start, end }) {
+    this.progressTarget.style.left = `${(start / this.minTarget.max) * 100}%`
+    this.progressTarget.style.right = `${100 - (end / this.maxTarget.max) * 100}%`
+  }
+
+  reportProgress({ detail: { from, end } }) {
+    debug("Report progress", { from, end })
+    this.#setProgress(this.#activeZoom.restore(from, end))
   }
 
   enableInputs() {
