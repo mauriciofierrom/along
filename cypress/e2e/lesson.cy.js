@@ -78,7 +78,7 @@ describe("Lesson", () => {
   })
 
   describe("Show", () => {
-    it("enables the New Section button after video load", () => {
+    it("enables the New Section button after player is ready", () => {
       cy.appFactories([["create", "lesson"]]).then(([lesson]) => {
         cy.window().then((window) => {
           window.localStorage.setItem("simulateLoad", true)
@@ -86,8 +86,8 @@ describe("Lesson", () => {
         cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
       })
 
-      cy.get("#new-section").should("have.class", "disabled")
-      cy.get("#new-section").should("not.have.class", "disabled")
+      cy.findByText("New Section").should("have.class", "disabled")
+      cy.findByText("New Section").should("not.have.class", "disabled")
     })
   })
 })
