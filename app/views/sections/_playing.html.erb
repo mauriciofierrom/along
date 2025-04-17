@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "sections", class: "section" do %>
+<div class="section">
   <div class="playing"
        data-controller="section"
        data-section-player-outlet=".video-player"
@@ -20,4 +20,4 @@
       <%= image_tag(loop_img(section), size: "16x16") %>
     </div>
   </div>
-<% end %>
+</div>
