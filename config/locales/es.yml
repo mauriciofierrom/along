@@ -56,6 +56,7 @@ es:
       success: "Lección actualizada"
     destroy:
       success: "Lección eliminada"
+      confirm: "¿Está segur de eliminar esta lección?"
   sections:
     create:
       success: "Sección creada"

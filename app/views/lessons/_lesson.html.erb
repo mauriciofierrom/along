@@ -5,6 +5,14 @@
     <%= link_to lesson.name, lesson, data: { turbo: false } %>
   </div>
 
+  <div class="action">
+    <%= button_to (fa_icon "trash"),
+      lesson,
+      method: :delete,
+      class: "link",
+      data: { turbo_confirm: t("lessons.destroy.confirm") } %>
+  </div>
+
   <% if Flipper.enabled?(:lesson_status) %>
     <% if lesson.sections.size > 0 && lesson.current_objective then %>
       <div class="subtitle">
