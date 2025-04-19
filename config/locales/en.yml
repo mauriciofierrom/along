@@ -66,6 +66,7 @@ en:
       success: "Lesson updated"
     destroy:
       success: "Lesson removed"
+      confirm: "Are you sure you want to remove the lesson?"
   sections:
     create:
       success: "Section created"

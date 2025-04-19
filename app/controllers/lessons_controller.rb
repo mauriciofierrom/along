@@ -45,6 +45,7 @@ class LessonsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(lessons_url, notice: t(".success")) }
+      format.turbo_stream { flash.now[:notice] = t(".success") }
     end
   end
 

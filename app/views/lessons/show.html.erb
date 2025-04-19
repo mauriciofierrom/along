@@ -6,8 +6,7 @@
     <h1><%= @lesson.name %></h1>
     <div class="header-actions">
       <%= link_to (fa_icon "arrow-left"), lessons_path %>
-      <%= link_to (fa_icon "edit"), edit_lesson_path(@lesson) %> |
-      <%= button_to (fa_icon "trash"), @lesson, method: :delete, class: "danger" %>
+      <%= link_to (fa_icon "edit"), edit_lesson_path(@lesson) %>
     </div>
   </div>
 
