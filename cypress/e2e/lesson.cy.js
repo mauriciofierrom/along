@@ -90,4 +90,59 @@ describe("Lesson", () => {
       cy.findByText("New Section").should("not.have.class", "disabled")
     })
   })
+
+  describe("Inline name editing", () => {
+    beforeEach(() => {
+      cy.appFactories([["create", "lesson", { name: "My Lesson" }]]).then(
+        ([lesson]) => {
+          cy.appFactories([
+            [
+              "create",
+              "lesson",
+              { name: "Your Lesson", user_id: lesson.user_id },
+            ],
+          ]).then(() => {
+            cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
+            cy.reload()
+            cy.get(".fa-edit").click({ force: true })
+          })
+        },
+      )
+    })
+
+    context("when editing succeeds", () => {
+      it("udpates the lesson name in place", () => {
+        cy.get("#lesson_name").clear().type("Our Lesson")
+        cy.findByText("Update Lesson").click({ force: true })
+        cy.findByText("Our Lesson")
+      })
+    })
+
+    context("when canceling", () => {
+      it("preserves the name", () => {
+        cy.findByText("Cancel").click({ force: true })
+        cy.findByText("My Lesson")
+      })
+    })
+
+    context("on validation error", () => {
+      beforeEach(() => {
+        cy.get("#lesson_name").clear().type("Your Lesson")
+        cy.findByText("Update Lesson").click({ force: true })
+      })
+
+      it("sets custom validity with the validation error message", () => {
+        cy.get("#lesson_name").should(($field) => {
+          expect($field.get(0).checkValidity()).to.equal(false)
+          expect($field.get(0).validationMessage).to.equal(
+            "has already been taken",
+          )
+        })
+      })
+
+      it("sets the invalid class on the element", () => {
+        cy.get("#lesson_name").should("have.class", "invalid")
+      })
+    })
+  })
 })
