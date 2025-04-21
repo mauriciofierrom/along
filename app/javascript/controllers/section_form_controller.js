@@ -46,26 +46,6 @@ export default class extends Controller {
     window.Turbo.navigator.submitForm(this.element)
   }
 
-  /**
-   * Once an error target (an element that is the next sibling to input
-   * elements) is connected we set a custom validity for it and make the form
-   * report the validity to show the related validation message
-   */
-  errorTargetConnected(el) {
-    const input = el.previousElementSibling
-    const errorMessage = el.dataset.message
-
-    input.classList.add("invalid")
-    input.setCustomValidity(errorMessage)
-    this.element.reportValidity()
-  }
-
-  errorTargetDisconnected(el) {
-    const input = el.previousElementSibling
-    input.classList.remove("invalid")
-    input.setCustomValidity("")
-  }
-
   #handleSubmissionError(event) {
     if (!event.detail.formSubmission.fromElement === this.element) return
 
