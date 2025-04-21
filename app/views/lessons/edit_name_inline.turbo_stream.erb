@@ -1,0 +1,10 @@
+<%= turbo_stream.replace "name_#{@lesson.id}" do %>
+  <%= turbo_frame_tag "name_#{@lesson.id}", style: "width:100%" do %>
+    <%= form_with(model: @lesson, url: update_inline_lesson_path, class: "inline-form", method: :patch, data: { controller: "error" }) do |form| %>
+      <%= form.text_field :name, class: "large #{error_style(:name, @lesson.errors)}", autofocus: true %>
+      <div id="name_errors"></div>
+      <%= form.submit nil %>
+      <%= link_to t("cancel"), lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}"} %>
+    <% end %>
+  <% end %>
+<% end %>

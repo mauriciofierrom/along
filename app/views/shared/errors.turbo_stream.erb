@@ -1,0 +1,5 @@
+<% object.inline_validation_fields.each do |field| %>
+  <%= turbo_stream.replace "#{field}_errors" do %>
+    <%= field_error(field, object.errors) %>
+  <% end %>
+<% end %>

@@ -1,7 +1,7 @@
 <%= form_with(model: [@lesson, @section],
               data: {
                 name: "section",
-                controller: "section-form",
+                controller: "section-form error",
                 action: "range:submitForm@window->section-form#submitForm"
               }) do |form| %>
   <% if section.errors.any? %>

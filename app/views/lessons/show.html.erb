@@ -3,10 +3,14 @@
      data-controller="lesson"
      data-action="player:playerInitialized@window->lesson#playerInitialized">
   <div class="header">
-    <h1><%= @lesson.name %></h1>
+    <%= turbo_frame_tag "name_#{@lesson.id}", class: "title" do %>
+      <div class="title">
+        <h1><%= @lesson.name %></h1>
+        <%= button_to (fa_icon "edit"), edit_name_inline_lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}"}, class: "link" %>
+      </div>
+    <% end %>
     <div class="header-actions">
       <%= link_to (fa_icon "arrow-left"), lessons_path %>
-      <%= link_to (fa_icon "edit"), edit_lesson_path(@lesson) %>
     </div>
   </div>
 

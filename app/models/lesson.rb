@@ -10,7 +10,9 @@ class Lesson < ApplicationRecord
   belongs_to :user
   has_many :sections, -> { order(order: :asc) }, dependent: :destroy, inverse_of: :lesson
 
-  validates :name, presence: true
+  include InlineValidatable
+
+  validates :name, presence: true, uniqueness: { scope: :user_id }
   validates :duration_in_seconds,
     presence: true,
     numericality: {
@@ -21,5 +23,9 @@ class Lesson < ApplicationRecord
 
   def current_objective
     sections.find { |s| s.current = true }
+  end
+
+  def inline_validation_fields
+    [:name]
   end
 end

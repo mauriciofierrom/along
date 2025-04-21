@@ -27,7 +27,7 @@ class SectionsController < ApplicationController
         format.turbo_stream { redirect_to(lesson_url(@lesson)) }
       else
         format.html { render(:new, status: :unprocessable_entity) }
-        format.turbo_stream { render("errors", status: :unprocessable_entity) }
+        format.turbo_stream { render("shared/errors", status: :unprocessable_entity, locals: { object: @section }) }
       end
     end
   end
@@ -39,7 +39,7 @@ class SectionsController < ApplicationController
         format.html { redirect_to(lesson_url(@lesson)) }
       else
         format.html { render(:edit, status: :unprocessable_entity) }
-        format.turbo_stream { render("errors", status: :unprocessable_entity) }
+        format.turbo_stream { render("shared/errors", status: :unprocessable_entity, locals: { object: @section }) }
       end
     end
   end

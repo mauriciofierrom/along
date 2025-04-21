@@ -191,3 +191,13 @@ input[type="button"] {
     ) 4;
   }
 }
+
+.inline-form {
+  width: 100%;
+  display: flex;
+  flex-flow: row-nowrap;
+  gap: 5px;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: baseline;
+}
