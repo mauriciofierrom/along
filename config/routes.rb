@@ -3,6 +3,10 @@
 Rails.application.routes.draw do
   devise_for :users
   resources :lessons do
+    member do
+      post :edit_name_inline
+      patch :update_inline
+    end
     resources :sections, except: [:index]
   end
 

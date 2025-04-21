@@ -6,6 +6,8 @@ class Section < ApplicationRecord
   accepts_nested_attributes_for :zoom, allow_destroy: true
   delegate :duration_in_seconds, to: :lesson, prefix: true
 
+  include InlineValidatable
+
   validates :name, presence: true, uniqueness: { scope: :lesson_id }
   # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :order, uniqueness: { scope: :lesson_id }
@@ -49,6 +51,10 @@ class Section < ApplicationRecord
 
   def operation_range
     zoom.present? ? [zoom.last.start, zoom.last.end] : [0, lesson_duration_in_seconds]
+  end
+
+  def inline_validation_fields
+    [:name, :range]
   end
 
   private

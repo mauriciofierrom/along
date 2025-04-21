@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "name_#{@lesson.id}" do %>
+  <div class="title" id="<%= "name_#{@lesson.id}" %>">>
+    <h1><%= @lesson.name %></h1>
+    <%= button_to (fa_icon "edit"), edit_name_inline_lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}"}, class: "link" %>
+  </div>
+<%= end %>
+
