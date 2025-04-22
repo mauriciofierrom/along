@@ -198,7 +198,8 @@ export default class extends Controller {
    * @param {number} obj.detail.start the starting point
    * @param {number} obj.detail.end the ending point
    */
-  playFromTo({ detail: { start, end } }) {
+  playFromTo({ detail: { start, end, speed } }) {
+    this.player.setPlaybackSpeed(speed)
     this.state = this.playingState
     this.loop(start, end)
   }
