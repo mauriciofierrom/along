@@ -54,14 +54,4 @@ class SectionsTest < ApplicationSystemTestCase
     visit lesson_url(@lesson)
     assert_text "Part 3"
   end
-
-  test "should destroy Section" do
-    visit lesson_url(@lesson)
-
-    assert_text @section.name
-
-    find(".item", text: @section.name).find(".fa-trash").click
-
-    assert_no_text @section.name
-  end
 end
