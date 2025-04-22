@@ -21,6 +21,7 @@
         <%= button_to (fa_icon "trash"),
           lesson_section_path(lesson, section),
           method: :delete,
+          data: { turbo_confirm: t("sections.destroy.confirm") },
           class: "link" %>
       </div>
     </div>

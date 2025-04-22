@@ -77,6 +77,8 @@ export default class extends Player {
     }
   }
 
+  setPlaybackSpeed() {}
+
   static create(params) {
     return new Promise((resolve) => {
       const simulateLoad = window.localStorage.getItem("simulateLoad")
