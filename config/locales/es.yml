@@ -64,3 +64,4 @@ es:
       success: "Sección actualizada"
     destroy:
       success: "Sección eliminada"
+      confirm: "¿Está segur de eliminar esta sección?"

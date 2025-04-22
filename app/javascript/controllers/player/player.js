@@ -69,6 +69,15 @@ export default class Player {
     throw new Error("Abstract method canPlay must be implemented")
   }
 
+  /**
+   * Set plaayback speed
+   *
+   * @param {!number} speed
+   */
+  setPlaybackSpeed(_speed) {
+    throw new Error("Abstract method speedPlay must be implemented")
+  }
+
   /*
    * A factory function to create the player based on the params
    *
