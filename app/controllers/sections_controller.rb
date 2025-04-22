@@ -66,6 +66,8 @@ class SectionsController < ApplicationController
 
     @timeline = Timeline.new(@zoom.start, @zoom.end)
 
+    @zoom.start = @timeline.ticks.first.value
+
     respond_to do |format|
       format.turbo_stream
     end
