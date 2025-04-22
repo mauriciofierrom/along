@@ -147,6 +147,10 @@ export default class extends Player {
     this.#player.seekTo(0)
   }
 
+  setPlaybackSpeed(speed) {
+    this.#player.setPlaybackRate(speed)
+  }
+
   static create(params) {
     return new Promise((resolve) => {
       const tag = document.createElement("script")

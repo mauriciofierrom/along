@@ -3,6 +3,13 @@ import ScreenLockManager from "controllers/screen_lock_manager"
 import { debug } from "controllers/util"
 
 export default class extends Controller {
+  static values = {
+    start: Number,
+    end: Number,
+    loop: Boolean,
+    speed: Number,
+  }
+
   #screenLockManager
 
   initialize() {
@@ -12,10 +19,15 @@ export default class extends Controller {
 
   connect() {
     debug("connected section controller")
-    const start = parseFloat(this.element.dataset.start)
-    const end = parseFloat(this.element.dataset.end)
 
-    this.dispatch("connect", { detail: { start, end } })
+    this.dispatch("connect", {
+      detail: {
+        start: this.startValue,
+        end: this.endValue,
+        speed: this.speedValue,
+      },
+    })
+
     this.#screenLockManager.acquireScreenLock()
   }
 
