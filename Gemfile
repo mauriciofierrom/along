@@ -89,7 +89,7 @@ group :development do
   # gem "spring"
 
   # Linting
-  gem "rubocop", require: false
+  gem "rubocop", ">= 1.75", "< 1.84"
   gem "rubocop-shopify", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
