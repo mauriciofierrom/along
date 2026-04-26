@@ -113,8 +113,8 @@ class SectionsController < ApplicationController
 
   def section_params
     params
-      .require(:section)
-      .permit(:name,
+      .expect(section: [
+        :name,
         :start_time,
         :end_time,
         :playback_speed,
@@ -122,7 +122,8 @@ class SectionsController < ApplicationController
         :finished,
         :loop,
         :lesson_id,
-        zoom_attributes: [:start, :end, :id, :_destroy])
+        zoom_attributes: [:start, :end, :id, :_destroy],
+      ])
   end
 
   def zoom_params
