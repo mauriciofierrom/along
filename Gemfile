@@ -73,7 +73,7 @@ group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails", "~> 6.0.0"
-  gem "cypress-on-rails", "~> 1.15.0"
+  gem "cypress-on-rails", "~> 1.20.0"
   gem "faker", "~> 3.2.2"
   gem "database_cleaner-active_record"
 end
