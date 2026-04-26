@@ -26,7 +26,7 @@ class LessonsController < ApplicationController
         format.turbo_stream { flash.now[:notice] = t(".success") }
       end
     else
-      render(:new, status: :unprocessable_entity)
+      render(:new, status: :unprocessable_content)
     end
   end
 
@@ -36,7 +36,7 @@ class LessonsController < ApplicationController
         format.html { redirect_to(lesson_url(@lesson), notice: t(".success")) }
       end
     else
-      render(:edit, status: :unprocessable_entity)
+      render(:edit, status: :unprocessable_content)
     end
   end
 
@@ -60,7 +60,7 @@ class LessonsController < ApplicationController
       if @lesson.update(lesson_params)
         format.turbo_stream
       else
-        format.turbo_stream { render("shared/errors", status: :unprocessable_entity, locals: { object: @lesson }) }
+        format.turbo_stream { render("shared/errors", status: :unprocessable_content, locals: { object: @lesson }) }
       end
     end
   end

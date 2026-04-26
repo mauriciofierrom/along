@@ -26,8 +26,8 @@ class SectionsController < ApplicationController
         format.html { redirect_to(lesson_url(@lesson)) }
         format.turbo_stream { redirect_to(lesson_url(@lesson)) }
       else
-        format.html { render(:new, status: :unprocessable_entity) }
-        format.turbo_stream { render("shared/errors", status: :unprocessable_entity, locals: { object: @section }) }
+        format.html { render(:new, status: :unprocessable_content) }
+        format.turbo_stream { render("shared/errors", status: :unprocessable_content, locals: { object: @section }) }
       end
     end
   end
@@ -38,8 +38,8 @@ class SectionsController < ApplicationController
         flash.now[:notice] = t(".success")
         format.html { redirect_to(lesson_url(@lesson)) }
       else
-        format.html { render(:edit, status: :unprocessable_entity) }
-        format.turbo_stream { render("shared/errors", status: :unprocessable_entity, locals: { object: @section }) }
+        format.html { render(:edit, status: :unprocessable_content) }
+        format.turbo_stream { render("shared/errors", status: :unprocessable_content, locals: { object: @section }) }
       end
     end
   end
