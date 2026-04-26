@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.9"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0"
+gem "rails", "~> 8.1.3"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -30,7 +30,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
-gem "redis", "~> 4.0"
+gem "redis", "~> 5.4.1"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -89,7 +89,7 @@ group :development do
   # gem "spring"
 
   # Linting
-  gem "rubocop", ">= 1.75", "< 1.84"
+  gem "rubocop", "~> 1.86", ">= 1.86.1"
   gem "rubocop-shopify", require: false
   gem "rubocop-rails", require: false
   gem "rubocop-rspec", require: false
@@ -100,15 +100,14 @@ group :development do
   gem "reek", require: false
   gem "flog", require: false
   gem "guard-rspec", require: false
-  gem "minitest", "~> 5.1", require: false
   gem "guard-minitest", "~> 3.0", require: false
-  gem "dockerfile-rails", ">= 1.5", require: false
+  gem "dockerfile-rails", ">= 1.7.10", require: false
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "webdrivers"
-  gem "factory_bot_rails", "~> 6.4.3"
-  gem "shoulda-matchers", "~> 5.0"
+  gem "factory_bot_rails", "~> 6.5.1"
+  gem "shoulda-matchers", "~> 7.0.1"
 end
