@@ -140,6 +140,10 @@ export default class LoopManager {
       case end:
         finalEnd = end
         finalStart = Math.max(end - 3, 0)
+
+        if (finalStart < start) {
+          finalStart = start
+        }
         break
       default:
         finalStart = start
