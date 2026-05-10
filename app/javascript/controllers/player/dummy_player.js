@@ -51,14 +51,18 @@ export default class extends Player {
   }
 
   play(from) {
-    setTimeout(() => {
-      this.#onPlaying()
-      this.#currentTime = from
-      this.pause()
-      this.#intervalId = setInterval(() => {
-        this.#currentTime += 1
+    if (window.is_cypress === "true") {
+      setTimeout(() => {
+        this.#onPlaying()
+        this.#currentTime = from
+        this.pause()
+        this.#intervalId = setInterval(() => {
+          this.#currentTime += 1
+        }, 1000)
       }, 1000)
-    }, 1000)
+    } else {
+      this.#currentTime = Infinity
+    }
   }
 
   pause() {
