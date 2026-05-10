@@ -1,18 +1,29 @@
+import { mock, describe, jest, expect, beforeEach, it } from "bun:test"
+
 import { Application } from "@hotwired/stimulus"
 
-import PlayerController from "../../../../app/javascript/controllers/player_controller"
-import { PlayingState, EditingState } from "../../../../app/javascript/controllers/player/state"
-import LoopManager from "../../../../app/javascript/controllers/player/loop_manager"
+import PlayerController from "controllers/player_controller"
+import { PlayingState, EditingState } from "controllers/player/state"
+import LoopManager from "controllers/player/loop_manager"
 
-jest.mock("../../../../app/javascript/controllers/player/loop_manager")
-jest.useFakeTimers();
+mock.module("controllers/player/loop_manager", () => ({
+  default: class {
+    loop() {
+      return Promise.resolve()
+    }
+
+    // eslint-disable-next-line no-empty-function
+    clear() {}
+  },
+}))
+
+jest.useFakeTimers()
 
 describe("PlayerState", () => {
-  let application;
+  let application
 
   beforeEach(() => {
-    document.head.innerHTML = "<script></script>"
-    document.body.innerHTML = ` <div data-controller="player" data-player-video-id-value="video-id">
+    document.body.innerHTML = `<div data-controller="player" id="player" data-player-video-id-value="video-id">
     </div>
     `
 
@@ -23,8 +34,12 @@ describe("PlayerState", () => {
   describe("ReadyState", () => {
     describe("loop", () => {
       it("loops and transitions to playing state", () => {
-        const playerElement = document.querySelector('[data-controller="player"]')
-        const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+        const playerElement = document.querySelector("#player")
+        const playerController =
+          application.getControllerForElementAndIdentifier(
+            playerElement,
+            "player",
+          )
 
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 
@@ -40,8 +55,14 @@ describe("PlayerState", () => {
   describe("PlayingState", () => {
     describe("loop", () => {
       it("loops without transitioning", () => {
-        const playerElement = document.querySelector('[data-controller="player"]')
-        const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+        const playerElement = document.querySelector(
+          '[data-controller="player"]',
+        )
+        const playerController =
+          application.getControllerForElementAndIdentifier(
+            playerElement,
+            "player",
+          )
 
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 
@@ -57,8 +78,14 @@ describe("PlayerState", () => {
   describe("EditingState", () => {
     describe("loop", () => {
       it("loops without transitioning", () => {
-        const playerElement = document.querySelector('[data-controller="player"]')
-        const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+        const playerElement = document.querySelector(
+          '[data-controller="player"]',
+        )
+        const playerController =
+          application.getControllerForElementAndIdentifier(
+            playerElement,
+            "player",
+          )
 
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 
@@ -74,8 +101,14 @@ describe("PlayerState", () => {
   describe("PickingPointState", () => {
     describe("loop", () => {
       it("loops three times and then transitions back to EditingState", async () => {
-        const playerElement = document.querySelector('[data-controller="player"]')
-        const playerController = application.getControllerForElementAndIdentifier(playerElement, "player")
+        const playerElement = document.querySelector(
+          '[data-controller="player"]',
+        )
+        const playerController =
+          application.getControllerForElementAndIdentifier(
+            playerElement,
+            "player",
+          )
 
         const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
 

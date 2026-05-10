@@ -1,8 +1,8 @@
 import { Application } from "@hotwired/stimulus"
 
-import RangeController from "../../../app/javascript/controllers/range_controller"
-import ZoomController from "../../../app/javascript/controllers/zoom_controller"
-import Zoom, { ZoomType } from "../../../app/javascript/controllers/zoom/zoom"
+import RangeController from "controllers/range_controller"
+import ZoomController from "controllers/zoom_controller"
+import Zoom, { ZoomType } from "controllers/zoom/zoom"
 
 jest.useFakeTimers()
 
@@ -92,7 +92,7 @@ describe("RangeController", () => {
 
       rangeController.initialize()
 
-      jest.runAllTimers()
+      jest.runOnlyPendingTimers()
 
       expect(mockDispatch).toHaveBeenCalledWith("rangeInputReady", {
         detail: {
@@ -114,7 +114,7 @@ describe("RangeController", () => {
         rangeController.minTarget.value = "12"
         rangeController.minTarget.dispatchEvent(new InputEvent("input"))
 
-        jest.runAllTimers()
+        jest.runOnlyPendingTimers()
 
         const start = 5.2
         const end = 8.1
@@ -146,7 +146,7 @@ describe("RangeController", () => {
           detail: { zoom: new Zoom(4.0, 33.0, 290) },
         })
 
-        jest.runAllTimers()
+        jest.runOnlyPendingTimers()
 
         expect(mockResetRange).toHaveBeenCalled()
       })
@@ -163,7 +163,7 @@ describe("RangeController", () => {
             detail: { zoom: new Zoom(12.0, 33.0, 290) },
           })
 
-          jest.runAllTimers()
+          jest.runOnlyPendingTimers()
 
           expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
             detail: {
@@ -191,7 +191,7 @@ describe("RangeController", () => {
         rangeController.minTarget.value = "7"
         rangeController.minTarget.dispatchEvent(new InputEvent("input"))
 
-        jest.runAllTimers()
+        jest.runOnlyPendingTimers()
 
         const start = 6.35
         const end = 7.25

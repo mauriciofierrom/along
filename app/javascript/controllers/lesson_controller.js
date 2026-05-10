@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+
 import { debug, enable } from "controllers/util"
 
 export default class extends Controller {
