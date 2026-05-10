@@ -15,14 +15,19 @@ videos.
 
 # Test
 
-Run all the jest specs:
+Run all the bun specs:
 
-`npm test`
+`bun test --isolate`
 
-Run all jest specs with logs printing enabled:
-
-`npm test -- --silent=false`
+The isolate flag is required for mocked modules to not be leaked into other
+tests until bun fixes the behaviour.
 
 Run a focused spec:
 
-`npm test -- --silent=false -t "dispatches to player controller"`
+Add `.only` to the `it`/`describe` and run with the --only flag
+
+`bun test --only`
+
+Watch mode:
+
+`bun test --watch`
