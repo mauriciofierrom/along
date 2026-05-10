@@ -96,12 +96,8 @@ export default class LoopManager {
       times: this.#times,
     })
     this.#times = 0
-    if (!this.#intervalId !== null && this.#intervalId !== undefined) {
-      if (
-        this.#abortController !== null &&
-        this.#abortController !== undefined &&
-        !this.#abortController.signal.aborted
-      ) {
+    if (this.#intervalId) {
+      if (this.#abortController && !this.#abortController.signal.aborted) {
         debug("Aborting")
         this.#abortController.abort("Cancelled manually")
       } else {
