@@ -1,4 +1,4 @@
-import Zoom from "../../../../app/javascript/controllers/zoom/zoom"
+import Zoom from "controllers/zoom/zoom"
 
 describe("Zoom", () => {
   it("converts a point", () => {

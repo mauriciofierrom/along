@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+
 import ScreenLockManager from "controllers/screen_lock_manager"
 import { debug } from "controllers/util"
 

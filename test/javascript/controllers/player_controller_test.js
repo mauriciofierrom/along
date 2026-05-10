@@ -1,35 +1,29 @@
+import { mock, jest, describe, it, beforeEach, expect } from "bun:test"
+
 import { Application } from "@hotwired/stimulus"
 
+import PlayerController from "controllers/player_controller"
 import {
   ReadyState,
   PlayingState,
   EditingState,
-} from "../../../app/javascript/controllers/player/state"
-import PlayerController from "../../../app/javascript/controllers/player_controller"
-import LoopManager from "../../../app/javascript/controllers/player/loop_manager"
-
-jest.mock("../../../app/javascript/controllers/player/loop_manager", () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      loop: jest.fn(),
-      clear: jest.fn(),
-      settingRange: jest.fn(),
-    }
-  })
-})
-
-LoopManager.settingRange = (start, end) => [start, end]
+} from "controllers/player/state"
 
 jest.useFakeTimers()
+
+mock.module("controllers/player/loop_manager", () => {
+  return { loop: jest.fn(), clear: jest.fn(), settingRange: jest.fn() }
+})
 
 describe("PlayerController", () => {
   let application
 
-  // TODO: There seems to be an error with jest-dom or whatever that prevents me
-  // from creating and sharing the playerController/Element from the beforeEach.
+  // TODO: Sharing the playerController/Element from the beforeEach.
   // That would help simplify the tests.
   beforeEach(() => {
-    LoopManager.mockClear()
+    jest.clearAllMocks()
+
+    window.rails_env = "test"
 
     document.head.innerHTML = "<script></script>"
     document.body.innerHTML = ` <div data-controller="player" data-player-video-id-value="video-id">
@@ -120,7 +114,7 @@ describe("PlayerController", () => {
         detail: { start: 43, end: 65 },
       })
 
-      jest.runAllTimers()
+      jest.runOnlyPendingTimers()
 
       expect(mockDispatch.mock.calls[0][0]).toBe("loopClearStarted")
       expect(mockDispatch.mock.calls[1][0]).toBe("loopClearFinished")
