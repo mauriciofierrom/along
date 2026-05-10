@@ -68,7 +68,7 @@ export default class extends Player {
   canPlay() {
     const playerElement = document.querySelector("#player")
 
-    if (playerElement.dataset.restriction) {
+    if (playerElement?.dataset.restriction) {
       return Promise.reject(
         JSON.stringify({ restriction: playerElement.dataset.restriction }),
       )
