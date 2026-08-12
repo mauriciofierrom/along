@@ -108,7 +108,7 @@ class SectionsController < ApplicationController
   end
 
   def set_lesson
-    @lesson = Lesson.find(params[:lesson_id])
+    @lesson = current_user.lessons.find(params[:lesson_id])
   end
 
   def section_params
