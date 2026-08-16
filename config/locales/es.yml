@@ -48,6 +48,7 @@ es:
             video_url:
               host_not_allowed: "El nombre de sitio no es permitido"
               https_only: "Solo se acepta enlaces seguros (HTTPS)"
+              invalid_video_id: "El ID del video es incorrecto"
               invalid: "Enlace no válido"
   lessons:
     create:

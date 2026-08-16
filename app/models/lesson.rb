@@ -3,6 +3,11 @@
 require "uri"
 
 class Lesson < ApplicationRecord
+  VIDEO_URL_PATTERNS = {
+    host: /\A(?:www\.)?youtu\.be\z/,
+    path: %r{\A/[\w-]{11}\z},
+  }.freeze
+
   default_scope { order(created_at: :desc) }
   paginates_per 10
 
@@ -19,7 +24,7 @@ class Lesson < ApplicationRecord
       only_integer: true,
       greater_than: 0,
     }
-  validates :video_url, presence: true, url: { host: /(youtube\.com|youtu\.be)\Z/i }
+  validates :video_url, presence: true, url: VIDEO_URL_PATTERNS
 
   def current_objective
     sections.find(&:current)

@@ -7,6 +7,7 @@ class UrlValidator < ActiveModel::EachValidator
     uri = URI.parse(value)
     record.errors.add(attribute, :https_only) unless uri.scheme == "https"
     record.errors.add(attribute, :host_not_allowed) unless options[:host].nil? || uri.host =~ options[:host]
+    record.errors.add(attribute, :invalid_video_id) unless options[:path].nil? || uri.path =~ options[:path]
   rescue URI::InvalidURIError
     record.errors.add(attribute, :invalid)
   end

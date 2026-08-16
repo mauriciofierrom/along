@@ -55,7 +55,7 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
           instrument_id: @lesson.instrument_id,
           name: "Updated Lesson",
           order: @lesson.order + 2,
-          video_url: "https://youtu.be/another",
+          video_url: "https://youtu.be/dQw4w9WgXcQ?si=OauGG2D2vaMGlqav",
         },
       }
     assert_redirected_to lesson_url(@lesson)

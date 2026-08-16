@@ -58,6 +58,7 @@ en:
             video_url:
               host_not_allowed: "Host is not allowed"
               https_only: "Only secure links are allowed (HTTPS)"
+              invalid_video_id: "The video ID is incorrect"
               invalid: "Invalid link"
   lessons:
     create:

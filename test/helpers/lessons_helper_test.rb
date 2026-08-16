@@ -7,6 +7,6 @@ class LessonsHelperTest < ActionView::TestCase
 
   test "#video_id grabs the video id from the url" do
     lesson = lessons(:layla)
-    assert_equal video_id(lesson), "something"
+    assert_equal video_id(lesson), "fX5USg8_1gA"
   end
 end

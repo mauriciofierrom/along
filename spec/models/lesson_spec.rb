@@ -16,6 +16,16 @@ describe Lesson do
     it { is_expected.to(validate_numericality_of(:duration_in_seconds).only_integer.is_greater_than(0)) }
   end
 
+  describe "video url validations" do
+    it { is_expected.to(allow_value("https://youtu.be/0Rdu1S6UJBU?si=fYmWqtQ5KOhqCmxW").for(:video_url)) }
+    it { is_expected.to(allow_value("https://www.youtu.be/0Rdu1S6UJBU?si=fYmWqtQ5KOhqCmxW").for(:video_url)) }
+    it { is_expected.to(allow_value("https://www.youtu.be/0Rdu1S6UJBU").for(:video_url)) }
+    it { is_expected.to(allow_value("https://www.youtu.be/0Rdu-S6UJBU").for(:video_url)) }
+    it { is_expected.to(allow_value("https://www.youtu.be/0Rdu1S6UJ_U").for(:video_url)) }
+    it { is_expected.to(allow_value("https://www.youtu.be/0Rdu-S6UJ_U").for(:video_url)) }
+    it { is_expected.not_to(allow_value("https://evil-youtu.be/0Rdu1S6UJBU?si=fYmWqtQ5KOhqCmxW").for(:video_url)) }
+  end
+
   describe "#default_scope" do
     let(:user) { create(:user) }
     let(:older) { create(:lesson, created_at: 1.day.ago, user: user) }
