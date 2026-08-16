@@ -15,6 +15,6 @@ class LessonsTest < ApplicationSystemTestCase
 
   test "should have app-capable meta tag" do
     visit lesson_url(@lesson)
-    find 'meta[name="apple-mobile-web-app-capable"][content="yes"]', visible: :all
+    assert_selector 'meta[name="apple-mobile-web-app-capable"][content="yes"]', visible: :all
   end
 end
