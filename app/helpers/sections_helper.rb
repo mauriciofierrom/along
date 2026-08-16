@@ -6,7 +6,7 @@ module SectionsHelper
 
   def format_time(time_in_seconds)
     time = Time.at(time_in_seconds).utc
-    return time.strftime("%H:%M:%S") if time_in_seconds.seconds.in_hours > 1
+    return time.strftime("%H:%M:%S") if time_in_seconds.seconds.in_hours >= 1
 
     time.strftime("%M:%S")
   end

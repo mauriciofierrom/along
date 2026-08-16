@@ -20,9 +20,14 @@ class SectionsHelperTest < ActionView::TestCase
     assert_equal format_time(time), "18:36"
   end
 
-  test ".format_time for time an hour or more" do
+  test ".format_time for time greater than an hour" do
     time = 7943
     assert_equal format_time(time), "02:12:23"
+  end
+
+  test ".format_time for an hour" do
+    time = 3600
+    assert_equal format_time(time), "01:00:00"
   end
 
   test "loop img for section set to loop" do
