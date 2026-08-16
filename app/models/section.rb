@@ -41,10 +41,6 @@ class Section < ApplicationRecord
 
   before_create :set_order
 
-  def zoom_level
-    @section.zoom.maximum(:level)
-  end
-
   def timeline
     @timeline ||= Timeline.new(*operation_range)
   end
