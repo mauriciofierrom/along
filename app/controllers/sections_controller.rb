@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SectionsController < ApplicationController
-  before_action :set_lesson, except: :swap_order
+  before_action :set_lesson
   before_action :set_section, only: [:show, :edit, :update, :destroy]
 
   def show
@@ -87,8 +87,8 @@ class SectionsController < ApplicationController
   end
 
   def swap_order
-    dragged = Section.find(swap_params[:dragged_id].to_i)
-    dropped = Section.find(swap_params[:dropped_id].to_i)
+    dragged = @lesson.sections.find(swap_params[:dragged_id].to_i)
+    dropped = @lesson.sections.find(swap_params[:dropped_id].to_i)
 
     dragged_order = dragged.order
 

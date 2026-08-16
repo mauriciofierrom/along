@@ -7,12 +7,15 @@ Rails.application.routes.draw do
       post :edit_name_inline
       patch :update_inline
     end
-    resources :sections, except: [:index]
+    resources :sections, except: [:index] do
+      collection do
+        post :swap_order
+      end
+    end
   end
 
   post "section/zoom_in", to: "sections#zoom_in"
   post "section/zoom_out", to: "sections#zoom_out"
-  post "section/swap_order", to: "sections#swap_order"
 
   authenticated :user do
     root "lessons#index", as: :authenticated_root

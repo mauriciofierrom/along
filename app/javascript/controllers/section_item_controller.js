@@ -46,10 +46,10 @@ export default class extends Controller {
       event.currentTarget.dataset.sectionId,
       10,
     )
-
     const droppedElement = event.currentTarget
+    const swapEndpoint = event.target.dataset.swapEndpoint
 
-    fetch(`/section/swap_order/`, {
+    fetch(swapEndpoint, {
       method: "POST",
       body: JSON.stringify({
         swap_params: {
