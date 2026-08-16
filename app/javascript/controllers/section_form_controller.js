@@ -47,7 +47,7 @@ export default class extends Controller {
   }
 
   #handleSubmissionError(event) {
-    if (!event.detail.formSubmission.fromElement === this.element) return
+    if (event.detail.formSubmission.fromElement !== this.element) return
 
     if (!event.detail.success && this.#toRestore) {
       this.dispatch("restoreRange", { detail: { restore: this.#toRestore } })
