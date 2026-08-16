@@ -25,4 +25,21 @@ describe Lesson do
       expect(described_class.where(user: user)).to(eq([newer, older]))
     end
   end
+
+  describe "#current_objective" do
+    subject(:current_objective) { lesson.current_objective }
+
+    let(:user) { create(:user) }
+    let(:lesson) { create(:lesson, user: user) }
+
+    context "when there's no section" do
+      it { is_expected.to(be_nil) }
+    end
+
+    context "when there's a section" do
+      let!(:section) { create(:section, lesson: lesson, current: true) }
+
+      it { is_expected.to(eq(section)) }
+    end
+  end
 end

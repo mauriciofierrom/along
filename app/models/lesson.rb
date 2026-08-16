@@ -22,7 +22,7 @@ class Lesson < ApplicationRecord
   validates :video_url, presence: true, url: { host: /(youtube\.com|youtu\.be)\Z/i }
 
   def current_objective
-    sections.find { |s| s.current = true }
+    sections.find(&:current)
   end
 
   def inline_validation_fields

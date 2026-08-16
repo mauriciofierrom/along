@@ -14,9 +14,9 @@
   </div>
 
   <% if Flipper.enabled?(:lesson_status) %>
-    <% if lesson.sections.size > 0 && lesson.current_objective then %>
+    <% if (objective = lesson.current_objective) then %>
       <div class="subtitle">
-        Now learning: <%= lesson.sections.where(current: true)&.first&.name %>
+        Now learning: <%= objective.name %>
       </div>
     <% end %>
   <% end %>
