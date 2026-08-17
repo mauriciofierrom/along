@@ -145,21 +145,15 @@ export default class extends Controller {
 
     const starts = Array.from(
       document.querySelectorAll(`input[id^='${prefix}'][id$='start']`),
-    )
-      .sort()
-      .map((element) => parseFloat(element.value))
+    ).map((element) => parseFloat(element.value))
 
     const ends = Array.from(
       document.querySelectorAll(`input[id^='${prefix}'][id$='end']`),
-    )
-      .sort()
-      .map((element) => parseFloat(element.value))
+    ).map((element) => parseFloat(element.value))
 
     const ids = Array.from(
       document.querySelectorAll(`input[id^='${prefix}'][id$='id']`),
-    )
-      .sort()
-      .map((element) => parseInt(element.value, 10))
+    ).map((element) => parseInt(element.value, 10))
 
     return starts.map(
       (start, i) => new Zoom(start, ends[i], this.durationValue, ids[i]),
