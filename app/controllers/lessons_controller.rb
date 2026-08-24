@@ -74,6 +74,6 @@ class LessonsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def lesson_params
-    params.expect(lesson: [:name, :video_url, :instrument_id, :order, :duration_in_seconds, :page])
+    params.expect(lesson: [:name, :video_url, :instrument_id, :duration_in_seconds])
   end
 end
