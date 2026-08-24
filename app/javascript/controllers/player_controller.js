@@ -121,6 +121,16 @@ export default class extends Controller {
     }
   }
 
+  /**
+   * Stable reference to the turbo:submit-end handler to remove on disconnect
+   */
+  #turboSubmitEndHandler
+
+  /**
+   * Stable reference to the turbo:before-fetch-request handler to remove on disconnect
+   */
+  #turboBeforeFetchRequestHandler
+
   connect() {
     debug("Connect")
     this.#initPlayer()
@@ -146,16 +156,18 @@ export default class extends Controller {
     // reacting to a section turbo-stream event.
     document.documentElement.addEventListener(
       "turbo:submit-end",
-      this.#onSectionSave.bind(this),
+      this.#turboSubmitEndHandler,
     )
     document.documentElement.addEventListener(
       "turbo:before-fetch-request",
-      this.#onSectionCancel.bind(this),
+      this.#turboBeforeFetchRequestHandler,
     )
   }
 
   initialize() {
     this.updatePoints = debounce(this.updatePoints.bind(this), 1000)
+    this.#turboSubmitEndHandler = this.#onSectionSave.bind(this)
+    this.#turboBeforeFetchRequestHandler = this.#onSectionCancel.bind(this)
     this.#initStates()
   }
 
@@ -267,6 +279,17 @@ export default class extends Controller {
     )
 
     this.loop(start, end)
+  }
+
+  disconnect() {
+    document.documentElement.removeEventListener(
+      "turbo:submit-end",
+      this.#turboSubmitEndHandler,
+    )
+    document.documentElement.removeEventListener(
+      "turbo:before-fetch-request",
+      this.#turboBeforeFetchRequestHandler,
+    )
   }
 
   /**

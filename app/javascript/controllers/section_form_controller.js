@@ -4,6 +4,15 @@ export default class extends Controller {
   static targets = ["error"]
 
   #toRestore
+  #submissionErrorHandler
+
+  /**
+   * Bind the submission error handler once as a stable reference to
+   * remove it on disconnect
+   */
+  initialize() {
+    this.#submissionErrorHandler = this.#handleSubmissionError.bind(this)
+  }
 
   /**
    * We attach an event that allows us to react to turbo form submission to
@@ -11,10 +20,7 @@ export default class extends Controller {
    * should restore the form to before-submission-state
    */
   connect() {
-    document.addEventListener(
-      "turbo:submit-end",
-      this.#handleSubmissionError.bind(this),
-    )
+    document.addEventListener("turbo:submit-end", this.#submissionErrorHandler)
   }
 
   /*
@@ -24,7 +30,7 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener(
       "turbo:submit-end",
-      this.#handleSubmissionError.bind(this),
+      this.#submissionErrorHandler,
     )
   }
 
