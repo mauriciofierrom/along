@@ -132,16 +132,14 @@ class SectionsController < ApplicationController
 
   def zoom_params
     params
-      .permit(:start,
+      .expect(zoom: [
+        :start,
         :end,
         :duration,
-        :button,
-        :authenticity_token,
-        :commit,
         :zoom_out_start,
         :zoom_out_end,
         :zoom_out_id,
-        :lesson_id)
+      ])
   end
 
   def swap_params

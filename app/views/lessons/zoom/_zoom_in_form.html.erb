@@ -1,4 +1,5 @@
-<%= form_with url: section_zoom_in_path,
+<%= form_with scope: :zoom,
+  url: zoom_in_lesson_sections_path(lesson),
   data: { name: "zoom-in",
           "zoom-in-zoom-outlet": ".zoom",
           controller: "zoom-in",
@@ -13,7 +14,6 @@
   <%= form.hidden_field :start, data: { "zoom-in-target" => "start" } %>
   <%= form.hidden_field :end, data: { "zoom-in-target" => "end" } %>
   <%= form.hidden_field :duration, value: lesson.duration_in_seconds %>
-  <%= form.hidden_field :lesson_id, value: lesson.id %>
   <%= button_tag type: "submit" do %>
     <%= fa_icon("search-plus") %>
   <% end %>
