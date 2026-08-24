@@ -4,6 +4,5 @@ layla:
   name: "Layla - Eric Clapton"
   video_url: https://youtu.be/fX5USg8_1gA?si=2-VFYnmOvjO9KtUd
   instrument: guitar
-  order: 1
   duration_in_seconds: 1190
   user: default
