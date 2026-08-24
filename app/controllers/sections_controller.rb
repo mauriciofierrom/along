@@ -99,6 +99,10 @@ class SectionsController < ApplicationController
       dropped.save!(validate: false)
       dragged.save!(validate: false)
     end
+
+    respond_to do |format|
+      format.json { head(:no_content) }
+    end
   end
 
   private

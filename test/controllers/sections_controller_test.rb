@@ -62,4 +62,25 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to lesson_url(@lesson)
   end
+
+  test "should swap section " do
+    second_section = sections(:two)
+
+    post swap_order_lesson_sections_path(@lesson),
+      params: {
+        swap_params: {
+          dragged_id: @section.id,
+          dropped_id: second_section.id,
+        },
+      },
+      as: :json
+
+    assert_response :no_content
+
+    first_order = @section.order
+    second_order = second_section.order
+
+    assert_equal second_section.reload.order, first_order
+    assert_equal @section.reload.order, second_order
+  end
 end
