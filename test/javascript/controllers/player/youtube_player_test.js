@@ -1,6 +1,7 @@
 /* global global */
-import YoutubePlayer from "../../../../app/javascript/controllers/player/youtube_player"
-import { PlayerRestriction } from "../../../../app/javascript/controllers/player/player"
+import YoutubePlayer from "controllers/player/youtube_player"
+import { PlayerRestriction } from "controllers/player/player"
+import { PlaybackErrorType } from "controllers/player/error"
 
 jest.useFakeTimers()
 
@@ -44,13 +45,14 @@ describe("YoutubePlayer", () => {
 
         localStorage.setItem("wwwww12_1", threeHoursAgo - 3600)
 
-        await expect(ytPlayer.canPlay()).rejects.toMatch(
-          JSON.stringify({
+        await expect(ytPlayer.canPlay()).rejects.toMatchObject({
+          name: "PlaybackError",
+          type: PlaybackErrorType.PlayerRestriction,
+          message: "Player restriction",
+          details: {
             restriction: PlayerRestriction.UserActionRequired,
-            message:
-              'You must play manually to make it count towards the video creator\'s view count. <a href="">Learn more</a>',
-          }),
-        )
+          },
+        })
       })
     })
   })

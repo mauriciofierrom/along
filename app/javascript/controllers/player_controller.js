@@ -12,6 +12,7 @@ import YoutubePlayer from "controllers/player/youtube_player"
 import DummyPlayer from "controllers/player/dummy_player"
 import { PlayerRestriction } from "controllers/player/player"
 import { debug, debounce, show, hide, Env } from "controllers/util"
+import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 import { ZoomType } from "controllers/zoom/zoom"
 
 /** Controller for the YouTube player custom functionality */
@@ -110,11 +111,16 @@ export default class extends Controller {
     hide(this.restrictionTarget)
   }
 
-  #handlePlayerRestrictions = (error) => {
-    debug("We got player restriction", error)
-    const err = JSON.parse(error)
+  #isPlayerRestriction = (error) =>
+    error instanceof PlaybackError &&
+    error.type === PlaybackErrorType.PlayerRestriction
 
-    switch (err.restriction) {
+  #handlePlayerRestrictions = (error) => {
+    if (!this.#isPlayerRestriction(error)) return
+
+    debug("We got player restriction", error)
+
+    switch (error.details.restriction) {
       case PlayerRestriction.UserActionRequired:
         show(this.restrictionTarget)
         break

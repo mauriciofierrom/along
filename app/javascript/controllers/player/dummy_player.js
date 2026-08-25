@@ -1,6 +1,7 @@
 /* eslint-disable no-empty-function, no-unused-vars */
-import Player from "controllers/player/player"
+import Player, { PlayerRestriction } from "controllers/player/player"
 import { debug, randomBetween } from "controllers/util"
+import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 
 /** Dummy Player to use in tests */
 export default class extends Player {
@@ -74,7 +75,13 @@ export default class extends Player {
 
     if (playerElement?.dataset.restriction) {
       return Promise.reject(
-        JSON.stringify({ restriction: playerElement.dataset.restriction }),
+        new PlaybackError(
+          PlaybackErrorType.PlayerRestriction,
+          "Player restriction",
+          {
+            restriction: PlayerRestriction.UserActionRequired,
+          },
+        ),
       )
     } else {
       return Promise.resolve()

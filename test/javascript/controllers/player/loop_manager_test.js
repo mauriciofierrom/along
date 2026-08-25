@@ -1,6 +1,7 @@
 import LoopManager from "controllers/player/loop_manager"
 import DummyPlayer from "controllers/player/dummy_player"
 import { PlayerRestriction } from "controllers/player/player"
+import { PlaybackErrorType } from "controllers/player/error"
 
 jest.useFakeTimers()
 
@@ -36,7 +37,11 @@ describe("LoopManager", () => {
       await new Promise((resolve) => setImmediate(resolve))
       await loopManager.clear()
 
-      await expect(loop).rejects.toMatch("Cancelled manually")
+      await expect(loop).rejects.toMatchObject({
+        name: "PlaybackError",
+        type: PlaybackErrorType.LoopClear,
+        message: "Cancelled manually",
+      })
     })
   })
 
@@ -49,9 +54,12 @@ describe("LoopManager", () => {
         `
 
         const loopManager = new LoopManager(new DummyPlayer({}))
-        await expect(loopManager.loop(12, 23, 2)).rejects.toMatch(
-          JSON.stringify({ restriction: PlayerRestriction.UserActionRequired }),
-        )
+        await expect(loopManager.loop(12, 23, 2)).rejects.toMatchObject({
+          name: "PlaybackError",
+          type: PlaybackErrorType.PlayerRestriction,
+          message: "Player restriction",
+          details: { restriction: PlayerRestriction.UserActionRequired },
+        })
       })
     })
 

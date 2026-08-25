@@ -1,4 +1,5 @@
 import { debug } from "controllers/util"
+import { PlaybackError, PlaybackErrorType } from "controllers/player/error"
 
 /** Class driving the execution of a playback loop */
 export default class LoopManager {
@@ -60,7 +61,7 @@ export default class LoopManager {
 
         this.#aborted = true
         clearInterval(this.#intervalId)
-        reject(signal.reason)
+        reject(new PlaybackError(PlaybackErrorType.LoopClear, signal.reason))
       })
 
       this.#intervalId = setInterval(() => {

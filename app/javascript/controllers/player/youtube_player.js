@@ -1,6 +1,7 @@
 /* global YT */
 import { debug } from "controllers/util"
 import Player, { PlayerRestriction } from "controllers/player/player"
+import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 
 /** A class to encapsulate the YouTube player */
 export default class extends Player {
@@ -110,10 +111,13 @@ export default class extends Player {
         resolve()
       } else {
         reject(
-          JSON.stringify({
-            restriction: PlayerRestriction.UserActionRequired,
-            message: `You must play manually to make it count towards the video creator's view count. <a href="">Learn more</a>`,
-          }),
+          new PlaybackError(
+            PlaybackErrorType.PlayerRestriction,
+            "Player restriction",
+            {
+              restriction: PlayerRestriction.UserActionRequired,
+            },
+          ),
         )
       }
     })
