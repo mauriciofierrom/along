@@ -53,7 +53,7 @@ gem "font-awesome-rails"
 # Get locale from http header
 gem "http_accept_language", "~> 2.1", ">= 2.1.1"
 
-gem "devise", "~> 4.9"
+gem "devise", "~> 5.0"
 
 gem "flipper-active_record", ">= 1.3"
 
