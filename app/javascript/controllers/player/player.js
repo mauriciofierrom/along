@@ -2,7 +2,7 @@
 /** A class to abstract over video players */
 export default class Player {
   constructor() {
-    if (this.constructor === "Player") {
+    if (this.constructor === Player) {
       throw new Error("Abstract class Player cannot be instantiated")
     }
   }
