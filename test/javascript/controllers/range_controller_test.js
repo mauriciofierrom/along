@@ -128,6 +128,29 @@ describe("RangeController", () => {
           },
         })
       })
+
+      describe("when the starting point is zero", () => {
+        it("includes the setting", () => {
+          const mockDispatch = jest.spyOn(rangeController, "dispatch")
+
+          rangeController.updateZoomLevel({
+            detail: { zoom: new Zoom(4.0, 33.0, 290) },
+          })
+
+          rangeController.minTarget.value = "0"
+          rangeController.minTarget.dispatchEvent(new InputEvent("input"))
+
+          jest.runOnlyPendingTimers()
+
+          expect(mockDispatch).toHaveBeenCalledWith("rangeInputUpdated", {
+            detail: {
+              start: 4.0,
+              end: expect.any(Number),
+              setting: 4.0,
+            },
+          })
+        })
+      })
     })
 
     describe("on addZoomLevel", () => {

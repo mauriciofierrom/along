@@ -202,9 +202,9 @@ export default class extends Controller {
 
     return {
       ...this.#activeZoom.convert(start, end),
-      ...(pointToSet
-        ? { setting: this.#activeZoom.convertPoint(pointToSet) }
-        : {}),
+      ...(pointToSet == null
+        ? {}
+        : { setting: this.#activeZoom.convertPoint(pointToSet) }),
     }
   }
 
