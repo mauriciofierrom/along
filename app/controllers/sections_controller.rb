@@ -125,7 +125,6 @@ class SectionsController < ApplicationController
         :current,
         :finished,
         :loop,
-        :lesson_id,
         zoom_attributes: [:start, :end, :id, :_destroy],
       ])
   end
