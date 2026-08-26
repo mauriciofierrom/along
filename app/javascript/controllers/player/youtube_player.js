@@ -157,16 +157,11 @@ export default class extends Player {
 
   static create(params) {
     return new Promise((resolve) => {
-      const tag = document.createElement("script")
       let player
       const newParams = params
       newParams.onReady = () => {
         resolve(player)
       }
-
-      tag.src = "https://www.youtube.com/iframe_api"
-      const firstScriptTag = document.getElementsByTagName("script")[0]
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
 
       if (window && window.YT) {
         player = new this(newParams)
