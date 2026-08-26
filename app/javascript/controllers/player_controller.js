@@ -296,6 +296,9 @@ export default class extends Controller {
       "turbo:before-fetch-request",
       this.#turboBeforeFetchRequestHandler,
     )
+
+    this.loopManager?.clear()
+    this.player?.dispose()
   }
 
   /**

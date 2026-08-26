@@ -87,6 +87,13 @@ export default class Player {
   static async create(_params) {
     throw new Error("Abstract method prepare must be implemented")
   }
+
+  /**
+   * Cleanup to release any resources that might be still running
+   */
+
+  // eslint-disable-next-line no-empty-function
+  dispose() {}
 }
 
 export const PlayerRestriction = {

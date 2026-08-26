@@ -111,4 +111,8 @@ export default class extends Player {
         break
     }
   }
+
+  dispose() {
+    clearInterval(this.#intervalId)
+  }
 }
