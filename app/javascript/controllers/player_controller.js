@@ -115,12 +115,10 @@ export default class extends Controller {
     error instanceof PlaybackError &&
     error.type === PlaybackErrorType.PlayerRestriction
 
-  #handlePlayerRestrictions = (error) => {
-    if (!this.#isPlayerRestriction(error)) return
+  #handlePlayerRestrictions = (restriction) => {
+    debug("We got player restriction", restriction)
 
-    debug("We got player restriction", error)
-
-    switch (error.details.restriction) {
+    switch (restriction) {
       case PlayerRestriction.UserActionRequired:
         show(this.restrictionTarget)
         break
@@ -204,10 +202,12 @@ export default class extends Controller {
    */
   loop(start, end) {
     return this.state.loop(start, end).catch((error) => {
+      if (!this.#isPlayerRestriction(error)) return
+
       this.pendingLoop = { start, end }
       this.pendingState = this.state
       this.state = this.userActionRequiredState
-      this.#handlePlayerRestrictions(error)
+      this.#handlePlayerRestrictions(error.details.restriction)
     })
   }
 
