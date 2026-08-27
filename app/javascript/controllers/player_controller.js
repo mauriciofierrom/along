@@ -142,6 +142,9 @@ export default class extends Controller {
     this.#initPlayer()
       .then((player) => {
         debug("init player", player)
+        // Return early if we got disconnected by now
+        if (!this.element.isConnected) return
+
         // Set the player
         this.player = player
 
