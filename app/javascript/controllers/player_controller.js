@@ -72,9 +72,6 @@ export default class extends Controller {
   /** @propery {EditingState} */
   editingState
 
-  /** @property {SavingState} */
-  savingState
-
   /** @property {PickingPointState} */
   pickingPointState
 
