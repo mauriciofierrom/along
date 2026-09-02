@@ -36,6 +36,4 @@ jobs:
       - name: JS tests
         run: bun test --isolate
       - name: E2E tests
-        run: |
-          CYPRESS=1 bin/rails server -p 5017 &> /dev/null &
-          yarn cypress run
+        run: bin/rake test:cypress
