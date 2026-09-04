@@ -2,7 +2,7 @@ describe("Section", () => {
   it("Loads the section", () => {
     cy.appFactories([["create", "section"]]).then(([section]) => {
       cy.forceLogin({ redirect_to: "/lessons" })
-      cy.get(".video-card > .title").click()
+      cy.findByTestId("lesson-link").click()
       cy.findByText(section.name).should("exist")
     })
   })
@@ -32,7 +32,6 @@ describe("Section", () => {
         cy.appFactories([["create", "section", { name: "My Section" }]]).then(
           ([section]) => {
             cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
-            cy.reload()
             cy.findByText("New Section").click()
             cy.get("#section_name").type("My Section")
             cy.findByText("Create").click()
@@ -59,8 +58,7 @@ describe("Section", () => {
     it("enables the range inputs when the video starts playing", () => {
       cy.appFactories([["create", "section"]]).then(([section]) => {
         cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
-        cy.reload()
-        cy.get(".fa-pencil-square-o").click({ force: true })
+        cy.findByTestId("edit-section").click({ force: true })
         cy.get("#section_start_time")
           .should("have.class", "disabled")
           .should("be.disabled")
@@ -88,8 +86,7 @@ describe("Section", () => {
               ],
             ]).then(() => {
               cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
-              cy.reload()
-              cy.get(".fa-pencil-square-o").eq(1).click({ force: true })
+              cy.findAllByTestId("edit-section").eq(1).click({ force: true })
               cy.get("#section_name").clear().type("My Section")
               cy.findByText("Create").click()
             })
@@ -121,15 +118,15 @@ describe("Section", () => {
     beforeEach(() => {
       cy.appScenario("multiple_sections")
       cy.forceLogin({ redirect_to: "/lessons" })
-      cy.get(".video-card > .title").click()
-      cy.get(".item").eq(1).findByText("Section 2")
-      cy.get(".item")
+      cy.findByTestId("lesson-link").click()
+      cy.findAllByTestId("section-item").eq(1).findByText("Section 2")
+      cy.findAllByTestId("section-item")
         .last()
         .then(($lastItem) => {
           cy.wrap($lastItem).trigger("dragstart", {
             dataTransfer: new DataTransfer(),
           })
-          cy.get(".item")
+          cy.findAllByTestId("section-item")
             .first()
             .then(($firstItem) => {
               const data = new DataTransfer()
@@ -146,19 +143,17 @@ describe("Section", () => {
         })
     })
 
-    it("swaps the places of the sections", () => {
-      cy.get(".item").first().findByText("Section 3")
-      cy.get(".item").last().findByText("Section 1")
-    })
+    it("leaves the UI in a consistent state", () => {
+      // Swaps the places of the sections
+      cy.findAllByTestId("section-item").first().findByText("Section 3")
+      cy.findAllByTestId("section-item").last().findByText("Section 1")
 
-    it("makes the changes persistent", () => {
-      cy.reload()
-      cy.get(".item").first().findByText("Section 3")
-      cy.get(".item").last().findByText("Section 1")
-    })
+      // Makes the changes persistent
+      cy.findAllByTestId("section-item").first().findByText("Section 3")
+      cy.findAllByTestId("section-item").last().findByText("Section 1")
 
-    it("doesn't affect the other sections", () => {
-      cy.get(".item").eq(1).findByText("Section 2")
+      // Doesn't affect the other sections
+      cy.findAllByTestId("section-item").eq(1).findByText("Section 2")
     })
   })
 
@@ -169,7 +164,6 @@ describe("Section", () => {
           ["create", "section", { name: "Restriction Section" }],
         ]).then(([section]) => {
           cy.forceLogin({ redirect_to: `/lessons/${section.lesson_id}` })
-          cy.reload()
           cy.get("#player-restriction").should("have.class", "hidden")
           cy.get("#player").then(([player]) => {
             player.dataset.restriction = "user_action_required"

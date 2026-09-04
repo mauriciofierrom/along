@@ -103,8 +103,7 @@ describe("Lesson", () => {
             ],
           ]).then(() => {
             cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
-            cy.reload()
-            cy.get(".fa-edit").click({ force: true })
+            cy.findByTestId("edit-lesson").click({ force: true })
           })
         },
       )
