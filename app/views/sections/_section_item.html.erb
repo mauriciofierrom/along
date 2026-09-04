@@ -1,6 +1,7 @@
 <%= turbo_frame_tag section do %>
   <div class="item"
        draggable="true"
+       data-testid="section-item"
        data-section-id="<%= section.id %>"
        data-controller="section-item"
        data-action="dragstart->section-item#dragStart drop->section-item#onDrop:prevent:stop dragover->section-item#onDragOver:prevent:stop dragend->section-item#onDragEnd"
@@ -18,7 +19,8 @@
       <div class="item-actions">
         <%= link_to (fa_icon "pencil-square-o"),
           edit_lesson_section_path(lesson, section),
-          data: { turbo_frame: "sections" } %>
+          data: { turbo_frame: "sections", testid: "edit-section" }
+        %>
         <%= button_to (fa_icon "trash"),
           lesson_section_path(lesson, section),
           method: :delete,

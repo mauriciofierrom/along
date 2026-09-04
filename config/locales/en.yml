@@ -39,6 +39,8 @@ en:
   player_restriction_title: "Playback Restriction"
   manual_playback: "In order for YouTube to count our use as a view, please click the play button. We won't ask again for 3 hours"
   cancel: "Cancel"
+  zoom_in: "Zoom in"
+  zoom_out: "Zoom out"
   actions:
     new: "New"
     edit: "Edit"

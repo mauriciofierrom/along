@@ -6,7 +6,7 @@
     <%= turbo_frame_tag "name_#{@lesson.id}", class: "title" do %>
       <div class="title">
         <h1><%= @lesson.name %></h1>
-        <%= button_to (fa_icon "edit"), edit_name_inline_lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}"}, class: "link" %>
+        <%= button_to (fa_icon "edit"), edit_name_inline_lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}", testid: "edit-lesson" }, class: "link" %>
       </div>
     <% end %>
     <div class="header-actions">

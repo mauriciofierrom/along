@@ -3,6 +3,8 @@ es:
   sign_up: "Registrarse"
   logout: "Salir"
   cancel: "Cancelar"
+  zoom_in: "Acercar"
+  zoom_out: "Alejar"
   forgot_password: "¿Olvidaste tu contraseña?"
   no_confirmation: "¿No recibiste las instrucciones de confirmación?"
   no_unlock: "¿No recibiste las instrucciones de desbloqueo?"

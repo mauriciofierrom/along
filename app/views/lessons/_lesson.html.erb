@@ -2,7 +2,7 @@
   <%= image_tag(video_thumbnail_url(lesson), class: "thumbnail") %>
   <div class="title">
     <%= instrument_emoji(lesson) %>
-    <%= link_to lesson.name, lesson, data: { turbo: false } %>
+    <%= link_to lesson.name, lesson, data: { turbo: false, testid: "lesson-link" } %>
   </div>
 
   <div class="action">
