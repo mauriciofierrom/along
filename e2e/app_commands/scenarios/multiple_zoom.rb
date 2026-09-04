@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-section = CypressOnRails::SmartFactoryWrapper.create(:section, name: "Section 1")
+section = CypressOnRails::SmartFactoryWrapper.create(:section, name: "Section 1", end_time: 20)
 
 # Each subsequent section level must be inside the other to an upper limit of 3
-# FIXME: This depends on lesson/section values to have enough duration/end time
 zoom1 = Zoom.create!(
   section: section,
   start: section.start_time + 2.0,
