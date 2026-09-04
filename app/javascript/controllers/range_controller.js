@@ -186,11 +186,12 @@ export default class extends Controller {
   #preparePoints(pointToSet) {
     const rawStart = parseFloat(this.minTarget.value)
     const rawEnd = parseFloat(this.maxTarget.value)
+    const isPickingFirstPoint = this.#firstPick && pointToSet != null
     const { start, end } = this.#firstPick
       ? this.#optimalCurrentRange(pointToSet)
       : { start: rawStart, end: rawEnd }
 
-    if (this.#firstPick) {
+    if (isPickingFirstPoint) {
       if (pointToSet === rawStart) {
         this.maxTarget.value = end
       } else {
