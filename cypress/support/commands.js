@@ -33,3 +33,8 @@ Cypress.Commands.add(
   },
 )
 
+Cypress.Commands.add("disableDebounce", () => {
+  cy.window().then((win) => {
+    win.disable_debounce = true
+  })
+})

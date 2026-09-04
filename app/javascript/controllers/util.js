@@ -1,4 +1,5 @@
 export function debounce(callback, delay) {
+  if (window.disable_debounce) return callback
   let timeout
   return function (...restParam) {
     clearTimeout(timeout)
