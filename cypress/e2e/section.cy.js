@@ -148,6 +148,8 @@ describe("Section", () => {
       cy.findAllByTestId("section-item").first().findByText("Section 3")
       cy.findAllByTestId("section-item").last().findByText("Section 1")
 
+      cy.reload()
+
       // Makes the changes persistent
       cy.findAllByTestId("section-item").first().findByText("Section 3")
       cy.findAllByTestId("section-item").last().findByText("Section 1")
