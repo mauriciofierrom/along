@@ -3,6 +3,11 @@ import { debug } from "controllers/util"
 import Player, { PlayerRestriction } from "controllers/player/player"
 import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 
+const URL_PATTERNS = Object.freeze({
+  host: /^(?:www\.)?youtu\.be$/,
+  path: /^\/[\w-]{11}$/,
+})
+
 /** A class to encapsulate the YouTube player */
 export default class extends Player {
   /** @property {Player} player - The Youtube player */
@@ -203,7 +208,21 @@ export default class extends Player {
   #formatUrl(url) {
     const baseUrl = "https://youtu.be/v"
     const parsedUrl = new URL(url)
+    if (!this.#isYouTubeUrl(parsedUrl)) throw new Error("Invalid YouTube URL")
     return `${baseUrl}${parsedUrl.pathname}`
+  }
+
+  /**
+   * Validate if an URL is a YouTube shared URL
+   *
+   * @param {URL} - The parsed URL to test
+   * @return {boolean} Whether it is a valid URL
+   */
+  #isYouTubeUrl(url) {
+    return (
+      URL_PATTERNS.host.test(url.hostname) &&
+      URL_PATTERNS.path.test(url.pathname)
+    )
   }
 
   /**
