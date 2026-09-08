@@ -11,7 +11,14 @@ import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player"
 import DummyPlayer from "controllers/player/dummy_player"
 import { PlayerRestriction } from "controllers/player/player"
-import { debug, debounce, show, hide, Env } from "controllers/util"
+import {
+  debug,
+  debounce,
+  showPlayerError,
+  show,
+  hide,
+  Env,
+} from "controllers/util"
 import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 import { ZoomType } from "controllers/zoom/zoom"
 
@@ -153,6 +160,11 @@ export default class extends Controller {
         this.dispatch("playerInitialized")
       })
       .catch((error) => {
+        showPlayerError({
+          message: "Player initialization failed",
+          details: error,
+          target: this.element,
+        })
         console.error("Player initialization failed", error)
       })
 
@@ -186,6 +198,11 @@ export default class extends Controller {
       show(this.element.children[0])
       this.state = this.readyState
     } catch (error) {
+      showPlayerError({
+        message: "Player failed to load",
+        details: error,
+        target: this.element,
+      })
       console.error(error)
     }
   }
@@ -389,5 +406,12 @@ export default class extends Controller {
       },
       userId: this.userIdValue,
     }
+  }
+
+  /**
+   * Refresh page from error message CTA
+   */
+  refresh() {
+    window.location.reload()
   }
 }
