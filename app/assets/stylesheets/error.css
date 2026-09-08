@@ -1,0 +1,40 @@
+.error {
+  border: 10px solid transparent;
+  border-image: repeating-linear-gradient(
+    45deg,
+    #ffdd00,
+    #ffdd00 10px,
+    #000 10px,
+    #000 20px
+  ) 4;
+  animation: scroll-border 1s linear infinite;
+  width: 100%;
+  background: var(--bg-dark);
+  color: var(--bg-light);
+  padding: 10px;
+
+  .title {
+    font-weight: 500;
+    font-size: 3em;
+  }
+
+  .message {
+    color: var(--bg-light);
+    font-size: 1.5em;
+  }
+
+  .cta {
+    display: flex;
+    justify-content: flex-end;
+    color: var(--accent);
+  }
+
+  .details {
+    color: var(--primary);
+
+    .summary {
+      color: var(--accent);
+    }
+  }
+}
+
