@@ -109,3 +109,34 @@ function debugCondition() {
     !(window.is_cypress === "true")
   )
 }
+
+/**
+ * Player error definition
+ *
+ * @param {!Object} options
+ * @param {!Element} options.target - Element to add the error to
+ * @param {string} [options.title="Player error"] - Error panel title
+ * @param {string} options.message - User error message
+ * @param {!Error} options.details - Error containing the technical details
+ */
+export const showPlayerError = ({
+  target,
+  title = "Player error",
+  message,
+  details,
+}) => {
+  const template = document.querySelector("#player-error")
+  const clone = document.importNode(template.content, true)
+  const titleElem = clone.querySelector(".title")
+  const messageElem = clone.querySelector(".message")
+
+  titleElem.textContent = title
+  messageElem.textContent = message
+
+  // Add details
+  const detailsElem = clone.querySelector(".details")
+  detailsElem.insertAdjacentText("beforeend", details.message)
+
+  target.querySelector(".error")?.remove()
+  target.prepend(clone)
+}
