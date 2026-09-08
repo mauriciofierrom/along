@@ -1,0 +1,14 @@
+<template id="player-error">
+  <div class="error">
+    <div class="title">
+    </div>
+    <div class="message">
+    </div>
+    <details class="details">
+      <summary>Details</summary>
+    </details>
+    <div class="cta">
+      <%= button_tag t(:refresh), type: :button, data: { action: "click->player#refresh" } %>
+    </div>
+  </div>
+</template>
