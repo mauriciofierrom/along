@@ -3,6 +3,11 @@ import Player, { PlayerRestriction } from "controllers/player/player"
 import { debug, randomBetween } from "controllers/util"
 import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 
+const SimulatedError = {
+  Load: "load",
+  Init: "init",
+}
+
 /** Dummy Player to use in tests */
 export default class extends Player {
   #intervalId
@@ -38,6 +43,16 @@ export default class extends Player {
 
   get isLoaded() {
     return this.#loaded
+  }
+
+  #simulateError(error) {
+    switch (error) {
+      case SimulatedError.Load:
+        this.#onLoadError()
+        throw new Error("Load error details")
+      case SimulatedError.Init:
+        throw new Error("Init error details")
+    }
   }
 
   load(_url) {
@@ -99,17 +114,11 @@ export default class extends Player {
           resolve(new this(params))
         }, 1000)
       } else {
+        const error = window.sessionStorage.getItem("simulateError")
+        if (error) throw new Error("Init error details")
         resolve(new this(params))
       }
     })
-  }
-
-  #simulateError(error) {
-    switch (error) {
-      case "load":
-        this.#onLoadError()
-        break
-    }
   }
 
   dispose() {

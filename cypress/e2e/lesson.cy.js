@@ -1,4 +1,20 @@
 describe("Lesson", () => {
+  context("when the player fails to initialize", () => {
+    it("shows a player error", () => {
+      cy.window().then((window) => {
+        window.sessionStorage.setItem("simulateError", "init")
+      })
+      cy.appFactories([["create", "user"]])
+      cy.forceLogin()
+      cy.findByText("New Lesson").click()
+
+      cy.findByText("Player error")
+      cy.findByText("Player initialization failed")
+      cy.findByText("Details")
+      cy.findByText("Init error details")
+    })
+  })
+
   describe("New", () => {
     beforeEach(() => {
       cy.appFactories([["create", "user"]])
@@ -45,32 +61,49 @@ describe("Lesson", () => {
           cy.findByLabelText("Video link")
             .invoke("val", "https://some.com")
             .trigger("input")
+        })
+      })
+
+      describe("shows a player error", () => {
+        it("shows a player error", () => {
+          cy.findByText("Player error")
+          cy.findByText("Player failed to load")
+          cy.findByText("Details")
+          cy.findByText("Load error details")
+        })
+      })
+
+      context("and lesson creation is attempted", () => {
+        beforeEach(() => {
           cy.findByLabelText("Name").should("have.class", "disabled")
           cy.findByLabelText("Instrument").should("have.class", "disabled")
           cy.findByText("Create Lesson").should("have.class", "disabled")
         })
-      })
 
-      it("disables the rest of the fields and the submit button and shows the error message", () => {
-        cy.findByText("This video is restricted from being embedded")
-      })
+        it("disables the rest of the fields and the submit button and shows the error message", () => {
+          cy.findByText("This video is restricted from being embedded")
+        })
 
-      context("and a new url is used that succeeds to load", () => {
-        it("enables the rest of the fields and the submit button and hides the error message", () => {
-          cy.get("#player").then(([player]) => {
-            delete player.dataset.error
-            cy.findByLabelText("Video link")
-              .invoke("val", "https://some-other.com")
-              .trigger("input")
-            cy.findByLabelText("Name").should("not.have.class", "disabled")
-            cy.findByLabelText("Instrument").should(
-              "not.have.class",
-              "disabled",
-            )
-            cy.findByText("Create Lesson").should("not.have.class", "disabled")
-            cy.findByText(
-              "This video is restricted from being embedded",
-            ).should("not.exist")
+        context("and a new url is used that succeeds to load", () => {
+          it("enables the rest of the fields and the submit button and hides the error message", () => {
+            cy.get("#player").then(([player]) => {
+              delete player.dataset.error
+              cy.findByLabelText("Video link")
+                .invoke("val", "https://some-other.com")
+                .trigger("input")
+              cy.findByLabelText("Name").should("not.have.class", "disabled")
+              cy.findByLabelText("Instrument").should(
+                "not.have.class",
+                "disabled",
+              )
+              cy.findByText("Create Lesson").should(
+                "not.have.class",
+                "disabled",
+              )
+              cy.findByText(
+                "This video is restricted from being embedded",
+              ).should("not.exist")
+            })
           })
         })
       })
