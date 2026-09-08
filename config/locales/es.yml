@@ -10,6 +10,7 @@ es:
   no_unlock: "¿No recibiste las instrucciones de desbloqueo?"
   player_restriction_title: "Restricción de Reproducción"
   manual_playback: "Para que YouTube cuente este uso como una vista, por favor haz click en el botón de play. No te pediremos de nuevo por 3 horas"
+  refresh: "Recargar"
   actions:
     new: "Agregar"
     edit: "Editar"
