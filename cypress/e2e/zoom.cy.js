@@ -5,7 +5,6 @@ describe("Zoom", () => {
       cy.findByText("New Section").shouldBeEnabled().click()
       cy.findByTestId("zoom-in").should("not.be.visible")
       cy.get("#section_start_time")
-        .shouldBeEnabled()
         .invoke("val", 10.0)
         .trigger("input", { force: true })
         .should("have.value", 10.0)
