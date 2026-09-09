@@ -90,15 +90,7 @@ class SectionsController < ApplicationController
     dragged = @lesson.sections.find(swap_params[:dragged_id].to_i)
     dropped = @lesson.sections.find(swap_params[:dropped_id].to_i)
 
-    dragged_order = dragged.order
-
-    Section.transaction do
-      dragged.order = dropped.order
-      dropped.order = dragged_order
-
-      dropped.save!(validate: false)
-      dragged.save!(validate: false)
-    end
+    SwapSectionOrder.call(dragged:, dropped:)
 
     respond_to do |format|
       format.json { head(:no_content) }
