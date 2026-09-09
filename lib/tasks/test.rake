@@ -27,7 +27,7 @@ namespace :test do
     )
 
     begin
-      sh("yarn wait-on http://localhost:5017")
+      sh("yarn wait-on --timeout 60000 http://localhost:5017")
       sh("yarn cypress run")
     ensure
       begin
