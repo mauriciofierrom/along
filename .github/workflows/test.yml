@@ -41,3 +41,9 @@ jobs:
         run: bun test --isolate
       - name: E2E tests
         run: bin/rake test:cypress
+      - name: Upload server logs on failure
+        uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: logs
+          path: log/
