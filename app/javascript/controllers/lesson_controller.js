@@ -4,6 +4,7 @@ import { debug, enable } from "controllers/util"
 
 export default class extends Controller {
   static targets = ["newSection"]
+  static outlets = ["player"]
   static values = {
     playerLoaded: Boolean,
   }
@@ -12,8 +13,15 @@ export default class extends Controller {
     debug("we're on")
   }
 
+  playerOutletConnected(player) {
+    if (!player.isPlayerInitialized) return
+    this.playerLoadedValue = true
+    if (this.hasNewSectionTarget) {
+      enable(this.newSectionTarget)
+    }
+  }
+
   newSectionTargetConnected(element) {
-    debug("new section button connected")
     if (this.playerLoadedValue) enable(element)
   }
 

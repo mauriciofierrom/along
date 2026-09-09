@@ -139,6 +139,16 @@ export default class extends Controller {
    */
   #turboBeforeFetchRequestHandler
 
+  /**
+   * The player has been initialized
+   */
+
+  #isPlayerInitialized = false
+
+  get isPlayerInitialized() {
+    return this.#isPlayerInitialized
+  }
+
   connect() {
     debug("Connect")
     this.#initPlayer()
@@ -157,6 +167,7 @@ export default class extends Controller {
         this.state = this.readyState
 
         debug("right before dispatch, is this a this thing?")
+        this.#isPlayerInitialized = true
         this.dispatch("playerInitialized")
       })
       .catch((error) => {
