@@ -178,6 +178,10 @@ export default class extends Controller {
     this.#hasPlayed = true
   }
 
+  disconnect() {
+    this.update.cancel()
+  }
+
   #setSliderStyles(min, max) {
     this.sliderTarget.style.left = `${(min / this.minTarget.max) * 100}%`
     this.sliderTarget.style.right = `${100 - (max / this.maxTarget.max) * 100}%`

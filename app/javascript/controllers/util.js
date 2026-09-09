@@ -1,11 +1,30 @@
+/**
+ * Returns a debounced version of the provided function using the provided
+ * delay.
+ *
+ * The function is augmented with a cancel method stop the timeout.
+ *
+ * @param {!Function} callback - The function to debounce
+ * @param {!number} delay - The delay in milliseconds
+ *
+ * @return {Function} The function debounced with a cancel method
+ *
+ */
 export function debounce(callback, delay) {
-  if (window.disable_debounce) return callback
   let timeout
-  return function (...restParam) {
+  const debounced = (...restParam) => {
+    if (window.disable_debounce) {
+      callback(...restParam)
+      return
+    }
+
     clearTimeout(timeout)
-    // eslint-disable-next-line @babel/no-invalid-this
-    timeout = setTimeout(() => callback.apply(this, restParam), delay)
+    timeout = setTimeout(() => callback(...restParam), delay)
   }
+
+  debounced.cancel = () => clearTimeout(timeout)
+
+  return debounced
 }
 
 export function debug(msg, ...options) {

@@ -314,6 +314,7 @@ export default class extends Controller {
       this.#turboBeforeFetchRequestHandler,
     )
 
+    this.updatePoints.cancel()
     this.loopManager?.clear()
     this.player?.dispose()
   }
