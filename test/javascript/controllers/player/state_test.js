@@ -12,6 +12,10 @@ mock.module("controllers/player/loop_manager", () => ({
       return Promise.resolve()
     }
 
+    playTimes() {
+      return Promise.resolve()
+    }
+
     // eslint-disable-next-line no-empty-function
     clear() {}
   },
@@ -110,12 +114,12 @@ describe("PlayerState", () => {
             "player",
           )
 
-        const mockLoop = jest.spyOn(LoopManager.prototype, "loop")
+        const mockPlayTimes = jest.spyOn(LoopManager.prototype, "playTimes")
 
         playerController.state = playerController.pickingPointState
         await playerController.loop(1, 5)
 
-        expect(mockLoop).toHaveBeenCalledWith(1, 5, 1)
+        expect(mockPlayTimes).toHaveBeenCalledWith(1, 5, 1)
         expect(playerController.state).toBeInstanceOf(EditingState)
       })
     })

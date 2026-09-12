@@ -20,28 +20,102 @@ describe("LoopManager", () => {
       const loopManager = new LoopManager(player, mockElement)
       const mockPlay = jest.spyOn(player, "play")
 
-      loopManager.loop(1, 5, 3)
+      const loop = loopManager.playTimes(1, 5, 3)
 
-      await new Promise((resolve) => setImmediate(resolve))
-      jest.runAllTimers()
+      await Promise.resolve()
 
-      expect(mockPlay).toHaveBeenCalledTimes(4)
+      jest.advanceTimersByTime(600)
+
+      await expect(loop).resolves.toBeUndefined()
+      expect(mockPlay).toHaveBeenCalledTimes(3)
     })
   })
 
   describe("unrestricted loop", () => {
     it("should not stop until interrupted", async () => {
       const loopManager = new LoopManager(player, mockElement)
+      const mockPlay = jest.spyOn(player, "play")
 
       const loop = loopManager.loop(1, 5)
-      await new Promise((resolve) => setImmediate(resolve))
-      await loopManager.clear()
+
+      await Promise.resolve()
+
+      jest.advanceTimersByTime(400)
+
+      expect(mockPlay).toHaveBeenCalledTimes(3)
+
+      loopManager.clear()
 
       await expect(loop).rejects.toMatchObject({
         name: "PlaybackError",
         type: PlaybackErrorType.LoopClear,
         message: "Cancelled manually",
       })
+
+      expect(mockPlay).toHaveBeenCalledTimes(3)
+    })
+  })
+
+  describe("play times followed by loop", () => {
+    it("should start fresh", async () => {
+      const loopManager = new LoopManager(player, mockElement)
+      const mockPlay = jest.spyOn(player, "play")
+
+      loopManager.playTimes(1, 5, 3)
+      await Promise.resolve()
+
+      jest.advanceTimersByTime(600)
+
+      expect(mockPlay).toHaveBeenCalledTimes(3)
+
+      const loop = loopManager.loop(1, 5)
+
+      await Promise.resolve()
+
+      jest.advanceTimersByTime(400)
+
+      expect(mockPlay).toHaveBeenCalledTimes(6)
+
+      loopManager.clear()
+
+      await expect(loop).rejects.toMatchObject({
+        name: "PlaybackError",
+        type: PlaybackErrorType.LoopClear,
+        message: "Cancelled manually",
+      })
+
+      expect(mockPlay).toHaveBeenCalledTimes(6)
+    })
+  })
+
+  describe("loop followed by play times", () => {
+    it("should start fresh", async () => {
+      const loopManager = new LoopManager(player, mockElement)
+      const mockPlay = jest.spyOn(player, "play")
+
+      const loop = loopManager.loop(1, 5)
+
+      await Promise.resolve()
+
+      jest.advanceTimersByTime(600)
+
+      expect(mockPlay).toHaveBeenCalledTimes(4)
+
+      loopManager.clear()
+
+      await expect(loop).rejects.toMatchObject({
+        name: "PlaybackError",
+        type: PlaybackErrorType.LoopClear,
+        message: "Cancelled manually",
+      })
+
+      expect(mockPlay).toHaveBeenCalledTimes(4)
+
+      loopManager.playTimes(1, 5, 3)
+
+      jest.advanceTimersByTime(600)
+
+      expect(mockPlay).toHaveBeenCalledTimes(7)
     })
   })
 
@@ -54,7 +128,7 @@ describe("LoopManager", () => {
         `
 
         const loopManager = new LoopManager(new DummyPlayer({}))
-        await expect(loopManager.loop(12, 23, 2)).rejects.toMatchObject({
+        await expect(loopManager.playTimes(12, 23, 2)).rejects.toMatchObject({
           name: "PlaybackError",
           type: PlaybackErrorType.PlayerRestriction,
           message: "Player restriction",
@@ -69,11 +143,13 @@ describe("LoopManager", () => {
         document.body.innerHTML = ` <div data-controller="player" id="player">
         </div>
         `
-        const loopManager = new LoopManager(new DummyPlayer({}))
+        const loopManager = new LoopManager(new DummyPlayer({}), mockElement)
 
-        // TODO: Check why this fails if we expect something
-        // eslint-disable-next-line jest/valid-expect
-        await expect(loopManager.loop(12, 34, 2)).resolves
+        const playTimes = loopManager.playTimes(12, 34, 2)
+        await Promise.resolve()
+        jest.advanceTimersByTime(400)
+
+        await expect(playTimes).resolves.toBeUndefined()
       })
     })
   })

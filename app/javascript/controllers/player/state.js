@@ -102,7 +102,7 @@ export class PickingPointState extends PlayerState {
       from,
       to,
     })
-    await this.context.loopManager.loop(from, to, 1)
+    await this.context.loopManager.playTimes(from, to, 1)
     debug(
       "PickingPointState: Done point looping. Doing editing loop:",
       this.context.editState,

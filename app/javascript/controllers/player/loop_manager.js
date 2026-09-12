@@ -7,8 +7,8 @@ export default class LoopManager {
   #player
   /** @property {number} intervalId - The id to clear the interval */
   #intervalId
-  /** @property {number} times - The number of times the lopo has repeated */
-  #times = 0
+  /** @property {number} times - The number of times the loop has repeated */
+  #times = 1
   /** @property {boolean} aborted - Whether the loop has been canceled or not */
   #aborted = false
   /** @property {AbortController} abortController - A controller to abort the
@@ -31,18 +31,20 @@ export default class LoopManager {
   }
 
   /**
-   * Loop the player from the given points an optional maximum number of times.
+   * Play the video by looping between the points with an action to perform on
+   * each loop and an exit condition predicate. In this case, the promise
+   * resolves normally.
    *
-   * We wrap the interval in a promise that will resolve only in the case the
-   * max parameter has a value, otherwise we rely on the AbortController to stop
-   * it when via the clear method.
+   * We also rely on an AbortController to interrupt regular playback. In this
+   * case, the promise rejects with a PlaybackError.
+   *
    *
    * @param {!number} from - The starting point of the loop
    * @param {!number} to - The end point of the loop
-   * @param {?number} max - An optional maximum number of repetitions for the
-   * loop
+   * @param {Function} [onLoop] - A callback to execute on each loop
+   * @param {Function} [exitCondition] - A predicate to exit regular playback
    */
-  async loop(from, to, max = null) {
+  async #play(from, to, onLoop, exitCondition = () => false) {
     await this.#canLoop()
 
     // We need to stop any previous loop before we start a new one
@@ -66,17 +68,16 @@ export default class LoopManager {
 
       this.#intervalId = setInterval(() => {
         if (this.#player.currentTime >= to) {
+          if (exitCondition()) {
+            this.#times = 1
+            clearInterval(this.#intervalId)
+            resolve()
+            return
+          }
+
           this.#player.play(from)
 
-          if (max !== null && max !== undefined) {
-            this.#times++
-          }
-        }
-
-        if (max !== null && max !== undefined && this.#times >= max) {
-          this.#times = 0
-          clearInterval(this.#intervalId)
-          resolve()
+          onLoop?.()
         }
 
         this.#element.dispatch("reportProgress", {
@@ -84,6 +85,32 @@ export default class LoopManager {
         })
       }, 200)
     })
+  }
+
+  /**
+   * Loop the player from the given points
+   *
+   * @param {!number} from - The starting point of the loop
+   * @param {!number} to - The end point of the loop
+   */
+  loop(from, to) {
+    return this.#play(from, to)
+  }
+
+  /**
+   * Play the loop between the given points the provided number of times
+   *
+   * @param {!number} from - The starting point of the loop
+   * @param {!number} to - The end point of the loop
+   * @param {!number} times - The number of times to loop
+   */
+  playTimes(from, to, times) {
+    return this.#play(
+      from,
+      to,
+      () => this.#times++,
+      () => this.#times >= times,
+    )
   }
 
   /**
@@ -96,7 +123,7 @@ export default class LoopManager {
       invervalId: this.#intervalId,
       times: this.#times,
     })
-    this.#times = 0
+    this.#times = 1
     if (this.#intervalId) {
       if (this.#abortController && !this.#abortController.signal.aborted) {
         debug("Aborting")
