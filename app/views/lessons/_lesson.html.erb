@@ -14,7 +14,7 @@
   </div>
 
   <% if Flipper.enabled?(:lesson_status) %>
-    <% if (objective = lesson.current_objective) then %>
+    <% if (objective = lesson.current_section) then %>
       <div class="subtitle">
         Now learning: <%= objective.name %>
       </div>

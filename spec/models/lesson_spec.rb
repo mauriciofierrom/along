@@ -36,8 +36,8 @@ describe Lesson do
     end
   end
 
-  describe "#current_objective" do
-    subject(:current_objective) { lesson.current_objective }
+  describe "#current_section" do
+    subject(:current_section) { lesson.current_section }
 
     let(:user) { create(:user) }
     let(:lesson) { create(:lesson, user: user) }

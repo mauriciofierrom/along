@@ -26,7 +26,7 @@ class Lesson < ApplicationRecord
     }
   validates :video_url, presence: true, url: VIDEO_URL_PATTERNS
 
-  def current_objective
+  def current_section
     sections.find(&:current)
   end
 
