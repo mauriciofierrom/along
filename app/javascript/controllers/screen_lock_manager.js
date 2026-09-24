@@ -5,52 +5,100 @@ export default class {
   /** @property {WakeLockSentinel} */
   #wakeLock
 
-  /*
+  /** @property {Promise<WakeLockSentinel} */
+  #wakeLockRequest
+
+  /** @property  {Promise} */
+  #wakeLockRelease
+
+  /** @property {AbortController} */
+  #abortController
+
+  /**
    * Handler for the visibility change handler
-   *
    */
   #visibilityChangeHandler = async () => {
-    if (this.#wakeLock && document.visibilityState !== "visible") return
+    if (
+      (this.#wakeLock && !this.#wakeLock.released) ||
+      document.visibilityState !== "visible"
+    )
+      return
 
-    this.#wakeLock = await navigator.wakeLock.request("screen")
+    debug("Visibility restored. Re-acquiring lock.")
+    await this.acquireScreenLock()
+  }
+
+  get #pendingLock() {
+    return !this.#wakeLock && this.#wakeLockRequest
+  }
+
+  get #lockAcquired() {
+    return this.#wakeLock?.released === false
+  }
+
+  releaseScreenLock() {
+    this.#abortController?.abort()
+    document.removeEventListener(
+      "visibilitychange",
+      this.#visibilityChangeHandler,
+    )
+
+    if (this.#wakeLockRelease) return this.#wakeLockRelease
+    if (!this.#wakeLockRequest) return Promise.resolve()
+
+    this.#wakeLockRelease = new Promise((resolve, reject) => {
+      const lockRequest = this.#wakeLockRequest
+
+      lockRequest
+        ?.then((wakeLock) => wakeLock.release())
+        .finally(() => {
+          this.#wakeLockRequest = null
+          this.#wakeLockRelease = null
+          this.#wakeLock = null
+        })
+        .catch((err) => console.error(err))
+        .then(resolve, reject)
+    })
+
+    return this.#wakeLockRelease
   }
 
   async acquireScreenLock() {
-    if ("wakeLock" in navigator) {
-      debug("wakeLock in navigator")
-      try {
-        this.#wakeLock = await navigator.wakeLock.request("screen")
-
-        this.#wakeLock.addEventListener("release", () => {
-          debug("wake lock released")
-        })
-
-        document.addEventListener(
-          "visibilitychange",
-          this.#visibilityChangeHandler,
-        )
-      } catch (err) {
-        console.error(err)
-      }
-    } else {
-      debug("no wakeLock in navigator")
+    if (!this.#abortController || this.#abortController.signal.aborted) {
+      this.#abortController = new AbortController()
     }
-  }
+    const signal = this.#abortController.signal
+    if (!("wakeLock" in navigator)) throw new Error("No wake lock support")
+    if (this.#wakeLockRelease) {
+      await this.#wakeLockRelease
+      if (signal.aborted) return
+    }
+    if (this.#lockAcquired || this.#pendingLock) return
 
-  releaseLock() {
-    if (!this.#wakeLock) return
+    try {
+      this.#wakeLockRequest = navigator.wakeLock.request("screen")
+      document.addEventListener(
+        "visibilitychange",
+        this.#visibilityChangeHandler,
+      )
+      const wakeLock = await this.#wakeLockRequest
+      if (signal.aborted) return
+      this.#wakeLock = wakeLock
+      this.#wakeLock.addEventListener(
+        "release",
+        () => {
+          this.#wakeLock = null
+          this.#wakeLockRequest = null
+          debug("wake lock released")
+        },
+        { once: true },
+      )
+      debug("wakeLock acquired")
+    } catch (err) {
+      this.#wakeLockRequest = null
+      console.error(err)
+    }
 
-    this.#wakeLock
-      .release()
-      .then(() => {
-        debug("wake lock released")
-      })
-      .finally(() => {
-        document.removeEventListener(
-          "visibilitychange",
-          this.#visibilityChangeHandler,
-        )
-      })
-      .catch((error) => console.error("Wake Lock failed to release", error))
+    debug("wakeLock in navigator")
   }
 }

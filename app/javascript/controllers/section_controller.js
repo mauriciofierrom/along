@@ -35,6 +35,6 @@ export default class extends Controller {
   disconnect() {
     debug("section controller disconnect")
     this.dispatch("disconnect")
-    this.#screenLockManager.releaseLock()
+    this.#screenLockManager.releaseScreenLock()
   }
 }
