@@ -70,7 +70,7 @@ export default class extends Controller {
     const maxRange = parseFloat(this.maxTarget.value)
 
     if (maxRange - minRange < rangeMin) {
-      if (event.target.className === "min") {
+      if (event.target.classList.contains("min")) {
         this.minTarget.value = maxRange - rangeMin
       } else {
         this.maxTarget.value = minRange + rangeMin
@@ -80,7 +80,7 @@ export default class extends Controller {
     }
 
     const setting = parseFloat(
-      event.target.className === "min"
+      event.target.classList.contains("min")
         ? this.minTarget.value
         : this.maxTarget.value,
     )
