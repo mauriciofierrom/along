@@ -22,7 +22,7 @@ export default class extends Controller {
     debug("starting?")
     event.dataTransfer.setData(
       "application/section-id",
-      event.target.dataset.sectionId,
+      event.currentTarget.dataset.sectionId,
     )
     event.dataTransfer.dropEffect = "move"
   }
@@ -38,6 +38,7 @@ export default class extends Controller {
    */
   onDrop(event) {
     debug("dropped?", event.target)
+    debug("dropped?", event.currentTarget)
     const draggedSectionItemId = parseInt(
       event.dataTransfer.getData("application/section-id"),
       10,
@@ -47,7 +48,7 @@ export default class extends Controller {
       10,
     )
     const droppedElement = event.currentTarget
-    const swapEndpoint = event.target.dataset.swapEndpoint
+    const swapEndpoint = event.currentTarget.dataset.swapEndpoint
 
     fetch(swapEndpoint, {
       method: "POST",
@@ -74,7 +75,7 @@ export default class extends Controller {
   }
 
   onDragOver(event) {
-    debug("dragged over?", event.target)
+    debug("dragged over?", event.currentTarget)
   }
 
   onDragEnd() {
