@@ -135,9 +135,8 @@ export default class extends Controller {
    */
   resetRange() {
     debug(`Min: ${this.minTarget.value}. Max: ${this.maxTarget.value}`)
-    const range = this.element.querySelector(".range-selected")
-    range.style.left = "0%"
-    range.style.right = "0%"
+    this.sliderTarget.style.left = "0%"
+    this.sliderTarget.style.right = "0%"
 
     this.minTarget.value = 0
     this.maxTarget.value = this.maxTarget.max

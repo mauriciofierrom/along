@@ -7,6 +7,7 @@ import Zoom from "controllers/zoom/zoom"
 /** Controller for zoom actions */
 export default class extends Controller {
   static targets = ["zoomIn", "zoomOut", "zoomStart", "zoomEnd", "zoomDuration"]
+  static outlets = ["zoom-field"]
 
   static values = {
     duration: Number,
@@ -141,22 +142,13 @@ export default class extends Controller {
   }
 
   #initZoomLevels() {
-    const prefix = "section_zoom_attributes"
-
-    const starts = Array.from(
-      document.querySelectorAll(`input[id^='${prefix}'][id$='start']`),
-    ).map((element) => parseFloat(element.value))
-
-    const ends = Array.from(
-      document.querySelectorAll(`input[id^='${prefix}'][id$='end']`),
-    ).map((element) => parseFloat(element.value))
-
-    const ids = Array.from(
-      document.querySelectorAll(`input[id^='${prefix}'][id$='id']`),
-    ).map((element) => parseInt(element.value, 10))
-
-    return starts.map(
-      (start, i) => new Zoom(start, ends[i], this.durationValue, ids[i]),
-    )
+    return this.zoomFieldOutlet.zoomFieldTargets.map((zoomField) => {
+      const start = parseFloat(
+        zoomField.querySelector("input[id$='start']").value,
+      )
+      const end = parseFloat(zoomField.querySelector("input[id$='end']").value)
+      const id = parseInt(zoomField.querySelector("input[id$='id']").value, 10)
+      return new Zoom(start, end, this.durationValue, id)
+    })
   }
 }

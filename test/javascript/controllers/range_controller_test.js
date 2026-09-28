@@ -2,6 +2,7 @@ import { Application } from "@hotwired/stimulus"
 
 import RangeController from "controllers/range_controller"
 import ZoomController from "controllers/zoom_controller"
+import ZoomFieldController from "controllers/zoom_field_controller"
 import Zoom, { ZoomType } from "controllers/zoom/zoom"
 
 jest.useFakeTimers()
@@ -56,24 +57,31 @@ describe("RangeController", () => {
     const endField = document.createElement("input")
     endField.dataset.zoomTarget = "zoomEnd"
 
+    const zoomFieldsElement = document.createElement("div")
+    zoomFieldsElement.id = "zoom_fields"
+    zoomFieldsElement.dataset.controller = "zoom-field"
+
     form.appendChild(startField)
     form.appendChild(endField)
 
     const zoomControllerElement = document.createElement("div")
     zoomControllerElement.className = "zoom"
     zoomControllerElement.dataset.controller = "zoom"
+    zoomControllerElement.dataset.zoomZoomFieldOutlet = "#zoom_fields"
 
     controllerElement.dataset.rangeZoomOutlet = ".zoom"
 
     controllerElement.appendChild(slider)
     controllerElement.appendChild(rangeInput)
 
-    document.body.appendChild(zoomControllerElement)
+    document.body.appendChild(zoomFieldsElement)
     document.body.appendChild(controllerElement)
+    document.body.appendChild(zoomControllerElement)
 
     application = Application.start()
-    application.register("range", RangeController)
+    application.register("zoom-field", ZoomFieldController)
     application.register("zoom", ZoomController)
+    application.register("range", RangeController)
   })
 
   describe("range controller", () => {
