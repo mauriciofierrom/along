@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { debug } from "controllers/util"
+import { debug, ElementAction } from "controllers/util"
 
 export default class extends Controller {
   static targets = ["error"]
@@ -19,7 +19,7 @@ export default class extends Controller {
     const input = el.previousElementSibling
     const errorMessage = el.dataset.message
 
-    input.classList.add("invalid")
+    input.classList.add(ElementAction.Invalid)
     input.setCustomValidity(errorMessage)
     this.element.reportValidity()
   }
@@ -30,7 +30,7 @@ export default class extends Controller {
   errorTargetDisconnected(el) {
     debug("disconnected", el)
     const input = el.previousElementSibling
-    input.classList.remove("invalid")
+    input.classList.remove(ElementAction.Invalid)
     input.setCustomValidity("")
   }
 }

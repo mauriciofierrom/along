@@ -53,10 +53,11 @@ export const Env = {
  * @readonly
  * @enum {string}
  */
-export const ElementAction = {
+export const ElementAction = Object.freeze({
   Hide: "hidden",
   Disable: "disabled",
-}
+  Invalid: "invalid",
+})
 
 /*
  * Make an element visible
