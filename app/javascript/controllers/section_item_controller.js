@@ -2,6 +2,8 @@ import { Controller } from "@hotwired/stimulus"
 
 import { debug } from "controllers/util"
 
+const DRAG_DATA_TYPE = "application/section-id"
+
 /**
  * Controller for Section Items
  *
@@ -21,7 +23,7 @@ export default class extends Controller {
   dragStart(event) {
     debug("starting?")
     event.dataTransfer.setData(
-      "application/section-id",
+      DRAG_DATA_TYPE,
       event.currentTarget.dataset.sectionId,
     )
     event.dataTransfer.dropEffect = "move"
@@ -40,7 +42,7 @@ export default class extends Controller {
     debug("dropped?", event.target)
     debug("dropped?", event.currentTarget)
     const draggedSectionItemId = parseInt(
-      event.dataTransfer.getData("application/section-id"),
+      event.dataTransfer.getData(DRAG_DATA_TYPE),
       10,
     )
     const droppedSectionItemId = parseInt(
