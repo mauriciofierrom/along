@@ -3,6 +3,16 @@ import { Controller } from "@hotwired/stimulus"
 import { debounce, debug, enable, disable } from "controllers/util"
 import { ZoomType } from "controllers/zoom/zoom"
 
+export const Events = Object.freeze({
+  Reset: "resetRange",
+  InputReady: "rangeInputReady",
+  InputUpdated: "rangeInputUpdated",
+  SubmitForm: "submitForm",
+  Restore: "restoreRange",
+  ConvertFields: "convertFields",
+  ReportProgress: "reportProgress",
+})
+
 export default class extends Controller {
   static targets = ["min", "max", "slider", "progress"]
   static outlets = ["zoom"]
@@ -55,7 +65,7 @@ export default class extends Controller {
     }
 
     // Let the zoom controller know the range input is ready
-    this.dispatch("rangeInputReady", {
+    this.dispatch(Events.InputReady, {
       detail: {
         isEdit: this.hasMinDefaultValue && this.hasMaxDefaultValue,
         start,
@@ -88,7 +98,7 @@ export default class extends Controller {
     // We dispatch to the player controller to do its looping stuff
     const preparedPoints = this.#preparePoints(setting)
 
-    this.dispatch("rangeInputUpdated", {
+    this.dispatch(Events.InputUpdated, {
       detail: { ...preparedPoints },
     })
 
@@ -118,7 +128,7 @@ export default class extends Controller {
     }
 
     // Dispatch the event that the range values have been updated
-    this.dispatch("rangeInputUpdated", {
+    this.dispatch(Events.InputUpdated, {
       detail: {
         ...(firstZoom
           ? { start: this.#activeZoom.start, end: this.#activeZoom.end }
@@ -152,9 +162,9 @@ export default class extends Controller {
       this.minTarget.value = conversion.start
       this.maxTarget.value = conversion.end
 
-      this.dispatch("submitForm", { detail: { restore: { start, end } } })
+      this.dispatch(Events.SubmitForm, { detail: { restore: { start, end } } })
     } else {
-      this.dispatch("submitForm")
+      this.dispatch(Events.SubmitForm)
     }
   }
 

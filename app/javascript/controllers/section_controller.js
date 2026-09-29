@@ -3,6 +3,11 @@ import { Controller } from "@hotwired/stimulus"
 import ScreenLockManager from "controllers/screen_lock_manager"
 import { debug } from "controllers/util"
 
+export const Events = Object.freeze({
+  Connected: "connect",
+  Disconnected: "disconnect",
+})
+
 export default class extends Controller {
   static values = {
     start: Number,
@@ -21,7 +26,7 @@ export default class extends Controller {
   connect() {
     debug("connected section controller")
 
-    this.dispatch("connect", {
+    this.dispatch(Events.Connected, {
       detail: {
         start: this.startValue,
         end: this.endValue,
@@ -34,7 +39,7 @@ export default class extends Controller {
 
   disconnect() {
     debug("section controller disconnect")
-    this.dispatch("disconnect")
+    this.dispatch(Events.Disconnected)
     this.#screenLockManager.releaseScreenLock()
   }
 }

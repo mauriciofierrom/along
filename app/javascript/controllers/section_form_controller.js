@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
+import { Events as RangeEvents } from "controllers/range_controller"
+
 export default class extends Controller {
   static targets = ["error"]
 
@@ -39,7 +41,7 @@ export default class extends Controller {
    * the form for submission
    */
   submit() {
-    this.dispatch("convertFields")
+    this.dispatch(RangeEvents.ConvertFields)
   }
 
   /**
@@ -56,7 +58,9 @@ export default class extends Controller {
     if (event.detail.formSubmission.fromElement !== this.element) return
 
     if (!event.detail.success && this.#toRestore) {
-      this.dispatch("restoreRange", { detail: { restore: this.#toRestore } })
+      this.dispatch(RangeEvents.Restore, {
+        detail: { restore: this.#toRestore },
+      })
       this.#toRestore = null
     }
   }

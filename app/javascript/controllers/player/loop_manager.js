@@ -1,5 +1,6 @@
 import { debug } from "controllers/util"
 import { PlaybackError, PlaybackErrorType } from "controllers/player/error"
+import { Events as RangeEvents } from "controllers/range_controller"
 
 /** Class driving the execution of a playback loop */
 export default class LoopManager {
@@ -80,7 +81,7 @@ export default class LoopManager {
           onLoop?.()
         }
 
-        this.#element.dispatch("reportProgress", {
+        this.#element.dispatch(RangeEvents.ReportProgress, {
           detail: { from, end: this.#player.currentTime },
         })
       }, 200)

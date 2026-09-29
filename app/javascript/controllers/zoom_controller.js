@@ -4,6 +4,14 @@ import { debug, show, hide, disable, enable } from "controllers/util"
 import ZoomManager from "controllers/zoom/zoom_manager"
 import Zoom from "controllers/zoom/zoom"
 
+export const Events = Object.freeze({
+  Loaded: "zoomsLoaded",
+  Updated: "zoomUpdated",
+  Cancelled: "zoomCancelled",
+  LevelAdded: "zoomLevelAdded",
+  LevelRemoved: "zoomLevelRemoved",
+})
+
 /** Controller for zoom actions */
 export default class extends Controller {
   static targets = ["zoomIn", "zoomOut", "zoomStart", "zoomEnd", "zoomDuration"]
@@ -28,10 +36,9 @@ export default class extends Controller {
 
   updateZoomState() {
     debug("updated the zoom state")
-    const zoomLevels = this.#initZoomLevels()
-    debug("zoomLevels", zoomLevels)
-    this.#zoomManager.zoomLevels = zoomLevels
-    this.dispatch("zoomsLoaded")
+    this.#zoomManager.zoomLevels = this.#initZoomLevels()
+    debug("zoomLevels", this.#zoomManager.zoomLevels)
+    this.dispatch(Events.Loaded)
   }
 
   /**
@@ -98,7 +105,7 @@ export default class extends Controller {
     disable(this.zoomInTarget)
 
     // Dispatch the active zoom to the range controller
-    this.dispatch("zoomUpdated", {
+    this.dispatch(Events.Updated, {
       detail: {
         zoom: this.#zoomManager.activeZoom,
       },
@@ -114,6 +121,7 @@ export default class extends Controller {
    * original section's value
    */
   zoomLevelRemoved() {
+    debug("Zooming out")
     this.#zoomManager.zoomOut()
 
     if (this.isZoomed) {
@@ -124,7 +132,7 @@ export default class extends Controller {
       hide(this.zoomInTarget)
     }
 
-    this.dispatch("zoomUpdated", {
+    this.dispatch(Events.Updated, {
       detail: { zoom: this.#zoomManager.activeZoom },
     })
   }

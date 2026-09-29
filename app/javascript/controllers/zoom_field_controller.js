@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
+import { Events as ZoomEvents } from "controllers/zoom_controller"
 import { debug } from "controllers/util"
 
 export default class extends Controller {
@@ -31,7 +32,7 @@ export default class extends Controller {
     if (penultimateZoomField) penultimateZoomField.id = ""
     el.id = "last_zoom_field"
 
-    this.dispatch("zoomLevelAdded", { detail: { start, end } })
+    this.dispatch(ZoomEvents.LevelAdded, { detail: { start, end } })
   }
 
   /*
@@ -48,7 +49,7 @@ export default class extends Controller {
       lastZoomField.id = "last_zoom_field"
     }
 
-    this.dispatch("zoomLevelRemoved")
+    this.dispatch(ZoomEvents.LevelRemoved)
   }
 
   #activeZoomFields() {

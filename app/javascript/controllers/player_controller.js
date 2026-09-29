@@ -20,7 +20,17 @@ import {
   Env,
 } from "controllers/util"
 import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
+import { Events as ZoomEvents } from "controllers/zoom_controller"
 import { ZoomType } from "controllers/zoom/zoom"
+import { Events as RangeEvents } from "controllers/range_controller"
+
+export const Events = Object.freeze({
+  Initialized: "playerInitialized",
+  LoopClearStarted: "loopClearStarted",
+  LoopClearFinished: "loopClearFinished",
+  VideoLoaded: "videoLoaded",
+  VideoLoadFailed: "videoLoadFailed",
+})
 
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
@@ -109,7 +119,7 @@ export default class extends Controller {
 
     debug("onSectionCancel is being fired and resetting everything", event)
     this.reset()
-    this.dispatch("zoomCancelled")
+    this.dispatch(ZoomEvents.Cancelled)
     this.pendingState = null
     this.pendingLoop = null
     hide(this.restrictionTarget)
@@ -168,7 +178,7 @@ export default class extends Controller {
 
         debug("right before dispatch, is this a this thing?")
         this.#isPlayerInitialized = true
-        this.dispatch("playerInitialized")
+        this.dispatch(Events.Initialized)
       })
       .catch((error) => {
         showPlayerError({
@@ -291,9 +301,9 @@ export default class extends Controller {
     this.editState = rest
 
     // Disable the fields here and enable them after the clear
-    this.dispatch("loopClearStarted")
+    this.dispatch(Events.LoopClearStarted)
     this.loopManager.clear()
-    this.dispatch("loopClearFinished")
+    this.dispatch(Events.LoopClearFinished)
 
     switch (state.zoom) {
       case ZoomType.In:
@@ -351,11 +361,11 @@ export default class extends Controller {
     switch (event.target.dataset.name) {
       case "section":
         debug("Section event")
-        this.dispatch("zoomCancelled")
+        this.dispatch(ZoomEvents.Cancelled)
         this.reset()
         break
       case "zoom-in":
-        this.dispatch("resetRange")
+        this.dispatch(RangeEvents.Reset)
         break
     }
   }
@@ -396,14 +406,14 @@ export default class extends Controller {
       videoId: this.videoIdValue,
       containerOffsetHeight: this.element.parentNode.offsetHeight,
       onCue: () => {
-        this.dispatch("videoLoaded")
+        this.dispatch(Events.VideoLoaded)
 
         if (this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration, 10)
         }
       },
       onPlaying: () => {
-        this.dispatch("videoLoaded")
+        this.dispatch(Events.VideoLoaded)
 
         if (this.hasDurationTarget) {
           this.durationTarget.value = parseInt(this.player.duration, 10)
@@ -414,7 +424,7 @@ export default class extends Controller {
         this.state.onPlaying()
       },
       onLoadError: () => {
-        this.dispatch("videoLoadFailed")
+        this.dispatch(Events.VideoLoadFailed)
       },
       userId: this.userIdValue,
     }

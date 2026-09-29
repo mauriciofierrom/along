@@ -2,6 +2,10 @@ import { Controller } from "@hotwired/stimulus"
 
 import { show, hide, enable, disable } from "controllers/util"
 
+export const Events = Object.freeze({
+  VideoUrlChanged: "videoUrlChanged",
+})
+
 export default class extends Controller {
   static targets = ["field", "url", "errorContainer", "errorList"]
 
@@ -36,6 +40,8 @@ export default class extends Controller {
   }
 
   load() {
-    this.dispatch("videoUrlChanged", { detail: { url: this.urlTarget.value } })
+    this.dispatch(Events.VideoUrlChanged, {
+      detail: { url: this.urlTarget.value },
+    })
   }
 }
