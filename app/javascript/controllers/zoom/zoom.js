@@ -1,5 +1,7 @@
 import { debug } from "controllers/util"
 
+const PRECISION = 2
+
 export default class Zoom {
   #id
   start
@@ -24,7 +26,7 @@ export default class Zoom {
     return +(
       (point / this.duration) * (this.end - this.start) +
       this.start
-    ).toFixed(2)
+    ).toFixed(PRECISION)
   }
 
   /*
@@ -37,7 +39,7 @@ export default class Zoom {
     return +(
       ((point - this.start) * this.duration) /
       (this.end - this.start)
-    ).toFixed(2)
+    ).toFixed(PRECISION)
   }
 
   /*
@@ -52,9 +54,9 @@ export default class Zoom {
   convert(start, end) {
     return {
       // eslint-disable-next-line no-implicit-coercion
-      start: +this.convertPoint(start).toFixed(2),
+      start: +this.convertPoint(start).toFixed(PRECISION),
       // eslint-disable-next-line no-implicit-coercion
-      end: +this.convertPoint(end).toFixed(2),
+      end: +this.convertPoint(end).toFixed(PRECISION),
     }
   }
 
@@ -67,9 +69,9 @@ export default class Zoom {
     debug(`End: ${end}, Converted end: ${this.restorePoint(end)}`)
     return {
       // eslint-disable-next-line no-implicit-coercion
-      start: +this.restorePoint(start).toFixed(2),
+      start: +this.restorePoint(start).toFixed(PRECISION),
       // eslint-disable-next-line no-implicit-coercion
-      end: +this.restorePoint(end).toFixed(2),
+      end: +this.restorePoint(end).toFixed(PRECISION),
     }
   }
 
@@ -88,12 +90,12 @@ export default class Zoom {
  * @readonly
  * @enum {string}
  */
-export const ZoomType = {
+export const ZoomType = Object.freeze({
   /** We're working at a zoomed-in level (there are zoom*/
   In: "zoom-in",
   /** There are no zooms in play */
   Out: "zoom-out",
-}
+})
 
 export class NoZoom extends Zoom {
   restore(start, end) {
