@@ -33,6 +33,15 @@ describe("Zoom", () => {
       })
     })
 
+    it("persists the zoom", () => {
+      cy.findByTestId("zoom-indicator").should("exist")
+      cy.findByText("Create").click({ force: true })
+      cy.findByTestId("edit-section").should("exist")
+      cy.reload()
+      cy.findByTestId("edit-section").shouldBeEnabled().click({ force: true })
+      cy.findByTestId("zoom-indicator").should("exist")
+    })
+
     it("updates the UI consistently", () => {
       // Shows zoom indicator
       cy.findByTestId("zoom-indicator").should("exist")
