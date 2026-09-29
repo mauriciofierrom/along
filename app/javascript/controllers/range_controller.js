@@ -13,6 +13,8 @@ export const Events = Object.freeze({
   ReportProgress: "reportProgress",
 })
 
+const RANGE_DEBOUNCE_TIME = 100
+
 export default class extends Controller {
   static targets = ["min", "max", "slider", "progress"]
   static outlets = ["zoom"]
@@ -37,7 +39,7 @@ export default class extends Controller {
   }
 
   initialize() {
-    this.update = debounce(this.update.bind(this), 100)
+    this.update = debounce(this.update.bind(this), RANGE_DEBOUNCE_TIME)
     this.zoomOutlet.updateZoomState()
     this.#activeZoom = this.zoomOutlet.activeZoom
     this.#duration = parseFloat(this.maxTarget.max)
@@ -75,24 +77,23 @@ export default class extends Controller {
   }
 
   update(event) {
-    const rangeMin = 0
+    const minRangeGap = 0
     const minRange = parseFloat(this.minTarget.value)
     const maxRange = parseFloat(this.maxTarget.value)
+    const isMin = event.target === this.minTarget
 
-    if (maxRange - minRange < rangeMin) {
-      if (event.target.classList.contains("min")) {
-        this.minTarget.value = maxRange - rangeMin
+    if (maxRange - minRange < minRangeGap) {
+      if (isMin) {
+        this.minTarget.value = maxRange - minRangeGap
       } else {
-        this.maxTarget.value = minRange + rangeMin
+        this.maxTarget.value = minRange + minRangeGap
       }
     } else {
       this.#setSliderStyles(minRange, maxRange)
     }
 
     const setting = parseFloat(
-      event.target.classList.contains("min")
-        ? this.minTarget.value
-        : this.maxTarget.value,
+      isMin ? this.minTarget.value : this.maxTarget.value,
     )
 
     // We dispatch to the player controller to do its looping stuff
