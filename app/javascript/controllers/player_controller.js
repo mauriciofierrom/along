@@ -33,6 +33,13 @@ export const Events = Object.freeze({
   VideoLoadFailed: "videoLoadFailed",
 })
 
+const Form = Object.freeze({
+  Section: "section",
+  ZoomIn: "zoom-in",
+})
+
+const SECTIONS_ID = "sections"
+
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
   static values = {
@@ -112,7 +119,7 @@ export default class extends Controller {
   #onSectionCancel = (event) => {
     if (
       !(
-        event.target.id === "sections" &&
+        event.target.id === SECTIONS_ID &&
         this.#isLessonTarget(event.detail.url.pathname)
       )
     )
@@ -360,12 +367,12 @@ export default class extends Controller {
     if (!event.detail.success) return
 
     switch (event.target.dataset.name) {
-      case "section":
+      case Form.Section:
         debug("Section event")
         this.dispatch(ZoomEvents.Cancelled)
         this.reset()
         break
-      case "zoom-in":
+      case Form.ZoomIn:
         this.dispatch(RangeEvents.Reset)
         break
     }
