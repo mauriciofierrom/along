@@ -2,6 +2,8 @@
 
 import { debug } from "controllers/util"
 
+const PICK_POINT_LOOP_TIMES = 1
+
 /** Abstract class for a PlayerState */
 class PlayerState {
   /**
@@ -97,12 +99,12 @@ export class EditingState extends PlayerState {
 
 export class PickingPointState extends PlayerState {
   async loop(from, to) {
-    debug("PickingPointState: Looping 3 times", {
+    debug(`PickingPointState: Looping  ${PICK_POINT_LOOP_TIMES} times`, {
       state: this.constructor.name,
       from,
       to,
     })
-    await this.context.loopManager.playTimes(from, to, 1)
+    await this.context.loopManager.playTimes(from, to, PICK_POINT_LOOP_TIMES)
     debug(
       "PickingPointState: Done point looping. Doing editing loop:",
       this.context.editState,
