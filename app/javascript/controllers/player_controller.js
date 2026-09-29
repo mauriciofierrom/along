@@ -18,6 +18,7 @@ import {
   show,
   hide,
   Env,
+  TurboEvent,
 } from "controllers/util"
 import { PlaybackErrorType, PlaybackError } from "controllers/player/error"
 import { Events as ZoomEvents } from "controllers/zoom_controller"
@@ -192,11 +193,11 @@ export default class extends Controller {
     // INFO: We do our own player-related thing despite the fact that we're
     // reacting to a section turbo-stream event.
     document.documentElement.addEventListener(
-      "turbo:submit-end",
+      TurboEvent.SubmitEnd,
       this.#turboSubmitEndHandler,
     )
     document.documentElement.addEventListener(
-      "turbo:before-fetch-request",
+      TurboEvent.BeforeFetchRequest,
       this.#turboBeforeFetchRequestHandler,
     )
   }
@@ -327,11 +328,11 @@ export default class extends Controller {
 
   disconnect() {
     document.documentElement.removeEventListener(
-      "turbo:submit-end",
+      TurboEvent.SubmitEnd,
       this.#turboSubmitEndHandler,
     )
     document.documentElement.removeEventListener(
-      "turbo:before-fetch-request",
+      TurboEvent.BeforeFetchRequest,
       this.#turboBeforeFetchRequestHandler,
     )
 

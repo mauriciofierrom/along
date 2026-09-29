@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 import { Events as RangeEvents } from "controllers/range_controller"
+import { TurboEvent } from "controllers/util"
 
 export default class extends Controller {
   static targets = ["error"]
@@ -22,7 +23,10 @@ export default class extends Controller {
    * should restore the form to before-submission-state
    */
   connect() {
-    document.addEventListener("turbo:submit-end", this.#submissionErrorHandler)
+    document.addEventListener(
+      TurboEvent.SubmitEnd,
+      this.#submissionErrorHandler,
+    )
   }
 
   /*
@@ -31,7 +35,7 @@ export default class extends Controller {
    */
   disconnect() {
     document.removeEventListener(
-      "turbo:submit-end",
+      TurboEvent.SubmitEnd,
       this.#submissionErrorHandler,
     )
   }

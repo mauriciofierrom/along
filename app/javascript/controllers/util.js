@@ -159,3 +159,8 @@ export const showPlayerError = ({
   target.querySelector(".error")?.remove()
   target.prepend(clone)
 }
+
+export const TurboEvent = Object.freeze({
+  SubmitEnd: "turbo:submit-end",
+  BeforeFetchRequest: "turbo:before-fetch-request",
+})
