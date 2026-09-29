@@ -8,6 +8,11 @@ const URL_PATTERNS = Object.freeze({
   path: /^\/[\w-]{11}$/,
 })
 
+const YoutubePlayerError = Object.freeze({
+  NotEmbeddable: 101,
+  NotEmbeddableInDisguise: 150,
+})
+
 /** A class to encapsulate the YouTube player */
 export default class extends Player {
   /** @property {Player} player - The Youtube player */
@@ -48,8 +53,9 @@ export default class extends Player {
     const [width, height] = this.#calculateSize(params.containerOffsetHeight)
     this.onLoadError = params.onLoadError
     this.#userId = params.userId
+    const playerId = "player"
 
-    this.#player = new YT.Player("player", {
+    this.#player = new YT.Player(playerId, {
       width: width.toString(),
       height: height.toString(),
       videoId: params.videoId || "",
@@ -86,10 +92,10 @@ export default class extends Player {
         onError: (evt) => {
           console.error(`error: ${evt.data}`)
           switch (evt.data) {
-            case 101:
+            case YoutubePlayerError.NotEmbeddable:
               params.onLoadError()
               break
-            case 150:
+            case YoutubePlayerError.NotEmbeddableInDisguise:
               params.onLoadError()
               break
             default:
@@ -249,11 +255,12 @@ export default class extends Player {
     debug("Manual play record", manualPlayRecord)
 
     if (manualPlayRecord) {
+      const hourLimit = 3
       const manuallyPlayedAt = parseInt(manualPlayRecord, 10)
       debug("last played manually at", manuallyPlayedAt)
       const now = Date.now()
 
-      return now - manuallyPlayedAt < 3600 * 3 * 1000
+      return now - manuallyPlayedAt < 3600 * hourLimit * 1000
     } else {
       debug("no manual play record")
       return false
