@@ -2,6 +2,10 @@ import { debug } from "controllers/util"
 import { PlaybackError, PlaybackErrorType } from "controllers/player/error"
 import { Events as RangeEvents } from "controllers/range_controller"
 
+const LOOP_DELAY = 200
+const SETTING_GAP = 3
+const ABORT_MESSAGE = "Cancelled manually"
+
 /** Class driving the execution of a playback loop */
 export default class LoopManager {
   /** @property {YoutubePlayer} */
@@ -84,7 +88,7 @@ export default class LoopManager {
         this.#element.dispatch(RangeEvents.ReportProgress, {
           detail: { from, end: this.#player.currentTime },
         })
-      }, 200)
+      }, LOOP_DELAY)
     })
   }
 
@@ -128,7 +132,7 @@ export default class LoopManager {
     if (this.#intervalId) {
       if (this.#abortController && !this.#abortController.signal.aborted) {
         debug("Aborting")
-        this.#abortController.abort("Cancelled manually")
+        this.#abortController.abort(ABORT_MESSAGE)
       } else {
         debug("Already aborted")
       }
@@ -142,8 +146,8 @@ export default class LoopManager {
   /*
    * Returns a tuple of start and end values to loop based on the value we're
    * setting for looping when updating a point. If it's the starting point we
-   * loop from it to 3 seconds from it. If it's the end point we do it 3 seconds
-   * before it or zero if there's not enough time before
+   * loop from it to SETTING_GAP seconds from it. If it's the end point we do it
+   * SETTING_GAP seconds before it or zero if there's not enough time before
    *
    * @summary Return a two-tuple of start and end values to loop when setting a
    * point of a section
@@ -160,11 +164,11 @@ export default class LoopManager {
     switch (setting) {
       case start:
         finalStart = start
-        finalEnd = start + 3
+        finalEnd = start + SETTING_GAP
         break
       case end:
         finalEnd = end
-        finalStart = Math.max(end - 3, 0)
+        finalStart = Math.max(end - SETTING_GAP, 0)
 
         if (finalStart < start) {
           finalStart = start
