@@ -66,7 +66,7 @@ export default class Player {
    * @param {!number} speed
    */
   setPlaybackSpeed(_speed) {
-    throw new Error("Abstract method speedPlay must be implemented")
+    throw new Error("Abstract method setPlaybackSpeed must be implemented")
   }
 
   /*
@@ -76,7 +76,7 @@ export default class Player {
    * @return {Promise<Player>}
    */
   static async create(_params) {
-    throw new Error("Abstract method prepare must be implemented")
+    throw new Error("Abstract method create must be implemented")
   }
 
   /**

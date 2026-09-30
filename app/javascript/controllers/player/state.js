@@ -147,7 +147,6 @@ export class UserActionRequiredState extends PlayerState {
 
     // Clear pending loop and state
     // eslint-disable-next-line no-warning-comments
-    // TODO: This should be unified early perhaps
     this.context.pendingState = null
 
     // We loop in the state we were before we were interrupted by some invariant

@@ -72,7 +72,7 @@ export default class extends Controller {
    * @typedef {Object} PendingLoop
    * @property {!number} start
    * @property {!number} end
-   * /
+   */
 
   /** @property {PendingLoop} */
   pendingLoop
@@ -91,16 +91,17 @@ export default class extends Controller {
   /** @property {ReadyState} */
   readyState
 
-  /** @propery {PlayingState} */
+  /** @property {PlayingState} */
   playingState
 
-  /** @propery {EditingState} */
+  /** @property {EditingState} */
   editingState
 
   /** @property {PickingPointState} */
   pickingPointState
 
   /** @property {UserActionRequiredState} */
+  userActionRequiredState
 
   static targets = ["source", "duration", "restriction"]
 
