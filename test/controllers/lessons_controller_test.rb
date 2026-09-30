@@ -60,14 +60,11 @@ class LessonsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to lesson_url(@lesson)
   end
 
-  # FIXME: Seemx to be failing, no idea why
-  # test "should destroy lesson" do
-  #   pp Lesson.count
-  #   assert_difference("Lesson.count", -1) do
-  #     delete lesson_url(@lesson)
-  #   end
-  #   pp Lesson.count
+  test "should destroy lesson" do
+    assert_difference("Lesson.count", -1) do
+      delete lesson_url(@lesson)
+    end
 
-  #   assert_redirected_to lessons_url
-  # end
+    assert_redirected_to lessons_url
+  end
 end
