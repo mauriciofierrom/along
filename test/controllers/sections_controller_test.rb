@@ -16,23 +16,25 @@ class SectionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # SHould work again when changing the test database to postgresql
-  # test "should create section" do
-  #   assert_difference("Section.count") do
-  #     post lesson_sections_url(@lesson),
-  #       params: { section: {
-  #         current: false,
-  #         start_time: 10.34,
-  #         end_time: 24.22,
-  #         finished: false,
-  #         loop: true,
-  #         name: "Strange Brew",
-  #         playback_speed: 2.5,
-  #       }}
-  #   end
+  test "should create section" do
+    skip "Should work again by using PostgreSQL"
+    assert_difference("Section.count") do
+      post lesson_sections_url(@lesson),
+        params: {
+          section: {
+            current: false,
+            start_time: 10.34,
+            end_time: 24.22,
+            finished: false,
+            loop: true,
+            name: "Strange Brew",
+            playback_speed: 2.5,
+          },
+        }
+    end
 
-  #   assert_redirected_to lesson_url(@lesson)
-  # end
+    assert_redirected_to lesson_url(@lesson)
+  end
 
   test "should get edit" do
     get edit_lesson_section_url(@lesson, @section)
