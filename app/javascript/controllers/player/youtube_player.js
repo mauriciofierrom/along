@@ -15,7 +15,7 @@ const YoutubePlayerError = Object.freeze({
 
 /** A class to encapsulate the YouTube player */
 export default class extends Player {
-  /** @property {Player} player - The Youtube player */
+  /** @property {YT.Player} player - The Youtube player */
   #player
   #userId
 
@@ -24,21 +24,32 @@ export default class extends Player {
    */
 
   /**
-   * @callback OnPlayerPause
-   */
-
-  /**
    * @callback OnPlayerPlaying
    */
 
   /**
+   * @callback OnLoadError
+   */
+
+  /**
+   * @callback OnCue
+   */
+
+  /**
+   * @callback OnRestrictionLifted
+   */
+
+  /**
    * @typedef {Object} YoutubePlayerParams
-   * @property {number} width - The width of the player
-   * @property {number} height - The height of the player
-   * @property {string} videoId - The id of the YouTube video
-   * @property {boolean} edit - Whether we're in edition mode
+   * @property {number} containerOffsetHeight - The player's container element's height
+   * @property {number} userId - The current user Id
+   * @property {string} [videoId] - The YouTube video id
+   * @property {OnLoadError} onLoadError - A callback to run when the player fails
    * @property {OnPlayerReady} onReady - Callback when the player is ready
+   * @property {OnCue} onCue - Callback when the player has been enCued
    * @property {OnPlayerPlaying} onPlaying - Callback when the player is playing
+   * @property {OnRestrictionLifted} onRestrictionLifted - Callback when a
+   * playback restriction has resolved
    */
 
   /**
@@ -114,6 +125,11 @@ export default class extends Player {
     return this.#player.getCurrentTime()
   }
 
+  /**
+   * Checks if the player has any restrictions for playback.
+   *
+   * @return {Promise}
+   */
   canPlay() {
     debug("can it play", this.#hasPlayedManually())
     return new Promise((resolve, reject) => {
@@ -189,7 +205,8 @@ export default class extends Player {
    * values recommended for it and the current size of the container of the
    * player.
    *
-   * @param {Element} The controller's element
+   * @param {!number} containerOffsetHeight - The controller's container
+   * element's height
    * @return {number[]} A tuple (a 2-element list) with the width and height
    */
   #calculateSize(containerOffsetHeight) {
@@ -208,7 +225,8 @@ export default class extends Player {
    * http://www.youtube.com/v/VIDEO_ID?version=3". We skip the last part until
    * it is actually required.
    *
-   * @param {string} url The url to format
+   * @throws {Error} - When the URL is invalid
+   * @param {!string} url - The url to format
    * @return {string} The formatted url
    */
   #formatUrl(url) {
@@ -221,7 +239,7 @@ export default class extends Player {
   /**
    * Validate if an URL is a YouTube shared URL
    *
-   * @param {URL} - The parsed URL to test
+   * @param {URL} url - The parsed URL to test
    * @return {boolean} Whether it is a valid URL
    */
   #isYouTubeUrl(url) {
