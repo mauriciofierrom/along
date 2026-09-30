@@ -12,7 +12,6 @@ const SimulatedError = {
 export default class extends Player {
   #intervalId
   #currentTime
-  #loaded
   #duration
   #onPlaying
   #onLoadError
@@ -41,10 +40,6 @@ export default class extends Player {
     return this.#currentTime
   }
 
-  get isLoaded() {
-    return this.#loaded
-  }
-
   #simulateError(error) {
     switch (error) {
       case SimulatedError.Load:
@@ -62,7 +57,6 @@ export default class extends Player {
       this.#simulateError(playerElement.dataset.error)
     } else {
       this.#onPlaying()
-      this.#loaded = true
     }
   }
 

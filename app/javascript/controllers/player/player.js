@@ -25,15 +25,6 @@ export default class Player {
     throw new Error("Abstract field currentTime must be implemented")
   }
 
-  /**
-   * Get information on whether the player has finished loading
-   *
-   * @return {boolean}
-   */
-  get isLoaded() {
-    throw new Error("Abstract field isLoaded must be implemented")
-  }
-
   /*
    * Load a video in the player from an URL
    *
