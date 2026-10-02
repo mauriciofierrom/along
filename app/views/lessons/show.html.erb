@@ -16,7 +16,7 @@
 
   <%= render partial: "lessons/zoom/actions", locals: {lesson: @lesson} %>
 
-  <div class="video-player">
+  <div class="video-player spinner">
     <%= render partial: "lessons/player", locals: {lesson: @lesson, actions: edit_player_actions, hidden: false} %>
   </div>
 

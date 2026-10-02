@@ -391,6 +391,8 @@ export default class extends Controller {
    */
   #initPlayer() {
     debug("env", window.rails_env)
+    debug("player element", this.element)
+    this.element.parentNode.classList.remove("spinner")
     switch (window.rails_env) {
       case Env.Prod:
         return YoutubePlayer.create(this.#mkPlayerParams())
@@ -415,6 +417,7 @@ export default class extends Controller {
       videoId: this.videoIdValue,
       containerOffsetHeight: this.element.parentNode.offsetHeight,
       onCue: () => {
+        debug("loaded")
         this.dispatch(Events.VideoLoaded)
 
         if (this.hasDurationTarget) {

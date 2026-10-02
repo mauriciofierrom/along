@@ -35,3 +35,17 @@
   opacity: 0.5;
   pointer-events: none;
 }
+
+.spinner::after {
+  content: "";
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

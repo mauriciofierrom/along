@@ -71,6 +71,7 @@ a {
   align-items: center;
   grid-area: video;
   background-color: black;
+  color: white;
 }
 
 .zoom-actions {
