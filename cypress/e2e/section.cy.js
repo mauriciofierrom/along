@@ -7,6 +7,33 @@ describe("Section", () => {
     })
   })
 
+  it("enables the controls after player initialization", () => {
+    cy.window().then((window) => {
+      window.localStorage.setItem("simulateLoad", true)
+    })
+    cy.appScenario("multiple_sections")
+    cy.forceLogin({ redirect_to: "/lessons" })
+    cy.findByTestId("lesson-link").click()
+
+    cy.get(".video-player").should("have.class", "spinner")
+    cy.findAllByTestId("edit-section").should("have.class", "disabled")
+    cy.findAllByTestId("section-title").should("have.class", "disabled")
+
+    cy.get(".video-player").should("not.have.class", "spinner")
+    cy.findAllByTestId("edit-section").should("not.have.class", "disabled")
+    cy.findAllByTestId("section-title").should("not.have.class", "disabled")
+  })
+
+  it("enables the controls after form cancellation", () => {
+    cy.appFactories([["create", "section"]])
+    cy.forceLogin({ redirect_to: "/lessons" })
+    cy.findByTestId("lesson-link").click()
+    cy.findByTestId("edit-section").click()
+    cy.findByText("Cancel").click()
+    cy.findAllByTestId("edit-section").should("not.have.class", "disabled")
+    cy.findAllByTestId("section-title").should("not.have.class", "disabled")
+  })
+
   describe("On create", () => {
     it("enables the range inputs when the video starts playing", () => {
       cy.appFactories([["create", "lesson"]]).then(([lesson]) => {

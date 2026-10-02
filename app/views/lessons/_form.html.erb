@@ -5,7 +5,7 @@
     controller: "lesson-form",
     action: [
       "player:videoLoadFailed@window->lesson-form#videoLoadFailed",
-      "player:videoLoaded@window->lesson-form#videoLoaded"
+      "player:videoLoaded@window->lesson-form#videoLoaded",
     ].join(" ")
   }) do |form| %>
   <div style="color: red" data-lesson-form-target="errorContainer" class="<%= "hidden" if !lesson.errors.any? %>">

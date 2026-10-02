@@ -4,14 +4,15 @@
        data-testid="section-item"
        data-section-id="<%= section.id %>"
        data-controller="section-item"
-       data-action="dragstart->section-item#dragStart drop->section-item#onDrop:prevent:stop dragover->section-item#onDragOver:prevent:stop dragend->section-item#onDragEnd"
+       data-section-item-player-outlet=".player"
+       data-action="dragstart->section-item#dragStart drop->section-item#onDrop:prevent:stop dragover->section-item#onDragOver:prevent:stop dragend->section-item#onDragEnd player:playerInitialized@window->section-item#playerInitialized"
        data-start="<%= section.start_time %>"
        data-end="<%= section.end_time %>"
        data-loop="<%= section.loop %>"
        data-swap-endpoint="<%= swap_order_lesson_sections_path(lesson) %>"
        data-playback-speed="<%= section.playback_speed %>">
     <div class="item-top">
-      <span class="item-title">
+      <span class="item-title disabled" data-section-item-target="title" data-testid="section-title">
             <%= link_to section.name,
               lesson_section_path(lesson, section),
               data: { turbo_stream: "sections" } %>
@@ -19,7 +20,8 @@
       <div class="item-actions">
         <%= link_to (fa_icon "pencil-square-o"),
           edit_lesson_section_path(lesson, section),
-          data: { turbo_frame: "sections", testid: "edit-section" }
+          class: "disabled",
+          data: { turbo_frame: "sections", testid: "edit-section", "section-item-target": "editButton" }
         %>
         <%= button_to (fa_icon "trash"),
           lesson_section_path(lesson, section),

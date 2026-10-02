@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { debug } from "controllers/util"
+import { debug, enable } from "controllers/util"
 
 const DRAG_DATA_TYPE = "application/section-id"
 
@@ -13,6 +13,16 @@ const DRAG_DATA_TYPE = "application/section-id"
  *   allows us to swap them in place
  */
 export default class extends Controller {
+  static outlets = ["player"]
+  static targets = ["editButton", "title"]
+
+  connect() {
+    const isPlayerInitialized =
+      this.hasPlayerOutlet && this.playerOutlet.isPlayerInitialized
+
+    if (isPlayerInitialized) this.#enableTargets()
+  }
+
   /**
    * The handler for the section item's dragstart event
    *
@@ -84,6 +94,10 @@ export default class extends Controller {
     debug("finished?")
   }
 
+  playerInitialized() {
+    this.#enableTargets()
+  }
+
   #swap(sectionItem, otherSectionItem) {
     const firstSection = sectionItem.parentNode
     const secondSection = otherSectionItem.parentNode
@@ -94,5 +108,10 @@ export default class extends Controller {
 
     parent.insertBefore(firstSection, otherNext)
     parent.insertBefore(secondSection, next)
+  }
+
+  #enableTargets() {
+    this.editButtonTargets.forEach((editButton) => enable(editButton))
+    this.titleTargets.forEach((title) => enable(title))
   }
 }
