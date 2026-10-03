@@ -1,4 +1,4 @@
-<div id="<%= dom_id lesson %>" class="video-card">
+<div id="<%= dom_id lesson %>" class="<%= class_names("video-card", "fade-in": local_assigns[:new]) %>">
   <%= image_tag(video_thumbnail_url(lesson), class: "thumbnail") %>
   <div class="title">
     <%= instrument_emoji(lesson) %>
