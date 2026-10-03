@@ -10,7 +10,7 @@
       .merge(!lesson.video_url.nil? ? {"player-video-id-value" => video_id(lesson)} : {}) do
 %>
   <div id="player" class="<%= hidden ? "hidden" : "" %>"></div>
-  <div id="player-restriction" class="popover hidden" data-player-target="restriction">
+  <div id="player-restriction" class="popover hidden bounce-in" data-player-target="restriction">
     <div class="arrow"></div>
     <h1><%= t("player_restriction_title") %></h1>
     <p>
