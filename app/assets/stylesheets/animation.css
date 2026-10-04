@@ -10,6 +10,7 @@
 .flip-in-x { animation: flip-in-x .25s both; }
 .fade-in { animation: fade-in .6s both; }
 .bounce-in { animation: bounce-in .4s both; }
+.fade-out { animation: fade-out .4s both; }
 
 @keyframes fade-in { from { opacity: 0 } }
 
@@ -29,3 +30,5 @@
 @media (prefers-reduced-motion: reduce) {
   .flip-in-x, .fade-in, .bounce-in { animation-duration: 1ms }
 }
+
+@keyframes fade-out { to { opacity: 0 } }
