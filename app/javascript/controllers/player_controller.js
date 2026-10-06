@@ -16,7 +16,8 @@ import {
   debounce,
   showPlayerError,
   show,
-  hide,
+  hideAnimated,
+  Animations,
   Env,
   TurboEvent,
 } from "controllers/util"
@@ -238,7 +239,8 @@ export default class extends Controller {
     this.state.reset()
     this.pendingState = null
     this.pendingLoop = null
-    if (this.hasRestrictionTarget) hide(this.restrictionTarget)
+    if (this.hasRestrictionTarget)
+      hideAnimated(this.restrictionTarget, Animations.BounceOut)
   }
 
   /**
@@ -390,7 +392,7 @@ export default class extends Controller {
         }
       },
       onRestrictionLifted: () => {
-        hide(this.restrictionTarget)
+        hideAnimated(this.restrictionTarget, Animations.BounceOut)
         this.state.onPlaying()
       },
       onLoadError: () => {
