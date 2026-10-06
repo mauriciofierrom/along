@@ -70,6 +70,7 @@ export const Animations = Object.freeze({
   FlipInX: "flip-in-x",
   FlipOutX: "flip-out-x",
   BounceIn: "bounce-in",
+  BounceOut: "bounce-out",
 })
 
 /*
