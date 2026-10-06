@@ -11,7 +11,7 @@
             "player:zoomCancelled@window->zoom-in#zoomCancelled",
           ].join(" ")
         },
-  class: "hidden" do |form| %>
+  class: "hidden zoom-in" do |form| %>
   <%= form.hidden_field :start, data: { "zoom-in-target" => "start" } %>
   <%= form.hidden_field :end, data: { "zoom-in-target" => "end" } %>
   <%= form.hidden_field :duration, value: lesson.duration_in_seconds %>
