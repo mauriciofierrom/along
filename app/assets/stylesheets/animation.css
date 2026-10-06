@@ -15,6 +15,12 @@
 .fade-out { animation: fade-out .4s both; }
 .flip-out-x { animation: flip-out-x .4s both; }
 .bounce-out { animation: bounce-out .4s both; }
+.zoom-out { animation: zoom-out .3s both; }
+
+@keyframes zoom-out {
+  from { transform: scale(1); opacity: 1 }
+  to { transform: scale(.3); opacity: 0 }
+}
 
 @keyframes bounce-out {
   20% { transform: scale(.9) }
@@ -49,7 +55,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flip-in-x, .fade-in, .bounce-in, .zoom-in, .fade-out, .flip-out-x, .bounce-out { animation-duration: 1ms }
+  .flip-in-x, .fade-in, .bounce-in, .zoom-in, .fade-out, .flip-out-x, .bounce-out, .zoom-out { animation-duration: 1ms }
 }
 
 @keyframes fade-out { to { opacity: 0 } }
