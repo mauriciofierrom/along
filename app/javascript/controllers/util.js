@@ -71,6 +71,8 @@ export const Animations = Object.freeze({
   FlipOutX: "flip-out-x",
   BounceIn: "bounce-in",
   BounceOut: "bounce-out",
+  ZoomIn: "zoom-in",
+  ZoomOut: "zoom-out",
 })
 
 /*
