@@ -3,7 +3,10 @@
               data: {
                 name: "section",
                 controller: "section-form error",
-                action: "range:submitForm@window->section-form#submitForm"
+                action: [
+                  "range:submitForm@window->section-form#submitForm",
+                  "turbo:before-fetch-request@document->section-form#onCancel",
+                ].join(" ")
               }) do |form| %>
   <% if section.errors.any? %>
     <div style="color: red">

@@ -38,8 +38,6 @@ const Form = Object.freeze({
   ZoomIn: "zoom-in",
 })
 
-const SECTIONS_ID = "sections"
-
 /** Controller for the YouTube player custom functionality */
 export default class extends Controller {
   static values = {
@@ -105,35 +103,6 @@ export default class extends Controller {
 
   static targets = ["source", "duration", "restriction"]
 
-  /*
-   * Check if an URL path matches the lesson's show path
-   *
-   * @param {!string} - The url path
-   * @return {boolean}
-   */
-  #isLessonTarget = (urlPath) => {
-    debug("path", urlPath)
-    const regex = /^\/lessons\/\d+$/
-    return regex.test(urlPath)
-  }
-
-  #onSectionCancel = (event) => {
-    if (
-      !(
-        event.target.id === SECTIONS_ID &&
-        this.#isLessonTarget(event.detail.url.pathname)
-      )
-    )
-      return
-
-    debug("onSectionCancel is being fired and resetting everything", event)
-    this.reset()
-    this.dispatch(ZoomEvents.Cancelled)
-    this.pendingState = null
-    this.pendingLoop = null
-    hide(this.restrictionTarget)
-  }
-
   #isPlayerRestriction = (error) =>
     error instanceof PlaybackError &&
     error.type === PlaybackErrorType.PlayerRestriction
@@ -152,11 +121,6 @@ export default class extends Controller {
    * Stable reference to the turbo:submit-end handler to remove on disconnect
    */
   #turboSubmitEndHandler
-
-  /**
-   * Stable reference to the turbo:before-fetch-request handler to remove on disconnect
-   */
-  #turboBeforeFetchRequestHandler
 
   /**
    * The player has been initialized
@@ -204,16 +168,11 @@ export default class extends Controller {
       TurboEvent.SubmitEnd,
       this.#turboSubmitEndHandler,
     )
-    document.documentElement.addEventListener(
-      TurboEvent.BeforeFetchRequest,
-      this.#turboBeforeFetchRequestHandler,
-    )
   }
 
   initialize() {
     this.updatePoints = debounce(this.updatePoints.bind(this), 1000)
     this.#turboSubmitEndHandler = this.#onSectionSave.bind(this)
-    this.#turboBeforeFetchRequestHandler = this.#onSectionCancel.bind(this)
     this.#initStates()
   }
 
@@ -275,7 +234,11 @@ export default class extends Controller {
    */
   reset() {
     debug("current state", this.state)
+    this.dispatch(ZoomEvents.Cancelled)
     this.state.reset()
+    this.pendingState = null
+    this.pendingLoop = null
+    if (this.hasRestrictionTarget) hide(this.restrictionTarget)
   }
 
   /**
@@ -339,10 +302,6 @@ export default class extends Controller {
       TurboEvent.SubmitEnd,
       this.#turboSubmitEndHandler,
     )
-    document.documentElement.removeEventListener(
-      TurboEvent.BeforeFetchRequest,
-      this.#turboBeforeFetchRequestHandler,
-    )
 
     this.updatePoints.cancel()
     this.loopManager?.clear()
@@ -370,7 +329,6 @@ export default class extends Controller {
     switch (event.target.dataset.name) {
       case Form.Section:
         debug("Section event")
-        this.dispatch(ZoomEvents.Cancelled)
         this.reset()
         break
       case Form.ZoomIn:

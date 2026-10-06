@@ -1,10 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 import ScreenLockManager from "controllers/screen_lock_manager"
-import { debug } from "controllers/util"
+import {
+  debug,
+  onTurboCancel,
+  isLessonTarget,
+  SECTIONS_ID,
+} from "controllers/util"
 
 export const Events = Object.freeze({
   Connected: "connect",
+  Cancelled: "cancelled",
 })
 
 export default class extends Controller {
@@ -39,5 +45,17 @@ export default class extends Controller {
   disconnect() {
     debug("section controller disconnect")
     this.#screenLockManager.releaseScreenLock()
+  }
+
+  onCancel(event) {
+    const isCancel =
+      event.target.id === SECTIONS_ID &&
+      isLessonTarget(event.detail.url.pathname)
+
+    onTurboCancel(event, this.element, isCancel, () => {
+      this.dispatch(Events.Cancelled)
+      this.element.classList.remove("flip-in-x")
+      this.element.classList.add("flip-out-x")
+    })
   }
 }

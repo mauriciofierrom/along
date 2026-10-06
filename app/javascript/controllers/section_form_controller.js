@@ -1,7 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 import { Events as RangeEvents } from "controllers/range_controller"
-import { TurboEvent } from "controllers/util"
+import {
+  TurboEvent,
+  onTurboCancel,
+  isLessonTarget,
+  SECTIONS_ID,
+} from "controllers/util"
+
+export const Events = Object.freeze({
+  Cancelled: "cancelled",
+})
 
 export default class extends Controller {
   static targets = ["error"]
@@ -56,6 +65,18 @@ export default class extends Controller {
   submitForm({ detail: { restore } }) {
     this.#toRestore = restore
     window.Turbo.navigator.submitForm(this.element)
+  }
+
+  onCancel(event) {
+    const isCancel =
+      event.target.id === SECTIONS_ID &&
+      isLessonTarget(event.detail.url.pathname)
+
+    onTurboCancel(event, this.element, isCancel, () => {
+      this.dispatch(Events.Cancelled)
+      this.element.classList.remove("flip-in-x")
+      this.element.classList.add("flip-out-x")
+    })
   }
 
   #handleSubmissionError(event) {

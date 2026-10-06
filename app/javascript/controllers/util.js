@@ -165,3 +165,39 @@ export const TurboEvent = Object.freeze({
   SubmitEnd: "turbo:submit-end",
   BeforeFetchRequest: "turbo:before-fetch-request",
 })
+
+export const onTurboCancel = (event, element, predicate, before) => {
+  if (!predicate) return
+
+  event.preventDefault()
+
+  try {
+    before()
+  } catch (error) {
+    console.error(error)
+    event.detail.resume()
+    return
+  }
+
+  element.addEventListener(
+    "animationend",
+    () => {
+      event.detail.resume()
+    },
+    { once: true },
+  )
+}
+
+/*
+ * Check if an URL path matches the lesson's show path
+ *
+ * @param {!string} - The url path
+ * @return {boolean}
+ */
+export const isLessonTarget = (urlPath) => {
+  debug("path", urlPath)
+  const regex = /^\/lessons\/\d+$/
+  return regex.test(urlPath)
+}
+
+export const SECTIONS_ID = "sections"

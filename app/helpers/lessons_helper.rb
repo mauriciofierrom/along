@@ -26,6 +26,8 @@ module LessonsHelper
       "range:rangeInputReady@window->player#triggerEdition",
       "range:rangeInputUpdated@window->player#updatePoints",
       "section:connect@window->player#playFromTo",
+      "section:cancelled@window->player#reset",
+      "section-form:cancelled@window->player#reset",
     ].join(" ")
   end
 

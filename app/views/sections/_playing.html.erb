@@ -1,6 +1,7 @@
 <div class="sections-selector">
   <div class="playing"
        data-controller="section"
+       data-action="turbo:before-fetch-request@document->section#onCancel"
        data-section-player-outlet=".video-player"
        data-section-start-value="<%= section.start_time %>"
        data-section-end-value="<%= section.end_time %>"
