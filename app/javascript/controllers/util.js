@@ -91,6 +91,30 @@ export function hide(element) {
   element.classList.add(ElementAction.Hide)
 }
 
+/**
+ * Hide an element after an animation
+ *
+ * @param {Element} element - The element to hide
+ * @param {Animations} animation - The animation to run before hiding the element
+ */
+export function hideAnimated(element, animation) {
+  if (element.classList.contains(ElementAction.Hide)) return
+
+  debug("Hide Animated", element)
+
+  element.addEventListener(
+    "animationend",
+    () => {
+      debug("animation ended")
+      element.classList.remove(animation)
+      hide(element)
+    },
+    { once: true },
+  )
+
+  element.classList.add(animation)
+}
+
 /*
  * Enable an element
  *
