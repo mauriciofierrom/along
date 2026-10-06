@@ -10,6 +10,7 @@
 .flip-in-x { animation: flip-in-x .25s both; }
 .fade-in { animation: fade-in .6s both; }
 .bounce-in { animation: bounce-in .4s both; }
+.zoom-in { animation: zoom-in .3s both; }
 
 .fade-out { animation: fade-out .4s both; }
 .flip-out-x { animation: flip-out-x .4s both; }
@@ -42,8 +43,13 @@
   to { transform: scale(1) }
 }
 
+@keyframes zoom-in {
+  from { transform: scale(.3); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .flip-in-x, .fade-in, .bounce-in, .fade-out, .flip-out-x, .bounce-out { animation-duration: 1ms }
+  .flip-in-x, .fade-in, .bounce-in, .zoom-in, .fade-out, .flip-out-x, .bounce-out { animation-duration: 1ms }
 }
 
 @keyframes fade-out { to { opacity: 0 } }
