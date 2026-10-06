@@ -5,7 +5,6 @@ import { debug } from "controllers/util"
 
 export const Events = Object.freeze({
   Connected: "connect",
-  Disconnected: "disconnect",
 })
 
 export default class extends Controller {
@@ -39,7 +38,6 @@ export default class extends Controller {
 
   disconnect() {
     debug("section controller disconnect")
-    this.dispatch(Events.Disconnected)
     this.#screenLockManager.releaseScreenLock()
   }
 }
