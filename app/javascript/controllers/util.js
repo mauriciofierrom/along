@@ -59,6 +59,19 @@ export const ElementAction = Object.freeze({
   Invalid: "invalid",
 })
 
+/**
+ * Enum for animation classes (see animation.css)
+ * @readonly
+ * @enum {string}
+ */
+export const Animations = Object.freeze({
+  FadeIn: "fade-in",
+  FadeOut: "fade-out",
+  FlipInX: "flip-in-x",
+  FlipOutX: "flip-out-x",
+  BounceIn: "bounce-in",
+})
+
 /*
  * Make an element visible
  *

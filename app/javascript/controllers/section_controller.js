@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 import ScreenLockManager from "controllers/screen_lock_manager"
 import {
+  Animations,
   debug,
   onTurboCancel,
   isLessonTarget,
@@ -54,8 +55,8 @@ export default class extends Controller {
 
     onTurboCancel(event, this.element, isCancel, () => {
       this.dispatch(Events.Cancelled)
-      this.element.classList.remove("flip-in-x")
-      this.element.classList.add("flip-out-x")
+      this.element.classList.remove(Animations.FlipInX)
+      this.element.classList.add(Animations.FlipOutX)
     })
   }
 }

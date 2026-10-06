@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 import { Events as RangeEvents } from "controllers/range_controller"
 import {
+  Animations,
   TurboEvent,
   onTurboCancel,
   isLessonTarget,
@@ -74,8 +75,8 @@ export default class extends Controller {
 
     onTurboCancel(event, this.element, isCancel, () => {
       this.dispatch(Events.Cancelled)
-      this.element.classList.remove("flip-in-x")
-      this.element.classList.add("flip-out-x")
+      this.element.classList.remove(Animations.FlipInX)
+      this.element.classList.add(Animations.FlipOutX)
     })
   }
 
