@@ -1,6 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { debug, show, hide, disable, enable } from "controllers/util"
+import {
+  debug,
+  show,
+  hideAnimated,
+  disable,
+  enable,
+  Animations,
+} from "controllers/util"
 import ZoomManager from "controllers/zoom/zoom_manager"
 import Zoom from "controllers/zoom/zoom"
 
@@ -59,8 +66,8 @@ export default class extends Controller {
    */
   zoomCancelled() {
     debug("cancelled")
-    hide(this.zoomInTarget)
-    hide(this.zoomOutTarget)
+    hideAnimated(this.zoomInTarget, Animations.ZoomOut)
+    hideAnimated(this.zoomOutTarget, Animations.ZoomOut)
   }
 
   /*
@@ -126,10 +133,10 @@ export default class extends Controller {
 
     if (this.isZoomed) {
       show(this.zoomOutTarget)
-      hide(this.zoomInTarget)
+      hideAnimated(this.zoomInTarget, Animations.ZoomOut)
     } else {
-      hide(this.zoomOutTarget)
-      hide(this.zoomInTarget)
+      hideAnimated(this.zoomOutTarget, Animations.ZoomOut)
+      hideAnimated(this.zoomInTarget, Animations.ZoomOut)
     }
 
     this.dispatch(Events.Updated, {
