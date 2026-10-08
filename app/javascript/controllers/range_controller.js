@@ -96,9 +96,9 @@ export default class extends Controller {
       isMin ? this.minTarget.value : this.maxTarget.value,
     )
 
-    // We dispatch to the player controller to do its looping stuff
     const preparedPoints = this.#preparePoints(setting)
 
+    // We dispatch to the player controller to do its looping stuff
     this.dispatch(Events.InputUpdated, {
       detail: { ...preparedPoints },
     })
@@ -197,14 +197,25 @@ export default class extends Controller {
     this.sliderTarget.style.right = `${100 - (max / this.maxTarget.max) * 100}%`
   }
 
+  /**
+   * Updates the points based on the following criteria:
+   * 1. First point pick (initial or after zoom): Use the optimal range to
+   * update the other point.
+   * 2. Further point picks: Use the original points
+   *
+   * Regardless of this, convert the points to the corresponding zoom, if any.
+   */
   #preparePoints(pointToSet) {
     const rawStart = parseFloat(this.minTarget.value)
     const rawEnd = parseFloat(this.maxTarget.value)
     const isPickingFirstPoint = this.#firstPick && pointToSet != null
-    const { start, end } = this.#firstPick
+
+    // Calculate the points based on the optimal range for the first time
+    const { start, end } = isPickingFirstPoint
       ? this.#optimalCurrentRange(pointToSet)
       : { start: rawStart, end: rawEnd }
 
+    // Change the input for the other point to the new value
     if (isPickingFirstPoint) {
       if (pointToSet === rawStart) {
         this.maxTarget.value = end
@@ -212,9 +223,12 @@ export default class extends Controller {
         this.minTarget.value = start
       }
 
+      // Reflect the new values in the slider styles
       this.#setSliderStyles(start, end)
     }
 
+    // Return the start/end, and setting data according to the current zoom
+    // value
     return {
       ...this.#activeZoom.convert(start, end),
       ...(pointToSet == null
@@ -237,6 +251,13 @@ export default class extends Controller {
     return this.#duration * percentage
   }
 
+  /*
+   * Determine the optimal range based on the following criteria:
+   * 1. If we're setting the point, use the original value
+   * 2. The other point must be set to either 10% of the duration or the bound
+   *
+   * The bound is either the min/max of the duration
+   */
   #optimalCurrentRange(pointToSet) {
     const start = parseFloat(this.minTarget.value)
     const end = parseFloat(this.maxTarget.value)
