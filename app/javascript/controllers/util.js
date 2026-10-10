@@ -236,7 +236,7 @@ export const onTurboCancel = (event, element, predicate, before) => {
  */
 export const isLessonTarget = (urlPath) => {
   debug("path", urlPath)
-  const regex = /^\/lessons\/\d+$/
+  const regex = /^\/lessons(\/\d+)?$/
   return regex.test(urlPath)
 }
 
