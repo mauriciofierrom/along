@@ -6,6 +6,7 @@
     action: [
       "player:videoLoadFailed@window->lesson-form#videoLoadFailed",
       "player:videoLoaded@window->lesson-form#videoLoaded",
+      "turbo:before-fetch-request@document->lesson-form#onCancel",
     ].join(" ")
   }) do |form| %>
   <div style="color: red" data-lesson-form-target="errorContainer" class="<%= "hidden" if !lesson.errors.any? %>">

@@ -1,10 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { show, hide, enable, disable } from "controllers/util"
+import {
+  show,
+  hide,
+  enable,
+  disable,
+  isLessonTarget,
+  onTurboCancel,
+  Animations,
+} from "controllers/util"
 
 export const Events = Object.freeze({
   VideoUrlChanged: "videoUrlChanged",
 })
+
+const NEW_LESSON_TARGET_ID = "new_lesson"
 
 export default class extends Controller {
   static targets = ["field", "url", "errorContainer", "errorList"]
@@ -42,6 +52,17 @@ export default class extends Controller {
   load() {
     this.dispatch(Events.VideoUrlChanged, {
       detail: { url: this.urlTarget.value },
+    })
+  }
+
+  onCancel(event) {
+    const isCancel =
+      event.target.id === NEW_LESSON_TARGET_ID &&
+      isLessonTarget(event.detail.url.pathname)
+
+    onTurboCancel(event, this.element, isCancel, () => {
+      this.element.classList.remove(Animations.FlipInX)
+      this.element.classList.add(Animations.FlipOutX)
     })
   }
 }
