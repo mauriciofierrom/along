@@ -12,6 +12,7 @@
         <%= section.name %>
       </span>
       <div class="actions">
+        <%= fa_icon("unlock", data: { "section-target": "screenLockIndicator" }) %>
         <%= link_to "Cancel", lesson_path(@lesson) %>
       </div>
     </div>
