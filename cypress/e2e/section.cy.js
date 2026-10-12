@@ -203,5 +203,55 @@ describe("Section", () => {
         })
       })
     })
+
+    describe("Screen Lock indicator", () => {
+      it("should the screen lock indicator", () => {
+        cy.appFactories([
+          ["create", "section", { name: "Restriction Section" }],
+        ]).then(([section]) => {
+          cy.forceLogin()
+          cy.visit(`/lessons/${section.lesson_id}`, {
+            onBeforeLoad: (window) => {
+              const lockEvents = new EventTarget()
+              const lock = {
+                released: false,
+                release: () => {
+                  lock.released = true
+                  lockEvents.dispatchEvent(new Event("release"))
+                  return Promise.resolve()
+                },
+                addEventListener: (...args) => {
+                  lockEvents.addEventListener(...args)
+                },
+              }
+              cy.stub(window.navigator.wakeLock, "request")
+                .withArgs("screen")
+                .resolves(lock)
+            },
+          })
+          cy.findByTestId("section-title").click()
+          cy.get(".fa-lock")
+          cy.get(".fa-unlock").should("not.exist")
+        })
+      })
+
+      it("should show an unlock indicator", () => {
+        cy.appFactories([
+          ["create", "section", { name: "Restriction Section" }],
+        ]).then(([section]) => {
+          cy.forceLogin()
+          cy.visit(`/lessons/${section.lesson_id}`, {
+            onBeforeLoad: (window) => {
+              cy.stub(window.navigator.wakeLock, "request")
+                .withArgs("screen")
+                .rejects(new Error("No screen lock"))
+            },
+          })
+          cy.findByTestId("section-title").click()
+          cy.get(".fa-unlock")
+          cy.get(".fa-lock").should("not.exist")
+        })
+      })
+    })
   })
 })
