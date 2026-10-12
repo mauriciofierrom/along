@@ -17,28 +17,35 @@ describe("ScreenLockManager", () => {
   let request
   let addListener
   let removeListener
+  const onAcquisition = jest.fn()
+  const onRelease = jest.fn()
 
   beforeEach(() => {
+    const lockEvents = new EventTarget()
     lock = {
       released: false,
       release: mock(() => {
         lock.released = true
+        lockEvents.dispatchEvent(new Event("release"))
         return Promise.resolve()
       }),
-      addEventListener: jest.fn(),
+      addEventListener: jest.fn((...args) =>
+        lockEvents.addEventListener(...args),
+      ),
     }
     jest.clearAllMocks()
     request = mock(() => Promise.resolve(lock))
     navigator.wakeLock = { request }
     addListener = jest.spyOn(document, "addEventListener")
     removeListener = jest.spyOn(document, "removeEventListener")
-    manager = new ScreenLockManager()
+    manager = new ScreenLockManager(onAcquisition, onRelease)
   })
 
   afterEach(async () => {
     await manager.releaseScreenLock()
     jest.restoreAllMocks()
     delete navigator.wakeLock
+    delete document.visibilityState
   })
 
   describe("acquireScreenLock", () => {
@@ -48,6 +55,11 @@ describe("ScreenLockManager", () => {
         "visibilitychange",
         expect.any(Function),
       )
+    })
+
+    it("should call the onAcquisition callback", async () => {
+      await manager.acquireScreenLock()
+      expect(onAcquisition).toHaveBeenCalled()
     })
 
     it("should request the screen lock", async () => {
@@ -178,6 +190,15 @@ describe("ScreenLockManager", () => {
       expect(removeListener).toHaveBeenCalledWith("visibilitychange", handler)
     })
 
+    it("should call the onRelease Callback", async () => {
+      await manager.acquireScreenLock()
+      await manager.releaseScreenLock()
+
+      // It gets called twice, once as per the event and once as per the finally
+      // to make sure that it gets cleaned up
+      expect(onRelease).toHaveBeenCalledTimes(1)
+    })
+
     describe("when there's been no attempt to acquire the lock", () => {
       it("should do nothing", async () => {
         await expect(manager.releaseScreenLock()).resolves.toBeUndefined()
@@ -229,6 +250,15 @@ describe("ScreenLockManager", () => {
 
         expect(lock.release).toHaveBeenCalledTimes(1)
       })
+    })
+  })
+
+  describe("when visibility is lost", () => {
+    it("should call the onRelease callback", async () => {
+      await manager.acquireScreenLock()
+      await lock.release()
+
+      expect(onRelease).toHaveBeenCalledTimes(1)
     })
   })
 

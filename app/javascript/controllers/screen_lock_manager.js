@@ -14,6 +14,9 @@ export default class {
   /** @property {AbortController} */
   #abortController
 
+  #onAcquisition
+  #onRelease
+
   /**
    * Handler for the visibility change handler
    */
@@ -26,6 +29,11 @@ export default class {
 
     debug("Visibility restored. Re-acquiring lock.")
     await this.acquireScreenLock()
+  }
+
+  constructor(onAcquisition, onRelease) {
+    this.#onAcquisition = onAcquisition
+    this.#onRelease = onRelease
   }
 
   get #pendingLock() {
@@ -89,10 +97,12 @@ export default class {
         () => {
           this.#wakeLock = null
           this.#wakeLockRequest = null
+          this.#onRelease()
           debug("wake lock released")
         },
         { once: true },
       )
+      this.#onAcquisition()
       debug("wakeLock acquired")
     } catch (err) {
       this.#wakeLockRequest = null

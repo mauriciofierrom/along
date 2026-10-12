@@ -22,11 +22,32 @@ export default class extends Controller {
     speed: Number,
   }
 
+  static targets = ["screenLockIndicator"]
+
   #screenLockManager
+
+  #onScreenLockAcquisition() {
+    if (!this.hasScreenLockIndicatorTarget) return
+    debug("acquisition")
+
+    this.screenLockIndicatorTarget.classList.remove("fa-unlock")
+    this.screenLockIndicatorTarget.classList.add("fa-lock")
+  }
+
+  #onScreenLockRelease() {
+    if (!this.hasScreenLockIndicatorTarget) return
+    debug("release")
+
+    this.screenLockIndicatorTarget.classList.remove("fa-lock")
+    this.screenLockIndicatorTarget.classList.add("fa-unlock")
+  }
 
   initialize() {
     debug("initialize section controller")
-    this.#screenLockManager = new ScreenLockManager()
+    this.#screenLockManager = new ScreenLockManager(
+      this.#onScreenLockAcquisition.bind(this),
+      this.#onScreenLockRelease.bind(this),
+    )
   }
 
   connect() {
