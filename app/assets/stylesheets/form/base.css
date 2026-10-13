@@ -201,3 +201,11 @@ input[type="button"] {
   justify-content: flex-start;
   align-items: baseline;
 }
+
+.icon-field {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
