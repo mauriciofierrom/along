@@ -22,6 +22,32 @@ describe("Lesson", () => {
       cy.findByText("New Lesson").click()
     })
 
+    context("when using the paste button", () => {
+      context("and the clipboard has a valid YouTube URL", () => {
+        it("should populate the URL field", () => {
+          const url = "https://youtu.be/dQw4w9WgXcQ?si=rDMqqHoAycx5gXfY"
+          cy.window().then((window) => {
+            cy.stub(window.navigator.clipboard, "readText").resolves(url)
+          })
+          cy.findByTestId("paste-button").click()
+          cy.findByLabelText("Video link").should("have.value", url)
+        })
+      })
+
+      context("and the clipboard doesn't have a valid YouTube URL", () => {
+        it("should do nothing", () => {
+          cy.window().then((window) => {
+            cy.stub(window.navigator.clipboard, "readText")
+              .resolves("Awkward copied text")
+              .as("readText")
+          })
+          cy.findByTestId("paste-button").click()
+          cy.get("@readText").should("have.been.called")
+          cy.findByLabelText("Video link").should("have.value", "")
+        })
+      })
+    })
+
     context("when the video succeeds to load", () => {
       beforeEach(() => {
         cy.findByLabelText("Video link")
