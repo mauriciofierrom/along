@@ -9,6 +9,7 @@ import {
   onTurboCancel,
   Animations,
 } from "controllers/util"
+import YoutubePlayer from "controllers/player/youtube_player"
 
 export const Events = Object.freeze({
   VideoUrlChanged: "videoUrlChanged",
@@ -64,5 +65,18 @@ export default class extends Controller {
       this.element.classList.remove(Animations.FlipInX)
       this.element.classList.add(Animations.FlipOutX)
     })
+  }
+
+  async paste() {
+    try {
+      const currentText = await navigator.clipboard.readText()
+      const url = new URL(currentText)
+      if (!YoutubePlayer.isYouTubeUrl(url)) return
+
+      this.urlTarget.value = url.href
+      this.dispatch("input", { target: this.urlTarget, prefix: "" })
+    } catch (error) {
+      console.error(`Couldn't paste: ${error}`)
+    }
   }
 }
