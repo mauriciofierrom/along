@@ -232,7 +232,8 @@ export default class extends Player {
   #formatUrl(url) {
     const baseUrl = "https://youtu.be/v"
     const parsedUrl = new URL(url)
-    if (!this.#isYouTubeUrl(parsedUrl)) throw new Error("Invalid YouTube URL")
+    if (!this.constructor.isYouTubeUrl(parsedUrl))
+      throw new Error("Invalid YouTube URL")
     return `${baseUrl}${parsedUrl.pathname}`
   }
 
@@ -242,7 +243,7 @@ export default class extends Player {
    * @param {URL} url - The parsed URL to test
    * @return {boolean} Whether it is a valid URL
    */
-  #isYouTubeUrl(url) {
+  static isYouTubeUrl(url) {
     return (
       URL_PATTERNS.host.test(url.hostname) &&
       URL_PATTERNS.path.test(url.pathname)
