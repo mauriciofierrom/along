@@ -241,3 +241,5 @@ export const isLessonTarget = (urlPath) => {
 }
 
 export const SECTIONS_ID = "sections"
+
+export const tutorId = (tourId) => `[data-tutorid='${tourId}']`
