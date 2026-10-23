@@ -9,6 +9,11 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "layouts/practice", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "https://www.youtube.com/iframe_api" %>
+
+    <!-- Driver.js -->
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js" %>
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.css" %>
+
     <%= javascript_importmap_tags %>
     <%= javascript_tag do %>
       window.rails_env = "<%= Rails.env %>"
