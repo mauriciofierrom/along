@@ -28,10 +28,10 @@ export function debounce(callback, delay) {
 }
 
 export function debug(msg, ...options) {
-  if (debugCondition()) {
-    // eslint-disable-next-line no-console
-    console.log(`${extractPrefix()}: ${msg || ""}`, ...options)
-  }
+  // if (debugCondition()) {
+  //   // eslint-disable-next-line no-console
+  //   console.log(`${extractPrefix()}: ${msg || ""}`, ...options)
+  // }
 }
 
 /*
@@ -241,3 +241,5 @@ export const isLessonTarget = (urlPath) => {
 }
 
 export const SECTIONS_ID = "sections"
+
+export const tutorId = (tourId) => `[data-tutorid='${tourId}']`

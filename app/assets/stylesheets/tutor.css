@@ -1,0 +1,21 @@
+.driver-popover.tutor-theme {
+  background-color: var(--bg);
+  color: var(--neutral);
+}
+
+.driver-popover.tutor-theme .driver-popover-description {
+  color: var(--secondary);
+  font-family: "freeSans", "Free Sans", serif;
+}
+
+.driver-popover.tutor-theme .driver-popover-title,
+.driver-popover.tutor-theme .driver-popover-progress-text {
+  color: var(--primary);
+  font-family: "superMagic", "Super Magic", fantasy;
+}
+
+.driver-popover.tutor-theme button {
+  background-color: var(--bg);
+  color: var(--bg-dark);
+  font-family: "freeSans", "Free Sans", serif;
+}

@@ -1,7 +1,7 @@
 <div class="lesson-grid"
      data-lesson-player-outlet=".player"
-     data-controller="lesson"
-     data-action="player:playerInitialized@window->lesson#playerInitialized">
+     data-controller="practice"
+     data-action="player:playerInitialized@window->practice#playerInitialized">
   <div class="header">
     <%= turbo_frame_tag "name_#{@lesson.id}", class: "title" do %>
       <div class="title">

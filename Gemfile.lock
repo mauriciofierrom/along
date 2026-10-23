@@ -199,6 +199,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hana (1.3.7)
     http_accept_language (2.1.1)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
@@ -216,6 +217,11 @@ GEM
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     json (2.19.4)
+    json_schemer (2.5.0)
+      bigdecimal
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      simpleidn (~> 0.2)
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.2)
@@ -375,14 +381,14 @@ GEM
     rspec-mocks (3.13.8)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (6.0.4)
-      actionpack (>= 6.1)
-      activesupport (>= 6.1)
-      railties (>= 6.1)
-      rspec-core (~> 3.12)
-      rspec-expectations (~> 3.12)
-      rspec-mocks (~> 3.12)
-      rspec-support (~> 3.12)
+    rspec-rails (7.1.1)
+      actionpack (>= 7.0)
+      activesupport (>= 7.0)
+      railties (>= 7.0)
+      rspec-core (~> 3.13)
+      rspec-expectations (~> 3.13)
+      rspec-mocks (~> 3.13)
+      rspec-support (~> 3.13)
     rspec-support (3.13.7)
     rubocop (1.86.1)
       json (~> 2.3)
@@ -437,6 +443,7 @@ GEM
     shellany (0.0.1)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
+    simpleidn (0.3.0)
     sprockets (4.2.2)
       concurrent-ruby (~> 1.0)
       logger
@@ -510,13 +517,14 @@ DEPENDENCIES
   http_accept_language (~> 2.1, >= 2.1.1)
   importmap-rails
   jbuilder
+  json_schemer
   kaminari
   mutex_m
   puma (~> 6.0)
   rails (~> 8.1.3)
   redis (~> 5.4.1)
   reek
-  rspec-rails (~> 6.0.0)
+  rspec-rails (~> 7.1.0)
   rubocop (~> 1.86, >= 1.86.1)
   rubocop-capybara
   rubocop-factory_bot

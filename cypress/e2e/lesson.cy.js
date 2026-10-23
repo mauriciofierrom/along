@@ -15,6 +15,47 @@ describe("Lesson", () => {
     })
   })
 
+  describe("Tutorial", () => {
+    beforeEach(() => {
+      cy.appFactories([["create", "user"]])
+    })
+
+    context("whent here's no lesson", () => {
+      it("should skip lesson item's steps", () => {
+        const titles = ["New Lesson button", "Lesson list", "That's it!"]
+        cy.forceLogin()
+        cy.findByTestId("lesson-tutor").click()
+        titles.forEach((title) => {
+          cy.get(".driver-popover-title").should("have.text", title)
+          cy.get(".driver-popover-next-btn").click()
+        })
+      })
+    })
+
+    context.only("when there's at least one lesson", () => {
+      it("should do the whole tour", () => {
+        const titles = [
+          "New Lesson button",
+          "Lesson list",
+          "Lesson item",
+          "Lesson title",
+          "Lesson delete button",
+          "That's it",
+        ]
+        cy.appFactories([["create", "lesson", { name: "My Lesson" }]]).then(
+          ([lesson]) => {
+            cy.forceLogin()
+            cy.findByTestId("lesson-tutor").click()
+            titles.forEach((title) => {
+              cy.get(".driver-popover-title").should("have.text", title)
+              cy.get(".driver-popover-next-btn").click()
+            })
+          },
+        )
+      })
+    })
+  })
+
   describe("New", () => {
     beforeEach(() => {
       cy.appFactories([["create", "user"]])
