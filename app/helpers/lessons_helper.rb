@@ -34,4 +34,32 @@ module LessonsHelper
   def new_player_actions
     "lesson-form:videoUrlChanged@window->player#load"
   end
+
+  def tutorial_config
+    {
+      steps: tutorial_steps,
+      progressText: "{{current}} #{t("tutor.progress")} {{total}}",
+      nextBtnText: t("tutor.next"),
+      prevBtnText: t("tutor.previous"),
+      doneBtnText: t("tutor.done"),
+    }
+  end
+
+  private
+
+  def tutorial_steps
+    t("tutor.lesson").keys.map do |part|
+      {
+        element: (tutor_id(part) unless part == :final),
+        popover: {
+          title: t("tutor.lesson.#{part}.title"),
+          description: t("tutor.lesson.#{part}.description"),
+        },
+      }.compact
+    end
+  end
+
+  def tutor_id(name)
+    "[data-tutorid='#{name.to_s.dasherize}']"
+  end
 end

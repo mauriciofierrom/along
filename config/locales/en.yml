@@ -79,3 +79,28 @@ en:
     destroy:
       success: "Section removed"
       confirm: "Are you sure you want to remove the section?"
+  tutor:
+    progress: "of"
+    next: "Next"
+    previous: "Previous"
+    done: "Done"
+    lesson:
+      new_lesson:
+        title: "New Lesson button"
+        description: "Click this button to show the Lesson creation form"
+      lesson_list:
+        title: "Lesson list"
+        description: "This section contains the lessons you've created so far"
+      lesson_item:
+        title: "Lesson item"
+        description: "This is one of your lessons"
+      lesson_item_title:
+        title: "Lesson title"
+        description: "Click here to check your lesson and its sections"
+      lesson_item_delete:
+        title: "Lesson delete button"
+        description: "Click here to remove the lesson. You'll have to confirm your decision"
+      final:
+        title: "That's it!"
+        description: "Check the tutor for the practice view to get more information on practice controls!"
+

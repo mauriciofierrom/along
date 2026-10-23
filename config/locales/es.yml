@@ -69,3 +69,27 @@ es:
     destroy:
       success: "Sección eliminada"
       confirm: "¿Está segur de eliminar esta sección?"
+  tutor:
+    progress: "de"
+    next: "Siguiente"
+    previous: "Anterior"
+    done: "Terminar"
+    lesson:
+      new_lesson:
+        title: "Boton de nueva Lección"
+        description: "Haz click en este botón para mostrar el formulario de creación de Lecciones"
+      lesson_list:
+        title: "Lista de lecciones"
+        description: "Esta sección contiene las lecciones que has creado hasta ahora"
+      lesson_item:
+        title: "Ítem de Lección"
+        description: "Esta es una de tus lecciones"
+      lesson_item_title:
+        title: "Título de Lección"
+        description: "Haz click aquí para ver tu Lección y sus secciones"
+      lesson_item_delete:
+        title: "Botón de remover Lección"
+        description: "Haz click aquí para remover la lección. Tendrás que confirmar tu decisión."
+      final:
+        title: "¡Eso es todo!"
+        description: "Revisa el tutor en la Vista de Práctica para obtener más información sobre los controles de práctica"
