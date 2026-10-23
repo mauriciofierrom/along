@@ -16,13 +16,10 @@ describe("Lesson", () => {
   })
 
   describe("Tutorial", () => {
-    beforeEach(() => {
-      cy.appFactories([["create", "user"]])
-    })
-
     context("whent here's no lesson", () => {
       it("should skip lesson item's steps", () => {
         const titles = ["New Lesson button", "Lesson list", "That's it!"]
+        cy.appFactories([["create", "user"]])
         cy.forceLogin()
         cy.findByTestId("lesson-tutor").click()
         titles.forEach((title) => {
@@ -40,18 +37,20 @@ describe("Lesson", () => {
           "Lesson item",
           "Lesson title",
           "Lesson delete button",
-          "That's it",
+          "That's it!",
         ]
-        cy.appFactories([["create", "lesson", { name: "My Lesson" }]]).then(
-          ([lesson]) => {
-            cy.forceLogin()
+        cy.appFactories([["create", "user"]]).then(([user]) => {
+          cy.appFactories([
+            ["create", "lesson", { name: "My Lesson", user_id: user.id }],
+          ]).then(([_lesson]) => {
+            cy.forceLogin({ email: user.email })
             cy.findByTestId("lesson-tutor").click()
             titles.forEach((title) => {
               cy.get(".driver-popover-title").should("have.text", title)
               cy.get(".driver-popover-next-btn").click()
             })
-          },
-        )
+          })
+        })
       })
     })
   })
