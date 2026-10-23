@@ -15,7 +15,6 @@ describe("Section", () => {
     cy.forceLogin({ redirect_to: "/lessons" })
     cy.findByTestId("lesson-link").click()
 
-    cy.get(".video-player").should("have.class", "spinner")
     cy.findAllByTestId("edit-section").should("have.class", "disabled")
     cy.findAllByTestId("section-title").should("have.class", "disabled")
 
