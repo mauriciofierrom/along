@@ -72,7 +72,7 @@ gem "drb"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "rspec-rails", "~> 6.0.0"
+  gem "rspec-rails", "~> 7.1.0"
   gem "cypress-on-rails", "~> 1.20.0"
   gem "faker", "~> 3.2.2"
   gem "database_cleaner-active_record"
@@ -110,4 +110,5 @@ group :test do
   gem "webdrivers"
   gem "factory_bot_rails", "~> 6.5.1"
   gem "shoulda-matchers", "~> 7.0.1"
+  gem "json_schemer"
 end
