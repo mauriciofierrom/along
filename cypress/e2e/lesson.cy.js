@@ -29,7 +29,7 @@ describe("Lesson", () => {
       })
     })
 
-    context.only("when there's at least one lesson", () => {
+    context("when there's at least one lesson", () => {
       it("should do the whole tour", () => {
         const titles = [
           "New Lesson button",
