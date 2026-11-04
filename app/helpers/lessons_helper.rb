@@ -32,12 +32,23 @@ module LessonsHelper
   end
 
   def new_player_actions
-    "lesson-form:videoUrlChanged@window->player#load"
+    [
+      "lesson-form:videoUrlChanged@window->player#load",
+      "tutorial:start@document->player#onTutorialStart",
+      "tutorial:end@document->player#onTutorialEnd",
+    ].join(" ")
   end
 
-  def tutorial_config
+  def tutorial_config(scope)
     {
-      steps: tutorial_steps,
+      steps: tutorial_steps(scope),
+    }.merge(common_tutorial_conf)
+  end
+
+  private
+
+  def common_tutorial_conf
+    {
       progressText: "{{current}} #{t("tutor.progress")} {{total}}",
       nextBtnText: t("tutor.next"),
       prevBtnText: t("tutor.previous"),
@@ -45,15 +56,13 @@ module LessonsHelper
     }
   end
 
-  private
-
-  def tutorial_steps
-    t("tutor.lesson").keys.map do |part|
+  def tutorial_steps(translation_path)
+    t(translation_path).keys.map do |part|
       {
         element: (tutor_id(part) unless part == :final),
         popover: {
-          title: t("tutor.lesson.#{part}.title"),
-          description: t("tutor.lesson.#{part}.description"),
+          title: t("#{translation_path}.#{part}.title"),
+          description: t("#{translation_path}.#{part}.description"),
         },
       }.compact
     end

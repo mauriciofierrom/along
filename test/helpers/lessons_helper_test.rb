@@ -38,22 +38,28 @@ class LessonsHelperTest < ActionView::TestCase
     },
   })
 
+  TUTORIAL_CONFIGS = ["tutor.lesson", "tutor.lesson-form"].freeze
+
   test "#tutorial_config matches the schema in every locale" do
     elements = I18n.available_locales.map do |locale|
       I18n.with_locale(locale) do
-        config = JSON.parse(tutorial_config.to_json)
-        # Check that the configuration matches the schema
-        assert(TUTOR_SCHEMA.valid?(config), "invalid config for locale #{locale}")
-        config["steps"].map { |step| step["element"] }
+        TUTORIAL_CONFIGS.map do |conf|
+          config = JSON.parse(tutorial_config(conf).to_json)
+          # Check that the configuration matches the schema
+          assert(TUTOR_SCHEMA.valid?(config), "invalid config for locale #{locale}")
+          config["steps"].map { |step| step["element"] }
+        end
       end
     end
 
     # Check the same number of steps per locale
-    assert_equal 1, elements.uniq.size
+    assert_equal 2, elements.uniq.size
   end
 
   test "#tutorial_config final step has no element key" do
-    assert_not tutorial_config[:steps].last.key?(:element)
+    TUTORIAL_CONFIGS.each do |config|
+      assert_not tutorial_config(config)[:steps].last.key?(:element)
+    end
   end
 
   test "#video_id grabs the video id from the url" do

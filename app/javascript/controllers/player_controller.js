@@ -10,6 +10,7 @@ import {
 import LoopManager from "controllers/player/loop_manager"
 import YoutubePlayer from "controllers/player/youtube_player"
 import DummyPlayer from "controllers/player/dummy_player"
+import TutorialPlayer from "controllers/player/tutorial_player"
 import { PlayerRestriction } from "controllers/player/player"
 import {
   debug,
@@ -330,6 +331,14 @@ export default class extends Controller {
     newPlayer.create(this.#mkPlayerParams())
       .then(this.#onPlayerInitialized)
       .catch(this.#onPlayerInitializationError)
+  }
+
+  onTutorialStart() {
+    this.swap_player(TutorialPlayer)
+  }
+
+  onTutorialEnd() {
+    this.swap_player(this.#defaultPlayer())
   }
 
   disconnect() {

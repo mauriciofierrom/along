@@ -1,4 +1,4 @@
-<%= tag.div class: "lessons", data: { controller: "lesson", lesson_tutorial_config_value: tutorial_config } do %>
+<%= tag.div class: "lessons", data: { controller: "lesson", lesson_tutorial_config_value: tutorial_config("tutor.lesson") } do %>
   <div class="header">
     <div class="title">
       <h1><%= Lesson.model_name.human(count: 2) %></h1>

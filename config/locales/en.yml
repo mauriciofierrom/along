@@ -105,4 +105,28 @@ en:
       final:
         title: "That's it!"
         description: "Check the tutor for the practice view to get more information on practice controls!"
-
+    lesson-form:
+      video_player:
+        title: "Video Player"
+        description: "The videoplayer is loaded if the URL is valid"
+      name_field:
+        title: "Name field"
+        description: "Fill the name you want to display for this lesson"
+      video_link_field:
+        title: "Video link field"
+        description: "Paste here the shared link from YouTube"
+      video_paste_button:
+        title: "Video link paste button"
+        description: "Click this button to automatically paste the contents of the clipboard -if- it contains a YouTube shared URL"
+      instrument_selector:
+        title: "Instrument selector"
+        description: "Pick what instrument you're learning in this lesson"
+      create_button:
+        title: "Create button"
+        description: "Click the button to save your lesson"
+      cancel_button:
+        title: "Cancel button"
+        description: "Click the cancel button to close the form without saving"
+      final:
+        title: "That's it!"
+        description: "Check the tutor for the practice view to get more information on practice controls!"

@@ -95,3 +95,28 @@ es:
       final:
         title: "¡Eso es todo!"
         description: "Revisa el tutor en la Vista de Práctica para obtener más información sobre los controles de práctica"
+    lesson-form:
+      name_field:
+        title: "Campo Nombre"
+        description: "Llena el nombre con el que quieres que se muestre la Lección"
+      video_link_field:
+        title: "Campo Link de Video"
+        description: "Pega aquí el link compartido de YouTube"
+      video_paste_button:
+        title: "Botón de pegar Link de Video"
+        description: "Haz click aquí para pegar de tu portapapeles automáticamente -si- contiene un link de compratir de YouTube"
+      instrument_selector:
+        title: "Selector de instrumento"
+        description: "Selecciona el instrumento que aprendes en esta lección"
+      create_button:
+        title: "Botón de crear"
+        description: "Haz click en el botón para guardar tu Lección"
+      cancel_button:
+        title: "Botón de Cancelar"
+        description: "Haz click en el botón para cerrar el formulario sin guardar"
+      video_player:
+        title: "El reproductor de video"
+        description: "El reproductor de video carge si el link es válido"
+      final:
+        title: "¡Eso es todo!"
+        description: "Revisa el tutor en la Vista de Práctica para obtener más información sobre los controles de práctica"

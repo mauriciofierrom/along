@@ -3,10 +3,12 @@
   class: "lesson-form flip-in-x",
   data: {
     controller: "lesson-form",
+    lesson_form_tutorial_config_value: tutorial_config("tutor.lesson-form"),
     action: [
       "player:videoLoadFailed@window->lesson-form#videoLoadFailed",
       "player:videoLoaded@window->lesson-form#videoLoaded",
       "turbo:before-fetch-request@document->lesson-form#onCancel",
+      "videoLinkNext@document->lesson-form#videoLinkNext",
     ].join(" ")
   }) do |form| %>
   <div style="color: red" data-lesson-form-target="errorContainer" class="<%= "hidden" if !lesson.errors.any? %>">
@@ -19,19 +21,22 @@
     </ul>
   </div>
 
-  <%= form.label :name %>
-  <%= form.text_field :name, class: "large #{error_style(:name, lesson.errors)}", data: { "lesson-form-target" => "field" } %>
+  <div style="display: flex; gap: 5px;">
+    <%= form.label :name %>
+    <%= help_button "click->lesson-form#showTutorial" %>
+  </div>
+  <%= form.text_field :name, class: "large #{error_style(:name, lesson.errors)}", data: { "lesson-form-target" => "field", tutorid: "name-field" } %>
 
   <%= form.label :video_url %>
   <div class="icon-field">
     <%= form.text_field :video_url,
-      data: { action: "input->lesson-form#load", "lesson-form-target" =>  "url" },
+      data: { action: "input->lesson-form#load", "lesson-form-target" =>  "url", tutorid: "video-link-field" },
       class: "large #{error_style(:video_url, lesson.errors)}"
     %>
     <%= button_tag (fa_icon "paste"),
       type: "button",
       class: "link",
-      data: { action: "click->lesson-form#paste", testid: "paste-button" } %>
+      data: { action: "click->lesson-form#paste", tutorid: "video-paste-button", testid: "paste-button" } %>
   </div>
 
   <%= form.label :instrument_id, Instrument.model_name.human %>
@@ -39,14 +44,14 @@
     :instrument_id,
     Instrument.all.collect { |i| [i.name, i.id] }, {},
     class: "small",
-    data: { "lesson-form-target" => "field" }
+    data: { "lesson-form-target" => "field", tutorid: "instrument-selector" }
   ) %>
 
   <%= form.hidden_field :duration_in_seconds, data: { lesson_form_target: "duration" } %>
 
   <div class="form-footer">
-    <%= form.submit nil, data: { "lesson-form-target" => "field" } %>
-    <%= link_to t(:cancel), lessons_path(lesson) %>
+    <%= form.submit nil, data: { "lesson-form-target" => "field", tutorid: "create-button" } %>
+    <%= link_to t(:cancel), lessons_path(lesson), data: { tutorid: "cancel-button" } %>
   </div>
 <% end %>
 

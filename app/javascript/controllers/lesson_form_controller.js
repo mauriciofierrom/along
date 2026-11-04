@@ -4,12 +4,14 @@ import {
   show,
   hide,
   enable,
+  debug,
   disable,
   isLessonTarget,
   onTurboCancel,
   Animations,
 } from "controllers/util"
 import YoutubePlayer from "controllers/player/youtube_player"
+import { drive } from "controllers/lesson_form/tutorial"
 
 export const Events = Object.freeze({
   VideoUrlChanged: "videoUrlChanged",
@@ -19,6 +21,9 @@ const NEW_LESSON_TARGET_ID = "new_lesson"
 
 export default class extends Controller {
   static targets = ["field", "url", "errorContainer", "errorList", "duration"]
+  static values = {
+    tutorialConfig: Object,
+  }
 
   connect() {
     this.urlTarget.focus()
@@ -69,6 +74,17 @@ export default class extends Controller {
       this.element.classList.remove(Animations.FlipInX)
       this.element.classList.add(Animations.FlipOutX)
     })
+  }
+
+  showTutorial() {
+    if (!this.hasTutorialConfigValue) return
+
+    drive(this.tutorialConfigValue)
+  }
+
+  videoLinkNext() {
+    this.urlTarget.value = "https://youtu.be/N3V3RG0NN4"
+    this.urlTarget.dispatchEvent(new Event("input", { bubbles: true }))
   }
 
   async paste() {
