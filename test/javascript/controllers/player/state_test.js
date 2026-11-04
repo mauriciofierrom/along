@@ -17,7 +17,7 @@ mock.module("controllers/player/loop_manager", () => ({
     }
 
     // eslint-disable-next-line no-empty-function
-    clear() {}
+    clear() { }
   },
 }))
 
@@ -25,8 +25,10 @@ jest.useFakeTimers()
 
 describe("PlayerState", () => {
   let application
+  let player
 
   beforeEach(() => {
+    player = jest.fn()
     document.body.innerHTML = `<div data-controller="player" id="player" data-player-video-id-value="video-id">
     </div>
     `
@@ -51,7 +53,7 @@ describe("PlayerState", () => {
         playerController.loop(12, 32)
 
         expect(playerController.state).toBeInstanceOf(PlayingState)
-        expect(mockLoop).toHaveBeenCalledWith(12, 32)
+        expect(mockLoop).toHaveBeenCalledWith(player, 12, 32)
       })
     })
   })
@@ -74,7 +76,7 @@ describe("PlayerState", () => {
         playerController.loop(43, 123)
 
         expect(playerController.state).toBeInstanceOf(PlayingState)
-        expect(mockLoop).toHaveBeenCalledWith(43, 123)
+        expect(mockLoop).toHaveBeenCalledWith(player, 43, 123)
       })
     })
   })
@@ -97,7 +99,7 @@ describe("PlayerState", () => {
         playerController.loop(43, 56)
 
         expect(playerController.state).toBeInstanceOf(EditingState)
-        expect(mockLoop).toHaveBeenCalledWith(43, 56)
+        expect(mockLoop).toHaveBeenCalledWith(player, 43, 56)
       })
     })
   })
@@ -119,7 +121,7 @@ describe("PlayerState", () => {
         playerController.state = playerController.pickingPointState
         await playerController.loop(1, 5)
 
-        expect(mockPlayTimes).toHaveBeenCalledWith(1, 5, 1)
+        expect(mockPlayTimes).toHaveBeenCalledWith(player, 1, 5, 1)
         expect(playerController.state).toBeInstanceOf(EditingState)
       })
     })

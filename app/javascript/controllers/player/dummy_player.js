@@ -19,8 +19,8 @@ export default class extends Player {
   constructor({
     currentTime = 0,
     duration = randomBetween(300, 600),
-    onPlaying = () => {},
-    onLoadError = () => {},
+    onPlaying = () => { },
+    onLoadError = () => { },
   }) {
     super()
 
@@ -97,7 +97,7 @@ export default class extends Player {
     }
   }
 
-  setPlaybackSpeed() {}
+  setPlaybackSpeed() { }
 
   static create(params) {
     return new Promise((resolve) => {

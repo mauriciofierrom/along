@@ -8,8 +8,6 @@ const ABORT_MESSAGE = "Cancelled manually"
 
 /** Class driving the execution of a playback loop */
 export default class LoopManager {
-  /** @property {YoutubePlayer} */
-  #player
   /** @property {number} intervalId - The id to clear the interval */
   #intervalId
   /** @property {number} times - The number of times the loop has repeated */
@@ -26,13 +24,12 @@ export default class LoopManager {
    *
    * @param {YoutubePlayer} player - The player wrapper object to loop with
    */
-  constructor(player, element) {
-    this.#player = player
+  constructor(element) {
     this.#element = element
   }
 
-  #canLoop() {
-    return this.#player.canPlay()
+  #canLoop(player) {
+    return player.canPlay()
   }
 
   /**
@@ -49,13 +46,13 @@ export default class LoopManager {
    * @param {Function} [onLoop] - A callback to execute on each loop
    * @param {Function} [exitCondition] - A predicate to exit regular playback
    */
-  async #play(from, to, onLoop, exitCondition = () => false) {
-    await this.#canLoop()
+  async #play(player, from, to, onLoop, exitCondition = () => false) {
+    await this.#canLoop(player)
 
     // We need to stop any previous loop before we start a new one
     this.clear()
 
-    this.#player.play(from)
+    player.play(from)
 
     this.#abortController = new AbortController()
     const signal = this.#abortController.signal
@@ -72,7 +69,7 @@ export default class LoopManager {
       })
 
       this.#intervalId = setInterval(() => {
-        if (this.#player.currentTime >= to) {
+        if (player.currentTime >= to) {
           if (exitCondition()) {
             this.#times = 1
             clearInterval(this.#intervalId)
@@ -80,13 +77,13 @@ export default class LoopManager {
             return
           }
 
-          this.#player.play(from)
+          player.play(from)
 
           onLoop?.()
         }
 
         this.#element.dispatch(RangeEvents.ReportProgress, {
-          detail: { from, end: this.#player.currentTime },
+          detail: { from, end: player.currentTime },
         })
       }, LOOP_DELAY)
     })
@@ -98,8 +95,8 @@ export default class LoopManager {
    * @param {!number} from - The starting point of the loop
    * @param {!number} to - The end point of the loop
    */
-  loop(from, to) {
-    return this.#play(from, to)
+  loop(player, from, to) {
+    return this.#play(player, from, to)
   }
 
   /**
@@ -109,8 +106,9 @@ export default class LoopManager {
    * @param {!number} to - The end point of the loop
    * @param {!number} times - The number of times to loop
    */
-  playTimes(from, to, times) {
+  playTimes(player, from, to, times) {
     return this.#play(
+      player,
       from,
       to,
       () => this.#times++,

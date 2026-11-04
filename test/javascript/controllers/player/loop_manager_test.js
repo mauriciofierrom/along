@@ -17,10 +17,10 @@ describe("LoopManager", () => {
 
   describe("bounded loop", () => {
     it("should be stopped after the provided max times", async () => {
-      const loopManager = new LoopManager(player, mockElement)
+      const loopManager = new LoopManager(mockElement)
       const mockPlay = jest.spyOn(player, "play")
 
-      const loop = loopManager.playTimes(1, 5, 3)
+      const loop = loopManager.playTimes(player, 1, 5, 3)
 
       await Promise.resolve()
 
@@ -33,10 +33,10 @@ describe("LoopManager", () => {
 
   describe("unrestricted loop", () => {
     it("should not stop until interrupted", async () => {
-      const loopManager = new LoopManager(player, mockElement)
+      const loopManager = new LoopManager(mockElement)
       const mockPlay = jest.spyOn(player, "play")
 
-      const loop = loopManager.loop(1, 5)
+      const loop = loopManager.loop(player, 1, 5)
 
       await Promise.resolve()
 
@@ -58,17 +58,17 @@ describe("LoopManager", () => {
 
   describe("play times followed by loop", () => {
     it("should start fresh", async () => {
-      const loopManager = new LoopManager(player, mockElement)
+      const loopManager = new LoopManager(mockElement)
       const mockPlay = jest.spyOn(player, "play")
 
-      loopManager.playTimes(1, 5, 3)
+      loopManager.playTimes(player, 1, 5, 3)
       await Promise.resolve()
 
       jest.advanceTimersByTime(600)
 
       expect(mockPlay).toHaveBeenCalledTimes(3)
 
-      const loop = loopManager.loop(1, 5)
+      const loop = loopManager.loop(player, 1, 5)
 
       await Promise.resolve()
 
@@ -90,10 +90,10 @@ describe("LoopManager", () => {
 
   describe("loop followed by play times", () => {
     it("should start fresh", async () => {
-      const loopManager = new LoopManager(player, mockElement)
+      const loopManager = new LoopManager(mockElement)
       const mockPlay = jest.spyOn(player, "play")
 
-      const loop = loopManager.loop(1, 5)
+      const loop = loopManager.loop(player, 1, 5)
 
       await Promise.resolve()
 
@@ -111,7 +111,7 @@ describe("LoopManager", () => {
 
       expect(mockPlay).toHaveBeenCalledTimes(4)
 
-      loopManager.playTimes(1, 5, 3)
+      loopManager.playTimes(player, 1, 5, 3)
 
       jest.advanceTimersByTime(600)
 
@@ -127,8 +127,8 @@ describe("LoopManager", () => {
         </div>
         `
 
-        const loopManager = new LoopManager(new DummyPlayer({}))
-        await expect(loopManager.playTimes(12, 23, 2)).rejects.toMatchObject({
+        const loopManager = new LoopManager(mockElement)
+        await expect(loopManager.playTimes(player, 12, 23, 2)).rejects.toMatchObject({
           name: "PlaybackError",
           type: PlaybackErrorType.PlayerRestriction,
           message: "Player restriction",
@@ -137,15 +137,15 @@ describe("LoopManager", () => {
       })
     })
 
-    describe("whent he player has no unmet restrictions", () => {
+    describe("when he player has no unmet restrictions", () => {
       it("performs the loop normaly and resolves", async () => {
         document.head.innerHTML = "<script></script>"
         document.body.innerHTML = ` <div data-controller="player" id="player">
         </div>
         `
-        const loopManager = new LoopManager(new DummyPlayer({}), mockElement)
+        const loopManager = new LoopManager(mockElement)
 
-        const playTimes = loopManager.playTimes(12, 34, 2)
+        const playTimes = loopManager.playTimes(player, 12, 34, 2)
         await Promise.resolve()
         jest.advanceTimersByTime(400)
 

@@ -250,6 +250,20 @@ export default class extends Player {
     )
   }
 
+  dispose() {
+    if (!this.#player) return
+    debug("disposing")
+    const playerContainer = this.#player.getIframe().parentNode
+    debug("player container", playerContainer)
+    const playerElement = document.createElement("div")
+    playerElement.id = "player"
+    playerElement.classList.add("hidden")
+
+    this.#player.destroy()
+    this.#player = null
+    playerContainer.prepend(playerElement)
+  }
+
   /**
    * The key to store to indicate the restriction for the video and the user.
    * It's formed from the videoId and the user id concatenated to ensure this

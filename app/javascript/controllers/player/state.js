@@ -52,7 +52,7 @@ class PlayerState {
 export class ReadyState extends PlayerState {
   async loop(from, to) {
     this.context.state = this.context.playingState
-    return this.context.loopManager.loop(from, to)
+    return this.context.loopManager.loop(this.context.player, from, to)
   }
 
   reset() {
@@ -67,7 +67,7 @@ export class ReadyState extends PlayerState {
 
 export class PlayingState extends PlayerState {
   async loop(from, to) {
-    return this.context.loopManager.loop(from, to)
+    return this.context.loopManager.loop(this.context.player, from, to)
   }
 
   reset() {
@@ -83,7 +83,7 @@ export class PlayingState extends PlayerState {
 
 export class EditingState extends PlayerState {
   async loop(from, to) {
-    return this.context.loopManager.loop(from, to)
+    return this.context.loopManager.loop(this.context.player, from, to)
   }
 
   reset() {
@@ -104,7 +104,7 @@ export class PickingPointState extends PlayerState {
       from,
       to,
     })
-    await this.context.loopManager.playTimes(from, to, PICK_POINT_LOOP_TIMES)
+    await this.context.loopManager.playTimes(this.context.player, from, to, PICK_POINT_LOOP_TIMES)
     debug(
       "PickingPointState: Done point looping. Doing editing loop:",
       this.context.editState,
@@ -130,7 +130,7 @@ export class PickingPointState extends PlayerState {
 
 export class UserActionRequiredState extends PlayerState {
   async loop(from, to) {
-    await this.context.loopManager.loop(from, to)
+    await this.context.loopManager.loop(this.context.player, from, to)
     this.context.state = this.context.playingState
   }
 

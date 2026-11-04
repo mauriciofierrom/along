@@ -129,39 +129,59 @@ export default class extends Controller {
 
   #isPlayerInitialized = false
 
+  #onPlayerInitialized = (player) => {
+    if (!this.element.isConnected) return
+
+    this.player = player
+    this.#isPlayerInitialized = true
+    this.state = this.readyState
+    this.dispatch(Events.Initialized)
+  }
+
+  #onPlayerInitializationError = (error) => {
+    showPlayerError({
+      message: "Player initialization failed",
+      details: error,
+      target: this.element,
+    })
+    console.error("Player initialization failed", error)
+  }
+
+  /*
+   * The paramateres to initialize the Youtube Player
+   */
+  #mkPlayerParams = () => ({
+    videoId: this.videoIdValue,
+    containerOffsetHeight: this.element.parentNode.offsetHeight,
+    onCue: () => {
+      debug("loaded")
+      this.dispatch(Events.VideoLoaded, { detail: { duration: parseInt(this.player.duration, 10) } })
+    },
+    onPlaying: () => {
+      this.dispatch(Events.VideoLoaded)
+
+      if (this.hasDurationTarget) {
+        this.durationTarget.value = parseInt(this.player.duration, 10)
+      }
+    },
+    onRestrictionLifted: () => {
+      hideAnimated(this.restrictionTarget, Animations.BounceOut)
+      this.state.onPlaying()
+    },
+    onLoadError: () => {
+      this.dispatch(Events.VideoLoadFailed)
+    },
+    userId: this.userIdValue,
+  })
+
   get isPlayerInitialized() {
     return this.#isPlayerInitialized
   }
 
   connect() {
-    debug("Connect")
     this.#initPlayer()
-      .then((player) => {
-        debug("init player", player)
-        // Return early if we got disconnected by now
-        if (!this.element.isConnected) return
-
-        // Set the player
-        this.player = player
-
-        // Init the loop manager
-        this.loopManager = new LoopManager(this.player, this)
-
-        // With the Player and Loop manager initialized we're ready to rumble
-        this.state = this.readyState
-
-        debug("right before dispatch, is this a this thing?")
-        this.#isPlayerInitialized = true
-        this.dispatch(Events.Initialized)
-      })
-      .catch((error) => {
-        showPlayerError({
-          message: "Player initialization failed",
-          details: error,
-          target: this.element,
-        })
-        console.error("Player initialization failed", error)
-      })
+      .then(this.#onPlayerInitialized)
+      .catch(this.#onPlayerInitializationError)
 
     // INFO: We do our own player-related thing despite the fact that we're
     // reacting to a section turbo-stream event.
@@ -172,6 +192,7 @@ export default class extends Controller {
   }
 
   initialize() {
+    this.loopManager = new LoopManager(this)
     this.updatePoints = debounce(this.updatePoints.bind(this), 1000)
     this.#turboSubmitEndHandler = this.#onSectionSave.bind(this)
     this.#initStates()
@@ -299,6 +320,18 @@ export default class extends Controller {
     this.loop(start, end)
   }
 
+  swap_player(newPlayer) {
+    if (!newPlayer) return
+
+    this.reset()
+    this.player?.dispose()
+    this.player = null
+    this.#isPlayerInitialized = false
+    newPlayer.create(this.#mkPlayerParams())
+      .then(this.#onPlayerInitialized)
+      .catch(this.#onPlayerInitializationError)
+  }
+
   disconnect() {
     document.documentElement.removeEventListener(
       TurboEvent.SubmitEnd,
@@ -350,56 +383,17 @@ export default class extends Controller {
    *
    */
   #initPlayer() {
-    debug("env", window.rails_env)
-    debug("player element", this.element)
     this.element.parentNode.classList.remove("spinner")
-    switch (window.rails_env) {
-      case Env.Prod:
-        return YoutubePlayer.create(this.#mkPlayerParams())
-      case Env.Dev:
-        if (window.is_cypress === "true") {
-          return DummyPlayer.create(this.#mkPlayerParams())
-        } else {
-          return YoutubePlayer.create(this.#mkPlayerParams())
-        }
-      case Env.Test:
-        return DummyPlayer.create(this.#mkPlayerParams())
-      default:
-        return DummyPlayer.create(this.#mkPlayerParams())
-    }
+
+    return this.#defaultPlayer().create(this.#mkPlayerParams())
   }
 
-  /*
-   * The paramateres to initialize the Youtube Player
-   */
-  #mkPlayerParams() {
-    return {
-      videoId: this.videoIdValue,
-      containerOffsetHeight: this.element.parentNode.offsetHeight,
-      onCue: () => {
-        debug("loaded")
-        this.dispatch(Events.VideoLoaded)
+  #defaultPlayer() {
+    const isCypressEnv = window.rails_env === Env.Dev && window.is_cypress === "true"
+    const isTestEnv = window.rails_env === Env.Test
+    if (!isCypressEnv && !isTestEnv) return YoutubePlayer
 
-        if (this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration, 10)
-        }
-      },
-      onPlaying: () => {
-        this.dispatch(Events.VideoLoaded)
-
-        if (this.hasDurationTarget) {
-          this.durationTarget.value = parseInt(this.player.duration, 10)
-        }
-      },
-      onRestrictionLifted: () => {
-        hideAnimated(this.restrictionTarget, Animations.BounceOut)
-        this.state.onPlaying()
-      },
-      onLoadError: () => {
-        this.dispatch(Events.VideoLoadFailed)
-      },
-      userId: this.userIdValue,
-    }
+    return DummyPlayer
   }
 
   /**
