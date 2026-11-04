@@ -8,7 +8,7 @@ export default [
   ...fixupConfigRules(shopifyEslintPlugin.configs.esnext),
   ...fixupConfigRules(shopifyEslintPlugin.configs.prettier),
   {
-    ignores: ["**/preload.ts"],
+    ignores: ["**/preload.ts", "vendor/**"],
   },
   pluginCypress.configs.globals,
   {
