@@ -49,3 +49,27 @@
     <%= link_to t(:cancel), lessons_path(lesson) %>
   </div>
 <% end %>
+
+<template id="player-preview-template">
+  <div id="player-preview" class="preview-placeholder" role="img" data-tutorid="video-player">
+    <span class="stripes top"></span>
+    <span class="stripes bottom"></span>
+    <span class="rule top"></span>
+    <span class="rule bottom"></span>
+    <span class="corner tl"></span>
+    <span class="corner tr"></span>
+    <span class="corner bl"></span>
+    <span class="corner br"></span>
+    <div class="frame">
+      <span class="text"><%= t(".player_preview") %></span>
+    </div>
+    <div>
+      <span class="dot"></span>
+      <span class="bar"></span>
+    </div>
+    <div>
+      <span class="bar"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</template>
