@@ -543,7 +543,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 3.4.9p82
+   ruby 3.4.12p148
 
 BUNDLED WITH
    2.4.10
