@@ -16,35 +16,66 @@ describe("Lesson", () => {
   })
 
   describe("Tutorial", () => {
-    context("whent here's no lesson", () => {
-      it("should skip lesson item's steps", () => {
-        const titles = ["New Lesson button", "Lesson list", "That's it!"]
-        cy.appFactories([["create", "user"]])
-        cy.forceLogin()
-        cy.findByTestId("lesson-tutor").click()
-        titles.forEach((title) => {
-          cy.get(".driver-popover-title").should("have.text", title)
-          cy.get(".driver-popover-next-btn").click()
+    context("Lesson index", () => {
+      context("whent here's no lesson", () => {
+        it("should skip lesson item's steps", () => {
+          const titles = ["New Lesson button", "Lesson list", "That's it!"]
+          cy.appFactories([["create", "user"]])
+          cy.forceLogin()
+          cy.findByTestId("help-button").click()
+          titles.forEach((title) => {
+            cy.get(".driver-popover-title").should("have.text", title)
+            cy.get(".driver-popover-next-btn").click()
+          })
+        })
+      })
+
+      context("when there's at least one lesson", () => {
+        it("should do the whole tour", () => {
+          const titles = [
+            "New Lesson button",
+            "Lesson list",
+            "Lesson item",
+            "Lesson title",
+            "Lesson delete button",
+            "That's it!",
+          ]
+          cy.appFactories([["create", "user"]]).then(([user]) => {
+            cy.appFactories([
+              ["create", "lesson", { name: "My Lesson", user_id: user.id }],
+            ]).then(() => {
+              cy.forceLogin({ email: user.email })
+              cy.findByTestId("help-button").click()
+              titles.forEach((title) => {
+                cy.get(".driver-popover-title").should("have.text", title)
+                cy.get(".driver-popover-next-btn").click()
+              })
+            })
+          })
         })
       })
     })
 
-    context("when there's at least one lesson", () => {
+    context("Lesson form", () => {
       it("should do the whole tour", () => {
         const titles = [
-          "New Lesson button",
-          "Lesson list",
-          "Lesson item",
-          "Lesson title",
-          "Lesson delete button",
+          "Video Player",
+          "Name field",
+          "Video link field",
+          "Video link paste button",
+          "Instrument selector",
+          "Create button",
+          "Cancel button",
           "That's it!",
         ]
+
         cy.appFactories([["create", "user"]]).then(([user]) => {
           cy.appFactories([
             ["create", "lesson", { name: "My Lesson", user_id: user.id }],
           ]).then(() => {
             cy.forceLogin({ email: user.email })
-            cy.findByTestId("lesson-tutor").click()
+            cy.findByText("New Lesson").click()
+            cy.findAllByTestId("help-button").eq(1).click()
             titles.forEach((title) => {
               cy.get(".driver-popover-title").should("have.text", title)
               cy.get(".driver-popover-next-btn").click()
