@@ -2,12 +2,7 @@
   <div class="header">
     <div class="title">
       <h1><%= Lesson.model_name.human(count: 2) %></h1>
-      <%=
-        button_tag fa_icon("question-circle"),
-          class: "link",
-          type: :button,
-          data: { action: "click->lesson#showTutorial", testid: "lesson-tutor" }
-      %>
+      <%= help_button "click->lesson#showTutorial" %>
     </div>
 
     <div class="new">

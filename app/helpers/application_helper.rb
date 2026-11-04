@@ -29,4 +29,13 @@ module ApplicationHelper
 
     "invalid"
   end
+
+  def help_button(action)
+    button_tag(
+      fa_icon("question-circle"),
+      class: "link",
+      type: :button,
+      data: { action:, testid: "help-button" },
+    )
+  end
 end
