@@ -277,7 +277,6 @@ export default class extends Controller {
   }
 
   reportProgress({ detail: { from, end } }) {
-    debug("Report progress", { from, end })
     this.#setProgress(this.#activeZoom.restore(from, end))
   }
 
