@@ -1,6 +1,4 @@
-import { tutorId } from "controllers/util"
-
-const TUTOR_THEME_CLASS = "tutor-theme"
+import { mkDrive, tutorId, PopoverSide } from "controllers/tutorial"
 
 const Elements = Object.freeze({
   NewLesson: "new-lesson",
@@ -9,13 +7,6 @@ const Elements = Object.freeze({
   LessonItemTitle: "lesson-item-title",
   LessonItemDelete: "lesson-item-delete",
   Final: "final",
-})
-
-const PopoverSide = Object.freeze({
-  Left: "left",
-  Right: "right",
-  Top: "top",
-  Bottom: "bottom",
 })
 
 const stepSettings = {
@@ -36,29 +27,4 @@ const stepSettings = {
   },
 }
 
-const commonStepSettings = {
-  skipMissingElement: true,
-}
-
-const makeSteps = (translatedSteps) =>
-  translatedSteps.map((step) => ({
-    ...commonStepSettings,
-    ...step,
-    popover: {
-      ...step.popover,
-      ...stepSettings[step.element]?.popover,
-    },
-  }))
-
-export const drive = (config) => {
-  const driver = window.driver.js.driver
-
-  const driverObj = driver({
-    showProgress: true,
-    popoverClass: TUTOR_THEME_CLASS,
-    ...config,
-    steps: makeSteps(config.steps),
-  })
-
-  driverObj.drive()
-}
+export const drive = (config) => mkDrive(config, stepSettings)
