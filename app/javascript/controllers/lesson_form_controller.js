@@ -18,7 +18,7 @@ export const Events = Object.freeze({
 const NEW_LESSON_TARGET_ID = "new_lesson"
 
 export default class extends Controller {
-  static targets = ["field", "url", "errorContainer", "errorList"]
+  static targets = ["field", "url", "errorContainer", "errorList", "duration"]
 
   connect() {
     this.urlTarget.focus()
@@ -42,9 +42,13 @@ export default class extends Controller {
     show(this.errorContainerTarget)
   }
 
-  videoLoaded() {
+  videoLoaded({ detail: { duration } }) {
     this.errorListTarget.innerHTML = ""
+
     hide(this.errorContainerTarget)
+
+    debug("Setting duration to", duration)
+    this.durationTarget.value = duration
     this.fieldTargets.forEach(enable)
 
     this.fieldTargets[0].focus()

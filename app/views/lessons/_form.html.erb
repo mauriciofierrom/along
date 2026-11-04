@@ -42,7 +42,7 @@
     data: { "lesson-form-target" => "field" }
   ) %>
 
-  <%= form.hidden_field :duration_in_seconds, data: { "player-target" => "duration" } %>
+  <%= form.hidden_field :duration_in_seconds, data: { lesson_form_target: "duration" } %>
 
   <div class="form-footer">
     <%= form.submit nil, data: { "lesson-form-target" => "field" } %>
