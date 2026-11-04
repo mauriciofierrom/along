@@ -71,6 +71,8 @@ en:
     destroy:
       success: "Lesson removed"
       confirm: "Are you sure you want to remove the lesson?"
+    form:
+      player_preview: "Player preview"
   sections:
     create:
       success: "Section created"

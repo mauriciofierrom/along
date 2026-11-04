@@ -61,6 +61,8 @@ es:
     destroy:
       success: "Lección eliminada"
       confirm: "¿Está segur de eliminar esta lección?"
+    form:
+      player_preview: "Vista previa de reproductor"
   sections:
     create:
       success: "Sección creada"
