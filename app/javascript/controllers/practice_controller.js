@@ -1,12 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
 
 import { debug, enable } from "controllers/util"
+import { drive } from "controllers/practice/tutorial"
 
 export default class extends Controller {
   static targets = ["newSection"]
   static outlets = ["player"]
   static values = {
     playerLoaded: Boolean,
+    tutorialConfig: Object
   }
 
   connect() {
@@ -29,5 +31,11 @@ export default class extends Controller {
     debug("We're ready to rumble")
     this.playerLoadedValue = true
     enable(this.newSectionTarget)
+  }
+
+  showTutorial() {
+    if (!this.hasTutorialConfigValue) return
+
+    drive(this.tutorialConfigValue)
   }
 }

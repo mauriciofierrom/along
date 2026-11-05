@@ -2,6 +2,7 @@
   <div class="item"
        draggable="true"
        data-testid="section-item"
+       data-tutorid="section-item"
        data-section-id="<%= section.id %>"
        data-controller="section-item"
        data-section-item-player-outlet=".player"
@@ -21,12 +22,17 @@
         <%= link_to (fa_icon "pencil-square-o"),
           edit_lesson_section_path(lesson, section),
           class: "disabled",
-          data: { turbo_frame: "sections", testid: "edit-section", "section-item-target": "editButton" }
+          data: {
+            turbo_frame: "sections",
+            testid: "edit-section",
+            "section-item-target": "editButton",
+            tutorid: "section-item-edit-button"
+          }
         %>
         <%= button_to (fa_icon "trash"),
           lesson_section_path(lesson, section),
           method: :delete,
-          data: { turbo_confirm: t("sections.destroy.confirm") },
+          data: { turbo_confirm: t("sections.destroy.confirm"), tutorid: "section-item-delete-button" },
           class: "link" %>
       </div>
     </div>

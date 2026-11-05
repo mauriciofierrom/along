@@ -38,7 +38,7 @@ class LessonsHelperTest < ActionView::TestCase
     },
   })
 
-  TUTORIAL_CONFIGS = ["tutor.lesson", "tutor.lesson-form"].freeze
+  TUTORIAL_CONFIGS = ["tutor.lesson", "tutor.lesson-form", "tutor.lesson-show"].freeze
 
   test "#tutorial_config matches the schema in every locale" do
     elements = I18n.available_locales.map do |locale|
@@ -53,7 +53,7 @@ class LessonsHelperTest < ActionView::TestCase
     end
 
     # Check the same number of steps per locale
-    assert_equal 2, elements.uniq.size
+    assert_equal 1, elements.uniq.size
   end
 
   test "#tutorial_config final step has no element key" do

@@ -96,6 +96,9 @@ es:
         title: "¡Eso es todo!"
         description: "Revisa el tutor en la Vista de Práctica para obtener más información sobre los controles de práctica"
     lesson-form:
+      video_player:
+        title: "El reproductor de video"
+        description: "El reproductor de video carge si el link es válido"
       name_field:
         title: "Campo Nombre"
         description: "Llena el nombre con el que quieres que se muestre la Lección"
@@ -114,9 +117,34 @@ es:
       cancel_button:
         title: "Botón de Cancelar"
         description: "Haz click en el botón para cerrar el formulario sin guardar"
-      video_player:
-        title: "El reproductor de video"
-        description: "El reproductor de video carge si el link es válido"
       final:
         title: "¡Eso es todo!"
         description: "Revisa el tutor en la Vista de Práctica para obtener más información sobre los controles de práctica"
+    lesson-show:
+      lesson_title:
+        title: "Título de la Lección"
+        description: "El título de esta lección"
+      lesson_title_edit_button:
+        title: "Botón de editar título de Lección"
+        description: "Haz click en este botón para editar el título de esta Lección"
+      player:
+        title: "El Reproductor de Video"
+        description: "El reproductor de video que reproducirá las secciones de esta Lección"
+      new_section_link:
+        title: "El enlace de Nueva Sección"
+        description: "Haz click en este enlace para abrir el formulario para crear una nueva Sección"
+      section_item_list:
+        title: "Lista de ítems de Sección"
+        description: "Contiene las secciones que has creado para esta Lección"
+      section_item:
+        title: "Ítem de Sección"
+        description: "Cada ítem de Sección permite reproducirla al hacer click en su título"
+      section_item_edit_button:
+        title: "Botón de editar Sección"
+        description: "Haz click en este botón para abrir el formulario para editar la Sección"
+      section_item_delete_button:
+        title: "Botón de eliminar Sección"
+        description: "Haz click en este botón para eliminar la Sección"
+      final:
+        title: "¡Eso es todo!"
+        description: "Revisa el tutor en Formulario de Secciones para aprender más acerca de las herramientas de creación de Secciones"

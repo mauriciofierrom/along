@@ -84,6 +84,64 @@ describe("Lesson", () => {
         })
       })
     })
+
+    context("Lesson show", () => {
+      context("when there's at least one section-item", () => {
+        const titles = [
+          "Lesson title",
+          "Lesson title edit button",
+          "The video player",
+          "The New Section link",
+          "Section item list",
+          "Section item",
+          "Section item edit button",
+          "Section item delete button",
+          "That's it!",
+        ]
+
+        it("should do the whole tour", () => {
+          cy.appFactories([["create", "section"]]).then(() => {
+            cy.forceLogin({ redirect_to: "/lessons" })
+            cy.findByTestId("lesson-link").click()
+            cy.findByText("New Section")
+            cy.findByTestId("help-button").click()
+
+            titles.forEach((title) => {
+              cy.get(".driver-popover-title").should("have.text", title)
+              cy.get(".driver-popover-next-btn").click()
+            })
+          })
+        })
+      })
+
+      context("when there's no section-item", () => {
+        const titles = [
+          "Lesson title",
+          "Lesson title edit button",
+          "The video player",
+          "The New Section link",
+          "Section item list",
+          "That's it!",
+        ]
+
+        it("should skip the Section item steps", () => {
+          cy.appFactories([["create", "user"]]).then(([user]) => {
+            cy.appFactories([
+              ["create", "lesson", { name: "My Lesson", user_id: user.id }],
+            ]).then(() => {
+              cy.forceLogin({ email: user.email })
+              cy.findByText("My Lesson").click()
+              cy.findByText("New Section")
+              cy.findByTestId("help-button").click()
+              titles.forEach((title) => {
+                cy.get(".driver-popover-title").should("have.text", title)
+                cy.get(".driver-popover-next-btn").click()
+              })
+            })
+          })
+        })
+      })
+    })
   })
 
   describe("New", () => {

@@ -1,22 +1,26 @@
-<div class="lesson-grid"
-     data-practice-player-outlet=".player"
-     data-controller="practice"
-     data-action="player:playerInitialized@window->practice#playerInitialized">
+<%= tag.div class: "lesson-grid",
+  data: { controller: "practice",
+          action: "player:playerInitialized@window->practice#playerInitialized",
+          practice_player_outlet: ".player",
+          practice_tutorial_config_value: tutorial_config("tutor.lesson-show"),
+  } do
+%>
   <div class="header">
     <%= turbo_frame_tag "name_#{@lesson.id}", class: "title" do %>
-      <div class="title">
+      <div class="title" data-tutorid="lesson-title">
         <h1><%= @lesson.name %></h1>
-        <%= button_to (fa_icon "edit"), edit_name_inline_lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}", testid: "edit-lesson" }, class: "link" %>
+        <%= button_to (fa_icon "edit"), edit_name_inline_lesson_path(@lesson), data: { turbo_frame: "name_#{@lesson.id}", testid: "edit-lesson", tutorid: "lesson-title-edit-button" }, class: "link" %>
       </div>
     <% end %>
     <div class="header-actions">
+      <%= help_button "click->practice#showTutorial" %>
       <%= link_to (fa_icon "arrow-left"), lessons_path %>
     </div>
   </div>
 
   <%= render partial: "lessons/zoom/actions", locals: {lesson: @lesson} %>
 
-  <div class="video-player spinner">
+  <div class="video-player spinner" data-tutorid="player">
     <%= render partial: "lessons/player", locals: {lesson: @lesson, actions: edit_player_actions, hidden: false} %>
   </div>
 
@@ -25,11 +29,11 @@
       <%= button_to "#{t("actions.new")} #{Section.model_name.human}",
         new_lesson_section_path(@lesson),
         method: :get,
-        data: { "practice-target" => "newSection" },
+        data: { "practice-target" => "newSection", tutorid: "new-section-link" },
         class: "button link disabled" %>
     </div>
-    <div class="sections-selector">
+    <div class="sections-selector" data-tutorid="section-item-list">
       <%= render partial: "sections/section_item", collection: @lesson.sections, as: :section, locals: { lesson: @lesson }, cached: true %>
     </div>
   <% end %>
-</div>
+<% end %>

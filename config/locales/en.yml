@@ -130,3 +130,31 @@ en:
       final:
         title: "That's it!"
         description: "Check the tutor for the practice view to get more information on practice controls!"
+    lesson-show:
+      lesson_title:
+        title: "Lesson title"
+        description: "The title for this lesson"
+      lesson_title_edit_button:
+        title: "Lesson title edit button"
+        description: "Click on this button to edit the Lesson's title"
+      player:
+        title: "The video player"
+        description: "The video player that will play your sections"
+      new_section_link:
+        title: "The New Section link"
+        description: "Click this link to open the form to create a new Section"
+      section_item_list:
+        title: "Section item list"
+        description: "Contains the sections you've created for this lesson"
+      section_item:
+        title: "Section item"
+        description: "Each section item allows playing it by clicking its title"
+      section_item_edit_button:
+        title: "Section item edit button"
+        description: "Click this button to open the form to edit the Section"
+      section_item_delete_button:
+        title: "Section item delete button"
+        description: "Click on this button to delete the section"
+      final:
+        title: "That's it!"
+        description: "CHeck the tutor for the Section form to learn more about Section creation tools!"
