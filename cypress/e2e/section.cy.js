@@ -252,5 +252,26 @@ describe("Section", () => {
         })
       })
     })
+
+    describe.only("tutorial", () => {
+      it("should do the whole tour", () => {
+        const titles = [
+          "Section name",
+          "Section info",
+          "Screen Lock indicator",
+          "Cancel button",
+          "That's it!",
+        ]
+        cy.appFactories([["create", "section"]])
+        cy.forceLogin({ redirect_to: "/lessons" })
+        cy.findByTestId("lesson-link").click()
+        cy.findByTestId("section-title").click()
+        cy.findAllByTestId("help-button").eq(1).click()
+        titles.forEach((title) => {
+          cy.get(".driver-popover-title").should("have.text", title)
+          cy.get(".driver-popover-next-btn").click()
+        })
+      })
+    })
   })
 })

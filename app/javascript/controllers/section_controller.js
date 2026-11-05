@@ -8,6 +8,7 @@ import {
   isLessonTarget,
   SECTIONS_ID,
 } from "controllers/util"
+import { drive } from "controllers/playing/tutorial"
 
 export const Events = Object.freeze({
   Connected: "connect",
@@ -20,6 +21,7 @@ export default class extends Controller {
     end: Number,
     loop: Boolean,
     speed: Number,
+    tutorialConfig: Object,
   }
 
   static targets = ["screenLockIndicator"]
@@ -79,5 +81,11 @@ export default class extends Controller {
       this.element.classList.remove(Animations.FlipInX)
       this.element.classList.add(Animations.FlipOutX)
     })
+  }
+
+  showTutorial() {
+    if (!this.hasTutorialConfigValue) return
+
+    drive(this.tutorialConfigValue)
   }
 }

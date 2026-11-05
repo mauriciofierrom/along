@@ -1,25 +1,28 @@
 <div class="sections-selector">
-  <div class="playing flip-in-x"
-       data-controller="section"
-       data-action="turbo:before-fetch-request@document->section#onCancel"
-       data-section-player-outlet=".video-player"
-       data-section-start-value="<%= section.start_time %>"
-       data-section-end-value="<%= section.end_time %>"
-       data-section-loop-value="<%= section.loop %>"
-       data-section-speed-value="<%= section.playback_speed %>">
+  <%= tag.div class: "playing flip-in-x",
+    data: {
+      controller: "section",
+      action: "turbo:before-fetch-request@document->section#onCancel",
+      section_start_value: section.start_time,
+      section_end_value: section.end_time,
+      section_loop_value: section.loop,
+      section_speed_value: section.playback_speed,
+      section_tutorial_config_value: tutorial_config("tutor.lesson-practice")
+    } do %>
     <div class="top">
-      <span class="title">
+      <span class="title" data-tutorid="section-name">
+        <%= help_button "click->section#showTutorial" %>
         <%= section.name %>
       </span>
       <div class="actions">
-        <%= fa_icon("unlock", data: { "section-target": "screenLockIndicator" }) %>
-        <%= link_to "Cancel", lesson_path(@lesson) %>
+        <%= fa_icon("unlock", data: { "section-target": "screenLockIndicator", tutorid: "lock-indicator" }) %>
+        <%= link_to "Cancel", lesson_path(@lesson), data: { tutorid: "cancel-button" } %>
       </div>
     </div>
-    <div class="bottom">
+    <div class="bottom" data-tutorid="section-info">
       <%= format_playback_speed(section.playback_speed) %>x
       <%= "#{format_time(section.start_time)} -  #{format_time(section.end_time)}" %>
       <%= image_tag(loop_img(section), size: "16x16") %>
     </div>
-  </div>
+  <% end %>
 </div>

@@ -38,7 +38,12 @@ class LessonsHelperTest < ActionView::TestCase
     },
   })
 
-  TUTORIAL_CONFIGS = ["tutor.lesson", "tutor.lesson-form", "tutor.lesson-show"].freeze
+  TUTORIAL_CONFIGS = [
+    "tutor.lesson",
+    "tutor.lesson-form",
+    "tutor.lesson-show",
+    "tutor.lesson-practice",
+  ].freeze
 
   test "#tutorial_config matches the schema in every locale" do
     elements = I18n.available_locales.map do |locale|

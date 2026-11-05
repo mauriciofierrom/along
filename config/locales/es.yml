@@ -148,3 +148,19 @@ es:
       final:
         title: "¡Eso es todo!"
         description: "Revisa el tutor en Formulario de Secciones para aprender más acerca de las herramientas de creación de Secciones"
+    lesson-practice:
+      section_name:
+        title: "Nombre de la Sección"
+        description: "El nombre de la sección reproduciendo"
+      section_info:
+        title: "Información de la Sección"
+        description: "La velocidad y el rango de tiempo de la sección reproduciendo"
+      lock_indicator:
+        title: "Indicador de bloqueo de pantalla"
+        description: "Si el candado está cerrado significa que la pantalla no se dormirá mientras la sección está reproduciendo"
+      cancel_button:
+        title: "Botón de cancelar"
+        description: "Haz click en este botón para salir de la reproducción"
+      final:
+        title: "¡Eso es todo!"
+        description: "Revisa el tutor en Formulario de Secciones para aprender más acerca de las herramientas de creación de Secciones"

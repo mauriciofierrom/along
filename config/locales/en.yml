@@ -158,3 +158,19 @@ en:
       final:
         title: "That's it!"
         description: "CHeck the tutor for the Section form to learn more about Section creation tools!"
+    lesson-practice:
+      section_name:
+        title: "Section name"
+        description: "The name of the section currently playing"
+      section_info:
+        title: "Section info"
+        description: "The speed and time range of the section currently playing"
+      lock_indicator:
+        title: "Screen Lock indicator"
+        description: "If the lock is closed it means the screen will not go to sleep while the section is playing"
+      cancel_button:
+        title: "Cancel button"
+        description: "Click on this to exit playback"
+      final:
+        title: "That's it!"
+        description: "CHeck the tutor for the Section form to learn more about Section creation tools!"
