@@ -43,6 +43,7 @@ class LessonsHelperTest < ActionView::TestCase
     "tutor.lesson-form",
     "tutor.lesson-show",
     "tutor.lesson-practice",
+    "tutor.section-form",
   ].freeze
 
   test "#tutorial_config matches the schema in every locale" do

@@ -174,3 +174,31 @@ en:
       final:
         title: "That's it!"
         description: "CHeck the tutor for the Section form to learn more about Section creation tools!"
+    section-form:
+      timeline:
+        title: "Video timeline"
+        description: "Periodic time marks up to the duration of the video to help picking starting/ending points"
+      start_point:
+        title: "Start point"
+        description: "Use this slider to select the starting point of a section."
+      end_point:
+        title: "End point"
+        description: "Use this slider to select the ending point of a section."
+      name_field:
+        title: "Name field"
+        description: "Fill the name you want to display for this section"
+      playback_speed_field:
+        title: "Playback Speed field"
+        description: "Fill the desired speed at which you want this section to be played"
+      loop:
+        title: "Loop toggle"
+        description: "Use the toggle to set if the section should loop indefinitely or play once"
+      create:
+        title: "Create button"
+        description: "Click on this button to save your Section"
+      cancel_button:
+        title: "Cancel button"
+        description: "Click on this button to close the Section form without saving"
+      final:
+        title: "That's it!"
+        description: "Check the hints for the zoom controls while creating your sections!"

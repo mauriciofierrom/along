@@ -1,5 +1,5 @@
 <% present timeline, TimelinePresenter do |p| %>
-  <%= tag.datalist id: "ticks-#{lesson_id}" do %>
+  <%= tag.datalist id: "ticks-#{lesson_id}", data: { tutorid: "timeline" } do %>
     <% p.timeline.each do |tick| %>
       <%= p.tick(tick) %>
     <% end %>

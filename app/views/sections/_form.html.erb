@@ -3,6 +3,7 @@
               data: {
                 name: "section",
                 controller: "section-form error",
+                section_form_tutorial_config_value: tutorial_config("tutor.section-form"),
                 action: [
                   "range:submitForm@window->section-form#submitForm",
                   "turbo:before-fetch-request@document->section-form#onCancel",
@@ -56,19 +57,22 @@
     <% end %>
   <% end %>
 
-  <%= form.label :name %>
-  <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: Section.human_attribute_name("name") %>
-  <div id="name_errors"></div>
+  <div style="display: flex; gap: 10px; align-items: center;">
+    <%= help_button "click->section-form#showTutorial" %>
+    <%= form.label :name %>
+    <%= form.text_field :name, minlength: 5, maxlength: 25, placeholder: Section.human_attribute_name("name"), data: { tutorid: "name-field" } %>
+    <div id="name_errors"></div>
+  </div>
 
   <%= form.label :playback_speed  %>
-  <%= form.text_field :playback_speed, min: 0.5, max: 2, type: :number, step: 0.5 %>
+  <%= form.text_field :playback_speed, min: 0.5, max: 2, type: :number, step: 0.5, data: { tutorid: "playback-speed-field" } %>
 
   <%= form.label :loop %>
-  <label class="switch">
+  <label class="switch" data-tutorid="loop">
     <%= form.check_box :loop %>
     <span class="slider round"></span>
   </label>
 
-  <%= form.submit :Create, data: { action: "click->section-form#submit:prevent"} %>
-  <%= link_to t(:cancel), lesson_path(@lesson) %>
+  <%= form.submit :Create, data: { action: "click->section-form#submit:prevent", tutorid: "create" } %>
+  <%= link_to t(:cancel), lesson_path(@lesson), data: { tutorid: "cancel-button" } %>
 <% end %>

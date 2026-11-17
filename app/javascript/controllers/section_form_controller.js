@@ -8,6 +8,7 @@ import {
   isLessonTarget,
   SECTIONS_ID,
 } from "controllers/util"
+import { drive } from "controllers/section_form/tutorial"
 
 export const Events = Object.freeze({
   Cancelled: "cancelled",
@@ -15,6 +16,9 @@ export const Events = Object.freeze({
 
 export default class extends Controller {
   static targets = ["error"]
+  static values = {
+    tutorialConfig: Object,
+  }
 
   #toRestore
   #submissionErrorHandler
@@ -78,6 +82,12 @@ export default class extends Controller {
       this.element.classList.remove(Animations.FlipInX)
       this.element.classList.add(Animations.FlipOutX)
     })
+  }
+
+  showTutorial() {
+    if (!this.hasTutorialConfigValue) return
+
+    drive(this.tutorialConfigValue)
   }
 
   #handleSubmissionError(event) {

@@ -53,6 +53,29 @@ describe("Section", () => {
       })
     })
 
+    it("shows the form tutorial", () => {
+      const titles = [
+        "Video timeline",
+        "Start point",
+        "End point",
+        "Name field",
+        "Playback Speed field",
+        "Loop toggle",
+        "Create button",
+        "Cancel button",
+        "That's it!",
+      ]
+      cy.appFactories([["create", "lesson"]]).then(([lesson]) => {
+        cy.forceLogin({ redirect_to: `/lessons/${lesson.id}` })
+        cy.findByText("New Section").click()
+        cy.findAllByTestId("help-button").eq(1).click()
+        titles.forEach((title) => {
+          cy.get(".driver-popover-title").should("have.text", title)
+          cy.get(".driver-popover-next-btn").click()
+        })
+      })
+    })
+
     describe("on validation error", () => {
       beforeEach(() => {
         cy.appFactories([["create", "section", { name: "My Section" }]]).then(
@@ -253,7 +276,7 @@ describe("Section", () => {
       })
     })
 
-    describe.only("tutorial", () => {
+    describe("tutorial", () => {
       it("should do the whole tour", () => {
         const titles = [
           "Section name",

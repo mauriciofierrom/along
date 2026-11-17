@@ -164,3 +164,31 @@ es:
       final:
         title: "¡Eso es todo!"
         description: "Revisa el tutor en Formulario de Secciones para aprender más acerca de las herramientas de creación de Secciones"
+    section-form:
+      timeline:
+        title: "Línea temporal del video"
+        description: "Marcas periódicas hasta la duración del video para ayudar la selección de puntos de inicio/fin"
+      start_point:
+        title: "Punto de inicio"
+        description: "Desliza este control para seleccionar el punto de inicio de la sección"
+      end_point:
+        title: "Punto de fin"
+        description: "Desliza este control para seleccionar el punto de fin de la sección"
+      name_field:
+        title: "Campo Nombre"
+        description: "Ingresa el nombre que quieres mostrar para esta sección"
+      playback_speed_field:
+        title: "Campo de velocidad de reproducción"
+        description: "Ingresa la velocidad de reproducción a la que deseas que esta sección se reproduzca"
+      loop:
+        title: "Switch de bucle"
+        description: "Usa el switch de bucle para hacer que la sección se reproduzca en bucle indefinidamente o solo una vez"
+      create:
+        title: "Botón de Crear"
+        description: "Haz click en el botón para guardar tu Sección"
+      cancel_button:
+        title: "Botón de Cancelar"
+        description: "Haz click en el botón para cerrar el formulario sin guardar"
+      final:
+        title: "¡Eso es todo!"
+        description: "¡Revisa los hints de los controles de zoom mientras creas tus secciones!"

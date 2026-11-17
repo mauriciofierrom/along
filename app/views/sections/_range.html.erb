@@ -30,7 +30,7 @@
        step: 0.01,
        disabled: true,
        list: "ticks-#{lesson.id}",
-       data: { action: "input->range#update", "range-target" => "min" } %>
+       data: { action: "input->range#update", "range-target" => "min", tutorid: "start-point" } %>
      <%= form.range_field :end_time,
        value: section.end_time || lesson.duration_in_seconds.to_f,
        class: "max disabled",
@@ -38,7 +38,7 @@
        max: lesson.duration_in_seconds,
        step: 0.01,
        disabled: true,
-       data: { action: "input->range#update", "range-target" => "max" } %>
+       data: { action: "input->range#update", "range-target" => "max", tutorid: "end-point" } %>
    </div>
    <% cache lesson do %>
      <%= content_tag :div, id: "timeline" do %>
