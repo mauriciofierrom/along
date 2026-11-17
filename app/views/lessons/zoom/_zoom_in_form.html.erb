@@ -4,6 +4,7 @@
           "zoom-in-zoom-outlet": ".zoom",
           controller: "zoom-in",
           testid: "zoom-in",
+          tutorid: "zoom-in-button",
           "zoom-target" => "zoomIn",
           action: [
             "range:rangeInputReady@window->zoom-in#rangeInputReady",
@@ -15,7 +16,7 @@
   <%= form.hidden_field :start, data: { "zoom-in-target" => "start" } %>
   <%= form.hidden_field :end, data: { "zoom-in-target" => "end" } %>
   <%= form.hidden_field :duration, value: lesson.duration_in_seconds %>
-  <%= button_tag type: "submit", aria: { label: t(:zoom_in) } do %>
+  <%= button_tag type: "submit", aria: { label: t(:zoom_in) }, data: { tutorid: "zoom-in-button" } do %>
     <%= fa_icon("search-plus") %>
   <% end %>
 <% end %>

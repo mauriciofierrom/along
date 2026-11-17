@@ -10,6 +10,7 @@ import {
 } from "controllers/util"
 import ZoomManager from "controllers/zoom/zoom_manager"
 import Zoom from "controllers/zoom/zoom"
+import { hints } from "controllers/section_form/hints"
 
 export const Events = Object.freeze({
   Loaded: "zoomsLoaded",
@@ -26,9 +27,11 @@ export default class extends Controller {
 
   static values = {
     duration: Number,
+    hintsConfig: Object,
   }
 
   #zoomManager
+  #hints
 
   /**
    * @typedef {Object} Zoom
@@ -52,13 +55,10 @@ export default class extends Controller {
    * Sets up the initial state when a zoom level exists
    */
   rangeInputReady({ detail: { isEdit } }) {
-    if (isEdit) {
-      show(this.zoomInTarget)
-    }
+    if (isEdit) show(this.zoomInTarget)
+    if (this.isZoomed) show(this.zoomOutTarget)
 
-    if (this.isZoomed) {
-      show(this.zoomOutTarget)
-    }
+    this.#showHints()
   }
 
   /*
@@ -107,6 +107,7 @@ export default class extends Controller {
 
     if (this.#zoomManager.zoomLevel === 1) {
       show(this.zoomOutTarget)
+      this.#showHints()
     }
 
     disable(this.zoomInTarget)
@@ -144,6 +145,16 @@ export default class extends Controller {
     })
   }
 
+  hintsConfigValueChanged() {
+    debug("Hints available")
+    this.#hints?.hide()
+    this.#hints = hints(this.hintsConfigValue)
+  }
+
+  disconnect() {
+    this.#hints?.hide()
+  }
+
   get isZoomed() {
     return this.#zoomManager.isZoomed
   }
@@ -165,5 +176,11 @@ export default class extends Controller {
       const id = parseInt(zoomField.querySelector("input[id$='id']").value, 10)
       return new Zoom(start, end, this.durationValue, id)
     })
+  }
+
+  #showHints() {
+    if (!this.hasHintsConfigValue || !this.#hints) return
+
+    this.#hints.show()
   }
 }

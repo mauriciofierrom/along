@@ -15,7 +15,7 @@
   <%= form.hidden_field :zoom_out_end, data: { "zoom-out-target" => "end" } %>
   <%= form.hidden_field :zoom_out_id, data: { "zoom-out-target" => "id" } %>
   <%= form.hidden_field :lesson_id, value: lesson.id %>
-  <%= button_tag type: "submit", aria: { label: t(:zoom_out) } do %>
+  <%= button_tag type: "submit", aria: { label: t(:zoom_out) }, data: { tutorid: "zoom-out-button" } do %>
     <%= fa_icon("search-minus") %>
   <% end %>
 <% end %>
