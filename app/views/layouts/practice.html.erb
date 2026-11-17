@@ -14,6 +14,10 @@
     <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js" %>
     <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.css" %>
 
+    <!-- Driver.js Hints -->
+    <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/hints.iife.js" %>
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/hints.css" %>
+
     <%= javascript_importmap_tags %>
     <%= javascript_tag do %>
       window.rails_env = "<%= Rails.env %>"
