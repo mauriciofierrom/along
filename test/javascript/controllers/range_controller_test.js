@@ -68,6 +68,8 @@ describe("RangeController", () => {
     zoomControllerElement.className = "zoom"
     zoomControllerElement.dataset.controller = "zoom"
     zoomControllerElement.dataset.zoomZoomFieldOutlet = "#zoom_fields"
+    zoomControllerElement.dataset.zoomZoomFieldOutlet = "#zoom_fields"
+    zoomControllerElement.dataset.zoomHintsConfigValue = JSON.stringify({ hints: [], dismissButtonText: "" })
 
     controllerElement.dataset.rangeZoomOutlet = ".zoom"
 
