@@ -86,6 +86,7 @@ en:
     next: "Next"
     previous: "Previous"
     done: "Done"
+    dismiss: "Got it!"
     lesson:
       new_lesson:
         title: "New Lesson button"
@@ -202,3 +203,13 @@ en:
       final:
         title: "That's it!"
         description: "Check the hints for the zoom controls while creating your sections!"
+      hints:
+        zoom_in_button:
+          title: "Zoom-in button"
+          description: "Click on this button to zoom into the current section. The timeline will be updated to cover only the section, helping with more precise point-picking in videos with a longer duration"
+        zoom_out_button:
+          title: "Zoom-out button"
+          description: "Click on this button to zoom out of the current section. The timeline will be restored to the previous zoom level (if any) or to the full duration of the video"
+        zoom_level_indicator:
+          title: "Zoom level indicator"
+          description: "The zoom level indicator shows the portion of the video that the current active zooms cover in the actual video's duration"

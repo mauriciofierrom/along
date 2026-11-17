@@ -76,6 +76,7 @@ es:
     next: "Siguiente"
     previous: "Anterior"
     done: "Terminar"
+    dismiss: "¡Entendido!"
     lesson:
       new_lesson:
         title: "Boton de nueva Lección"
@@ -192,3 +193,13 @@ es:
       final:
         title: "¡Eso es todo!"
         description: "¡Revisa los hints de los controles de zoom mientras creas tus secciones!"
+      hints:
+        zoom_in_button:
+          title: "Botón de hacer Zoom"
+          description: "Haz click en este botón para hacer zoom en la sección actual. La línea temporal será actualizada para cubrir unicamente esa sección, ayudando a una selección de puntos más precisa en videos de mayor duración"
+        zoom_out_button:
+          title: "Botón de alejar zoom"
+          description: "Haz click en este botón para alejar el zoom de la sección actual. La línea de tiempo será restaurada al nivel de zoom anterior (si existe) o a la duración completa del video"
+        zoom_level_indicator:
+          title: "Indicador de nivel de zoom"
+          description: "El indicador del nivel de zoom muestra la porción del video que los zooms activos cubren en la duración real del video"
