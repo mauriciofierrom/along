@@ -19,3 +19,9 @@
   color: var(--bg-dark);
   font-family: "freeSans", "Free Sans", serif;
 }
+
+.driver-hint {
+  --driver-hint-size: 20px;
+  --driver-hint-color: var(--accent);
+  --driver-hint-animation-duration: 2s; /* One pulse */
+}
