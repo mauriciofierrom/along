@@ -7,6 +7,19 @@ export const PopoverSide = Object.freeze({
   Bottom: "bottom",
 })
 
+export const BeaconSide = Object.freeze({
+  Left: "left",
+  Right: "right",
+  Top: "top",
+  Bottom: "bottom",
+})
+
+export const BeaconAlign = Object.freeze({
+  Start: "start",
+  Center: "center",
+  End: "end",
+})
+
 export const Events = Object.freeze({
   Start: "tutorial:start",
   End: "tutorial:end"
@@ -23,6 +36,17 @@ const makeSteps = (translatedSteps, stepSettings) =>
     popover: {
       ...step.popover,
       ...stepSettings[step.element]?.popover,
+    },
+  }))
+
+const makeHints = (translatedHints, hintSettings) =>
+  translatedHints.map((hint) => ({
+    ...hint,
+    id: hintSettings[hint.element]?.id,
+    beacon: hintSettings[hint.element]?.beacon,
+    popover: {
+      ...hint.popover,
+      ...hintSettings[hint.element]?.popover,
     },
   }))
 
@@ -52,4 +76,20 @@ export const mkDrive = (config, stepSettings) => {
 
   // Actually start the tutorial
   driverObj.drive()
+}
+
+export const mkHints = (config, hintSettings) => {
+  const hints = window.driverHints.hints
+  const leHints = makeHints(config.hints, hintSettings).filter((hint) => !localStorage.getItem(hint.id))
+
+  return hints({
+    overlay: true,
+    overlayOpacity: 0.5,
+    popoverClass: "tutor-theme",
+    buttonText: config.dismissButtonText,
+    hints: leHints,
+    onDismiss: (_element, hint) => {
+      localStorage.setItem(hint.id, "dismissed")
+    },
+  })
 }
