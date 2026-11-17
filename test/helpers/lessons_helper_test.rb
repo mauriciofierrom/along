@@ -38,6 +38,16 @@ class LessonsHelperTest < ActionView::TestCase
     },
   })
 
+  HINT_SCHEMA = JSONSchemer.schema({
+    "type" => "object",
+    "required" => ["hints", "dismissButtonText"],
+    "additionalProperties" => false,
+    "properties" => {
+      "dismissButtonText" => { "type" => "string", "minLength" => 1 },
+      "hints" => { "type" => "array", "items" => STEPS },
+    },
+  })
+
   TUTORIAL_CONFIGS = [
     "tutor.lesson",
     "tutor.lesson-form",
@@ -54,6 +64,22 @@ class LessonsHelperTest < ActionView::TestCase
           # Check that the configuration matches the schema
           assert(TUTOR_SCHEMA.valid?(config), "invalid config for locale #{locale}")
           config["steps"].map { |step| step["element"] }
+        end
+      end
+    end
+
+    # Check the same number of steps per locale
+    assert_equal 1, elements.uniq.size
+  end
+
+  test "#hints_config matches the schema in every locale" do
+    elements = I18n.available_locales.map do |locale|
+      I18n.with_locale(locale) do
+        TUTORIAL_CONFIGS.map do |conf|
+          config = JSON.parse(hints_config(conf).to_json)
+          # Check that the configuration matches the schema
+          assert(HINT_SCHEMA.valid?(config), "invalid config for locale #{locale}")
+          config.fetch("hints", []).map { |step| step["element"] }
         end
       end
     end
