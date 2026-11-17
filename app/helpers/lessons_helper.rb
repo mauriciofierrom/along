@@ -45,6 +45,13 @@ module LessonsHelper
     }.merge(common_tutorial_conf)
   end
 
+  def hints_config(scope)
+    {
+      hints: hint_steps(scope),
+      dismissButtonText: t("tutor.dismiss"),
+    }
+  end
+
   private
 
   def common_tutorial_conf
@@ -57,15 +64,21 @@ module LessonsHelper
   end
 
   def tutorial_steps(translation_path)
-    t(translation_path).keys.map do |part|
-      {
-        element: (tutor_id(part) unless part == :final),
-        popover: {
-          title: t("#{translation_path}.#{part}.title"),
-          description: t("#{translation_path}.#{part}.description"),
-        },
-      }.compact
-    end
+    (t(translation_path).keys - [:hints]).map { |part| make_translated_step(translation_path, part) }
+  end
+
+  def hint_steps(translation_path)
+    t(translation_path).fetch(:hints, {}).keys.map { |part| make_translated_step("#{translation_path}.hints", part) }
+  end
+
+  def make_translated_step(translation_path, part)
+    {
+      element: (tutor_id(part) unless part == :final),
+      popover: {
+        title: t("#{translation_path}.#{part}.title"),
+        description: t("#{translation_path}.#{part}.description"),
+      },
+    }.compact
   end
 
   def tutor_id(name)
