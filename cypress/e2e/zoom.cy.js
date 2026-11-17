@@ -33,6 +33,15 @@ describe("Zoom", () => {
       })
     })
 
+    it("shows the tutorial hints", () => {
+      const titles = ["Zoom-in button", "Zoom-out button", "Zoom level indicator"]
+      cy.findByTestId("zoom-indicator").should("exist")
+      titles.forEach((title) => {
+        cy.findByLabelText(title).click()
+        cy.findByText("Got it!").click()
+      })
+    })
+
     it("persists the zoom", () => {
       cy.findByTestId("zoom-indicator").should("exist")
       cy.findByText("Create").click({ force: true })
