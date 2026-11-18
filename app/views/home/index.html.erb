@@ -1,14 +1,83 @@
-<article>
-  <section>
-    <h1>Welcome to <span class="banner-big">Along</span>!</h1>
-    <p>
-      Along is a web application to help practice along (he he) to YouTube instruction videos.
-    </p>
-    <p>
-      You can create <strong>Lessons</strong> by entering a YouTube video URL and then split the video in <strong>Sections</strong> that you can practice to by looping them over and over again, vastly simplifying the setup for practice sessions.
-    </p>
-    <p>
-      No more dragging the scrubber back over and over again. Set up once and practice with ease! Time to play along!
-    </p>
+<div class="landing">
+  <section class="hero-band">
+    <div class="wrap hero">
+      <h1>Split a video into sections. Learn each one by looping.</h1>
+      <p class="lead">Mark the parts of any YouTube video you want to learn, then loop each one at the speed you need. Start slow on the hard part and speed up as it gets easier.</p>
+      <a class="btn" href="">Sign up</a>
+    </div>
   </section>
-</article>
+
+  <div class="wrap">
+    <div class="rows">
+      <article class="row">
+        <div class="row__text">
+          <h2>Split the video into sections</h2>
+          <p>Drag two handles on the timeline to set where a section starts and ends. Save the intro, the solo, and the bridge as separate sections in one lesson.</p>
+        </div>
+        <div class="row__media">
+          <%= image_tag "landing/picker.webp", alt: "Timeline with two handles marking a section of a video", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="row__text">
+          <h2>Zoom in on long videos</h2>
+          <p>Short sections are hard to hit on a long timeline. Zoom into the part you need and place your start and end points exactly.</p>
+        </div>
+        <div class="row__media">
+          <%= image_tag "landing/zoom.webp", alt: "Zoomed timeline showing a section in fine detail", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="row__text">
+          <h2>Set the speed for each section</h2>
+          <p>Every section keeps its own loop and playback speed. Slow down the hard passage, leave the easy one at full speed, and bring them up together.</p>
+        </div>
+        <div class="row__media">
+          <%= image_tag "landing/speed.webp", alt: "Section settings with a playback speed control", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="row__text">
+          <h2>Loop until it sticks</h2>
+          <p>Play a section on repeat without touching the video. Screen lock support keeps your device awake, so the loop doesn't cut out mid-take.</p>
+        </div>
+        <div class="row__media">
+          <%= image_tag "landing/loop.webp", alt: "A section looping during practice on a phone", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+    </div>
+
+    <section class="band">
+      <h2>Questions</h2>
+      <details>
+        <summary>Can I set a different speed for each section?</summary>
+        <p>Yes. Each section has its own loop and playback speed.</p>
+      </details>
+      <details>
+        <summary>Do I need to download the video?</summary>
+        <p>No. Along plays the video from YouTube, so there is nothing to download or upload.</p>
+      </details>
+      <details>
+        <summary>Is it only for musicians?</summary>
+        <p>Along starts with musicians in mind, but it works for anything you learn from a video by repeating it, such as dance or language practice.</p>
+      </details>
+      <details>
+        <summary>Does it work on my phone or tablet?</summary>
+        <p>Yes. The page and the timeline are built for small screens, and screen lock support keeps playback going while you practice.</p>
+      </details>
+    </section>
+
+    <section class="band final">
+      <h2>Pick a section. Loop it until it's yours.</h2>
+      <a class="btn" href="">Sign up</a>
+    </section>
+
+    <nav class="legal">
+      <a href="">Privacy</a>
+      <a href="">Terms</a>
+    </nav>
+  </div>
+</div>

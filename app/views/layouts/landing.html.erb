@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <% title = content_for(:title).presence || "Along: split a YouTube video into sections and loop each one" %>
+    <% description = content_for(:description).presence || "Split any YouTube video into sections, set a loop and playback speed for each, and practice them until they stick. Built for musicians." %>
+    <title><%= title %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="<%= description %>">
+    <link rel="canonical" href="<%= root_url %>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:url" content="<%= root_url %>">
+    <%= stylesheet_link_tag "application" %>
+    <%= stylesheet_link_tag "landing" %>
+  </head>
+  <body class="landing-body">
+    <header class="landing-top">
+      <div class="landing-top__inner">
+        <a class="brand" href="<%= root_path %>">Along</a>
+        <a href="<%= new_user_session_path %>">Sign in</a>
+      </div>
+    </header>
+
+    <%= yield %>
+  </body>
+</html>

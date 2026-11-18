@@ -13,6 +13,7 @@
  *= require font-awesome
  *= require_self
  *= require core
+ *= require landing
  *= require_tree ./form
  *= require lesson
  *= require section
