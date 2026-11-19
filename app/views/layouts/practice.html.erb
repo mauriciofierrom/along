@@ -10,6 +10,12 @@
     <%= stylesheet_link_tag "layouts/practice", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "https://www.youtube.com/iframe_api" %>
 
+    <%= favicon_link_tag "/icon.svg", type: "image/svg+xml" %>
+    <%= favicon_link_tag "/favicon.ico", sizes: "48x48" %>
+    <%= favicon_link_tag "/apple-touch-icon.png", rel: "apple-touch-icon", type: "image/png" %>
+    <%= tag.meta property: "og:image", content: image_url("og.png") %>
+    <%= tag.meta name: "twitter:card", content: "summary_large_image" %>
+
     <!-- Driver.js -->
     <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js" %>
     <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.css" %>
