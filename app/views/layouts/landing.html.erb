@@ -18,7 +18,7 @@
     <header class="landing-top">
       <div class="landing-top__inner">
         <a class="brand" href="<%= root_path %>">Along</a>
-        <a href="<%= new_user_session_path %>">Sign in</a>
+        <%= link_to t(:sign_in), new_user_session_path %>
       </div>
     </header>
 
