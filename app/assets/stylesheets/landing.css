@@ -59,8 +59,31 @@
   .legal { display: flex; gap: 1.25rem; padding: 1.5rem 0 2rem; font-size: 0.9rem; }
 }
 .landing-body { margin: 0; background: var(--neutral); }
-.landing-top { background: var(--bg); color: var(--bg-dark); font-family: "freeSans", system-ui, sans-serif; }
-.landing-top__inner { max-width: 68rem; margin: 0 auto; padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
-.landing-top a { color: var(--primary); }
-.landing-top .brand { font-size: 1.4rem; font-weight: 700; color: var(--bg-dark); text-decoration: none; }
+.landing-top {
+  background: var(--bg);
+  color: var(--bg-dark);
+  font-family: "freeSans", system-ui, sans-serif;
+
+  a { color: var(--primary); }
+
+  .inner {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .brand {
+    color: var(--primary);
+    font-family: "superMagic", "Super Magic", fantasy;
+    font-weight: normal;
+    font-size: 1.3rem;
+    text-decoration: none;
+    text-shadow:
+      1px 1px 1px var(--accent),
+      2px 2px 1px var(--accent);
+  }
+}
 
