@@ -1,83 +1,87 @@
 <div class="landing">
   <section class="hero-band">
     <div class="wrap hero">
-      <h1>Split a video into sections. Learn each one by looping.</h1>
-      <p class="lead">Mark the parts of any YouTube video you want to learn, then loop each one at the speed you need. Start slow on the hard part and speed up as it gets easier.</p>
-      <a class="btn" href="">Sign up</a>
+      <h1>Aprende canciones dividiendo videos en secciones a repetir</h1>
+      <p class="lead">
+      Marca las partes de cualquier video de YouTube de una canción que desees aprender, luego reprodúcela en bucle cada una para practicarla a la velocidad que necesites
+      </p>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
     </div>
   </section>
 
   <div class="wrap">
     <div class="rows">
       <article class="row">
-        <div class="row__text">
-          <h2>Split the video into sections</h2>
-          <p>Drag two handles on the timeline to set where a section starts and ends. Save the intro, the solo, and the bridge as separate sections in one lesson.</p>
+        <div class="text">
+          <h2>Divide el video en secciones</h2>
+          <p>Arrastra los dos marcadores en la línea temporal para seleccionar dónde la sección empieza y termina. Guarda la intro, el solo, el coro y otros, como secciones separadas de una lección.</p>
         </div>
-        <div class="row__media">
-          <%# <%= image_tag "landing/picker.webp", alt: "Timeline with two handles marking a section of a video", class: "shot", width: 1200, height: 750, loading: "lazy" %1> %>
-        </div>
-      </article>
-
-      <article class="row">
-        <div class="row__text">
-          <h2>Zoom in on long videos</h2>
-          <p>Short sections are hard to hit on a long timeline. Zoom into the part you need and place your start and end points exactly.</p>
-        </div>
-        <div class="row__media">
-          <%# <%= image_tag "landing/zoom.webp", alt: "Zoomed timeline showing a section in fine detail", class: "shot", width: 1200, height: 750, loading: "lazy" %1> %>
+        <div class="media">
+          <%= image_tag "landing/picker.webp", alt: "Línea temporal con dos marcadores que indican una sección del video", class: "shot", loading: "lazy" %>
         </div>
       </article>
 
       <article class="row">
-        <div class="row__text">
-          <h2>Set the speed for each section</h2>
-          <p>Every section keeps its own loop and playback speed. Slow down the hard passage, leave the easy one at full speed, and bring them up together.</p>
+        <div class="text">
+          <h2>Haz zoom en videos largos</h2>
+          <p>Secciones cortas son difíciles de seleccionar en una línea temporal larga. Haz zoom en la parte que necesitas y marca los puntos de inicio y fin con facilidad.</p>
         </div>
-        <div class="row__media">
-          <%# <%= image_tag "landing/speed.webp", alt: "Section settings with a playback speed control", class: "shot", width: 1200, height: 750, loading: "lazy" %1> %>
+        <div class="media">
+          <%= image_tag "landing/zoom.webp", alt: "Línea temporal hecha zoom mostrando la sección en más detalle", class: "shot", loading: "lazy" %>
         </div>
       </article>
 
       <article class="row">
-        <div class="row__text">
-          <h2>Loop until it sticks</h2>
-          <p>Play a section on repeat without touching the video. Screen lock support keeps your device awake, so the loop doesn't cut out mid-take.</p>
+        <div class="text">
+          <h2>Selecciona la velocidad de reproducción de cada sección</h2>
+          <p>Cada sección tiene su propia velocidad de reproducción. Ralentiza las partes más intrincadas o difíciles.</p>
         </div>
-        <div class="row__media">
-          <%# <%= image_tag "landing/loop.webp", alt: "A section looping during practice on a phone", class: "shot", width: 1200, height: 750, loading: "lazy" %1> %>
+        <div class="media">
+          <%= image_tag "landing/loop.webp", alt: "El control de configuración de velocidad de reproducción", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Reproduce en bucle hasta que lo logres</h2>
+          <p>Reproduce la sección en bucle sin tocar el video. El soporte de bloqueo de pantalla mantiene tu dispositivo activo, evitando que el bucle se corte a mitad de la práctica.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/playback.webp", alt: "Una sección reproduciendo en bucle durante una práctica", class: "shot", loading: "lazy" %>
         </div>
       </article>
     </div>
 
     <section class="band">
-      <h2>Questions</h2>
+      <h2>Preguntas</h2>
       <details>
-        <summary>Can I set a different speed for each section?</summary>
-        <p>Yes. Each section has its own loop and playback speed.</p>
+        <summary>¿Puedo usar diferentes velocidades por sección?</summary>
+        <p>Sí. Cada sección tiene su propia velocidad de reproducción.</p>
       </details>
       <details>
-        <summary>Do I need to download the video?</summary>
-        <p>No. Along plays the video from YouTube, so there is nothing to download or upload.</p>
+        <summary>¿Tengo que descargar el video?</summary>
+        <p>No. Along reproduce el video de YouTube, así que no hay nada que subir o descargar.</p>
       </details>
       <details>
-        <summary>Is it only for musicians?</summary>
-        <p>Along starts with musicians in mind, but it works for anything you learn from a video by repeating it, such as dance or language practice.</p>
+        <summary>¿Es sólo para músicos?</summary>
+        <p>Along fue creado inicialmente con músicos en mente, pero funciona para cualquier cosa que require repetición para aprender de un video, como danza o práctica de lenguajes.</p>
       </details>
       <details>
-        <summary>Does it work on my phone or tablet?</summary>
-        <p>Yes. The page and the timeline are built for small screens, and screen lock support keeps playback going while you practice.</p>
+        <summary>¿Funciona con cualquier video?</summary>
+        <p>
+        No con cualquier video. Solo con videos que los dueños permitan ser insertados. Las restricciones de videos de YouTube también aplican. Revisa nuestros <a href="/terms">Términos de Servicio</a> para más detalles.
+        </p>
       </details>
     </section>
 
     <section class="band final">
-      <h2>Pick a section. Loop it until it's yours.</h2>
-      <a class="btn" href="">Sign up</a>
+      <h2>Selecciona una sección. Reprodúcela en bucle hasta que sea tuya.</h2>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
     </section>
 
     <nav class="legal">
-      <a href="">Privacy</a>
-      <a href="">Terms</a>
+      <a href="">Privacidad</a>
+      <a href="">Términos de Servicio</a>
     </nav>
   </div>
 </div>

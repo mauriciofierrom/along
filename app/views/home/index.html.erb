@@ -3,7 +3,7 @@
     <div class="wrap hero">
       <h1>Learn songs by splitting videos into sections to loop</h1>
       <p class="lead">Mark the parts of any YouTube video of a song you want to learn, then loop each one to practice at the speed you need</p>
-      <a class="btn" href="">Sign up</a>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
     </div>
   </section>
 
@@ -32,7 +32,7 @@
       <article class="row">
         <div class="text">
           <h2>Set the playback speed for each section</h2>
-          <p>Every section keeps its own playback speed. Slow down the hard or intricate passages. Ideal for solos!</p>
+          <p>Every section keeps its own playback speed. Slow down the hard or intricate passages.</p>
         </div>
         <div class="media">
           <%= image_tag "landing/loop.webp", alt: "Section settings with a playback speed control", class: "shot", loading: "lazy" %>
@@ -54,7 +54,7 @@
       <h2>Questions</h2>
       <details>
         <summary>Can I set a different speed for each section?</summary>
-        <p>Yes. Each section has its own loop and playback speed.</p>
+        <p>Yes. Each section has its own playback speed.</p>
       </details>
       <details>
         <summary>Do I need to download the video?</summary>
@@ -65,14 +65,16 @@
         <p>Along starts with musicians in mind, but it works for anything you learn from a video by repeating it, such as dance or language practice.</p>
       </details>
       <details>
-        <summary>Does it work on my phone or tablet?</summary>
-        <p>Yes. The page and the timeline are built for small screens, and screen lock support keeps playback going while you practice.</p>
+        <summary>Does it work with any video?</summary>
+        <p>
+        Not every video. Only videos the owner allows to be embedded. YouTube restrictions for published videos also apply. Check our <a href="/terms">Terms of Service</a> for more details.
+        </p>
       </details>
     </section>
 
     <section class="band final">
       <h2>Pick a section. Loop it until it's yours.</h2>
-      <a class="btn" href="">Sign up</a>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
     </section>
 
     <nav class="legal">
