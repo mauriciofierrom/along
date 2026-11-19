@@ -1,14 +1,85 @@
-<article>
-  <section>
-    <h1>Welcome to <span class="banner-big">Along</span>!</h1>
-    <p>
-      Along is a web application to help practice along (he he) to YouTube instruction videos.
-    </p>
-    <p>
-      You can create <strong>Lessons</strong> by entering a YouTube video URL and then split the video in <strong>Sections</strong> that you can practice to by looping them over and over again, vastly simplifying the setup for practice sessions.
-    </p>
-    <p>
-      No more dragging the scrubber back over and over again. Set up once and practice with ease! Time to play along!
-    </p>
+<div class="landing">
+  <section class="hero-band">
+    <div class="wrap hero">
+      <h1>Learn songs by splitting videos into sections to loop</h1>
+      <p class="lead">Mark the parts of any YouTube video of a song you want to learn, then loop each one to practice at the speed you need</p>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
+    </div>
   </section>
-</article>
+
+  <div class="wrap">
+    <div class="rows">
+      <article class="row">
+        <div class="text">
+          <h2>Split the video into sections</h2>
+          <p>Drag two handles on the timeline to set where a section starts and ends. Save the intro, the solo, the chorus, and others, as separate sections in one lesson.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/picker.webp", alt: "Timeline with two handles marking a section of a video", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Zoom in on long videos</h2>
+          <p>Short sections are hard to pick on a long timeline. Zoom into the part you need and place your start and end points with ease.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/zoom.webp", alt: "Zoomed timeline showing a section in fine detail", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Set the playback speed for each section</h2>
+          <p>Every section keeps its own playback speed. Slow down the hard or intricate passages.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/loop.webp", alt: "Section settings with a playback speed control", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Loop until it sticks</h2>
+          <p>Play a section on repeat without touching the video. Screen lock support keeps your device awake, so the loop doesn't cut out mid-practice.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/playback.webp", alt: "A section looping during practice", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+    </div>
+
+    <section class="band">
+      <h2>Questions</h2>
+      <details>
+        <summary>Can I set a different speed for each section?</summary>
+        <p>Yes. Each section has its own playback speed.</p>
+      </details>
+      <details>
+        <summary>Do I need to download the video?</summary>
+        <p>No. Along plays the video from YouTube, so there is nothing to download or upload.</p>
+      </details>
+      <details>
+        <summary>Is it only for musicians?</summary>
+        <p>Along starts with musicians in mind, but it works for anything you learn from a video by repeating it, such as dance or language practice.</p>
+      </details>
+      <details>
+        <summary>Does it work with any video?</summary>
+        <p>
+        Not every video. Only videos the owner allows to be embedded. YouTube restrictions for published videos also apply. Check our <a href="/terms">Terms of Service</a> for more details.
+        </p>
+      </details>
+    </section>
+
+    <section class="band final">
+      <h2>Pick a section. Loop it until it's yours.</h2>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
+    </section>
+
+    <nav class="legal">
+      <a href="">Privacy</a>
+      <a href="">Terms</a>
+    </nav>
+  </div>
+</div>

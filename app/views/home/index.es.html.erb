@@ -1,14 +1,87 @@
-<article>
-  <section>
-    <h1>¡Bienvenido a <span class="banner-big">Along</span>!</h1>
-    <p>
-      Along es una aplicación web para practicar con videos instructivos de YouTube
-    </p>
-    <p>
-      Puedes crear <strong>Lecciones</strong> ingresando un link de un video de YouTube y luego dividir el video en <strong>Secciones</strong> que luego puedes practicar reproduciéndolas en bucle una y otra vez, simplificando de gran manera la preparación para tus sesiones de práctica.
-    </p>
-    <p>
-      No más arrastrar la barra de desplazamiento una y otra vez. ¡Configúralo una vez y practica con facilidad! ¡Hora de practicar con Along!
-    </p>
+<div class="landing">
+  <section class="hero-band">
+    <div class="wrap hero">
+      <h1>Aprende canciones dividiendo videos en secciones a repetir</h1>
+      <p class="lead">
+      Marca las partes de cualquier video de YouTube de una canción que desees aprender, luego reprodúcela en bucle cada una para practicarla a la velocidad que necesites
+      </p>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
+    </div>
   </section>
-</article>
+
+  <div class="wrap">
+    <div class="rows">
+      <article class="row">
+        <div class="text">
+          <h2>Divide el video en secciones</h2>
+          <p>Arrastra los dos marcadores en la línea temporal para seleccionar dónde la sección empieza y termina. Guarda la intro, el solo, el coro y otros como secciones separadas de una lección.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/picker.webp", alt: "Línea temporal con dos marcadores que indican una sección del video", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Haz zoom en videos largos</h2>
+          <p>Secciones cortas son difíciles de seleccionar en una línea temporal larga. Haz zoom en la parte que necesitas y marca los puntos de inicio y fin con facilidad.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/zoom.webp", alt: "Línea temporal hecha zoom mostrando la sección en más detalle", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Selecciona la velocidad de reproducción de cada sección</h2>
+          <p>Cada sección tiene su propia velocidad de reproducción. Ralentiza las partes más intrincadas o difíciles.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/loop.webp", alt: "El control de configuración de velocidad de reproducción", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+
+      <article class="row">
+        <div class="text">
+          <h2>Reproduce en bucle hasta que lo logres</h2>
+          <p>Reproduce la sección en bucle sin tocar el video. El soporte de bloqueo de pantalla mantiene tu dispositivo activo, evitando que el bucle se corte a mitad de la práctica.</p>
+        </div>
+        <div class="media">
+          <%= image_tag "landing/playback.webp", alt: "Una sección reproduciendo en bucle durante una práctica", class: "shot", loading: "lazy" %>
+        </div>
+      </article>
+    </div>
+
+    <section class="band">
+      <h2>Preguntas</h2>
+      <details>
+        <summary>¿Puedo usar diferentes velocidades por sección?</summary>
+        <p>Sí. Cada sección tiene su propia velocidad de reproducción.</p>
+      </details>
+      <details>
+        <summary>¿Tengo que descargar el video?</summary>
+        <p>No. Along reproduce el video de YouTube, así que no hay nada que subir o descargar.</p>
+      </details>
+      <details>
+        <summary>¿Es sólo para músicos?</summary>
+        <p>Along fue creado inicialmente con músicos en mente, pero funciona para cualquier cosa que requiere repetición para aprender de un video como danza o práctica de idiomas.</p>
+      </details>
+      <details>
+        <summary>¿Funciona con cualquier video?</summary>
+        <p>
+        No con cualquier video. Solo con videos que los dueños permitan ser insertados. Las restricciones de videos de YouTube también aplican. Revisa nuestros <a href="/terms">Términos de Servicio</a> para más detalles.
+        </p>
+      </details>
+    </section>
+
+    <section class="band final">
+      <h2>Selecciona una sección. Reprodúcela en bucle hasta que sea tuya.</h2>
+      <%= link_to t(:sign_up), new_user_registration_path, class: "btn" %>
+    </section>
+
+    <nav class="legal">
+      <a href="">Privacidad</a>
+      <a href="">Términos de Servicio</a>
+    </nav>
+  </div>
+</div>
