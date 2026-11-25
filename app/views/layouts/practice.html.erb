@@ -24,6 +24,8 @@
     <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/hints.iife.js" %>
     <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/driver.js@latest/dist/hints.css" %>
 
+    <%= render "layouts/honeybadger" if Rails.env.production? %>
+
     <%= javascript_importmap_tags %>
     <%= javascript_tag do %>
       window.rails_env = "<%= Rails.env %>"

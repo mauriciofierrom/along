@@ -60,6 +60,8 @@ gem "mutex_m"
 gem "bigdecimal"
 gem "drb"
 
+gem "honeybadger", "~> 6.10"
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 

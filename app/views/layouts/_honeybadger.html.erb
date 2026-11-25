@@ -1,0 +1,8 @@
+<!-- Honeybadger -->
+<%= javascript_include_tag "https://js.honeybadger.io/v6.17/honeybadger.min.js" %>
+<%= javascript_tag do %>
+  Honeybadger.configure({
+    apiKey: "<%= ENV["HONEYBADGER_JS_API_KEY"] %>",
+    environment: "production",
+  });
+<% end %>
