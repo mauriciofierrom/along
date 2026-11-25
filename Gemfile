@@ -98,7 +98,6 @@ group :development do
   gem "flog", require: false
   gem "guard-rspec", require: false
   gem "guard-minitest", "~> 3.0", require: false
-  gem "dockerfile-rails", ">= 1.7.10", require: false
 end
 
 group :test do
