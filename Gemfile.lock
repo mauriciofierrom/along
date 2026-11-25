@@ -352,10 +352,6 @@ GEM
       erb
       psych (>= 4.0.0)
       tsort
-    redis (5.4.1)
-      redis-client (>= 0.22.0)
-    redis-client (0.28.0)
-      connection_pool
     reek (6.5.0)
       dry-schema (~> 1.13)
       logger (~> 1.6)
@@ -522,7 +518,6 @@ DEPENDENCIES
   mutex_m
   puma (~> 6.0)
   rails (~> 8.1.4.1)
-  redis (~> 5.4.1)
   reek
   rspec-rails (~> 7.1.0)
   rubocop (~> 1.86, >= 1.86.1)
