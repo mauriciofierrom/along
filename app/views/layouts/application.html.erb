@@ -35,6 +35,11 @@
         <ul>
           <li>
             <% if user_signed_in? %>
+              <%= link_to current_user.email, edit_user_registration_path, class: "small link" %>
+            <% end %>
+          </li>
+          <li>
+            <% if user_signed_in? %>
               <%= button_to t(:logout),
                   destroy_user_session_path, method: :delete, class: "small link" %>
             <% else %>

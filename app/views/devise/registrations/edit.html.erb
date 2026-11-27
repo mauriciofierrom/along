@@ -1,4 +1,4 @@
-<h2> <%= t("edit") %><%= resource_name.to_s.humanize %></h2>
+<h2><%= "#{t("actions.edit")} #{resource_class.model_name.human}" %></h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
@@ -13,11 +13,11 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+    <%= f.label :password %> <i><%= t(".leave_blank") %></i><br />
     <%= f.password_field :password, class: "medium", autocomplete: "new-password" %>
     <% if @minimum_password_length %>
       <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <em><%= "#{@minimum_password_length} #{t(".min_characters")}" %></em>
     <% end %>
   </div>
 
@@ -27,17 +27,17 @@
   </div>
 
   <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= f.label :current_password %> <i><%= t(".current_password") %></i><br />
     <%= f.password_field :current_password, class: "medium", autocomplete: "current-password" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Update" %>
+    <%= f.submit %>
   </div>
 <% end %>
 
-<h2>Cancel my account</h2>
+<h2><%= t(".cancel_account") %></h2>
 
-<div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, class: "danger", method: :delete %></div>
+<div><%= t(".cancel_message") %> <%= button_to t(".cancel_account"), registration_path(resource_name), data: { turbo_confirm: t(".confirm") }, class: "danger", method: :delete %></div>
 
-<%= link_to "Back", :back %>
+<%= link_to t(".back"), :back %>

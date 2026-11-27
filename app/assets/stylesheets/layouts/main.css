@@ -62,13 +62,13 @@ header {
 
 nav {
     display: flex;
-    flex-flow: row no-wrap;
     justify-content: space-between;
 
     ul {
         order: 2;
-        align-self: flex-end;
-        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
 
         li {
             list-style-type: none;

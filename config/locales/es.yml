@@ -15,6 +15,16 @@ es:
     new: "Agregar"
     edit: "Editar"
     delete: "Eliminar"
+  devise:
+    registrations:
+      edit:
+        cancel_account: "Eliminar mi cuenta"
+        cancel_message: "¿Eliminar la cuenta y todos sus datos?"
+        confirm: "¿Está seguro de eliminar su cuenta?"
+        leave_blank: "(dejar en blanco si no deseas cambiarla)"
+        current_password: "(necesitamos tu contraseña actual para confirmar tus cambios)"
+        back: "Regresar"
+        min_characters: "caracteres mínimo"
   helpers:
     submit:
       create: "Crear %{model}"

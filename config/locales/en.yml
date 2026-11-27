@@ -46,6 +46,16 @@ en:
     new: "New"
     edit: "Edit"
     delete: "Delete"
+  devise:
+    registrations:
+      edit:
+        cancel_account: "Delete my account"
+        cancel_message: "Delete your account and all your data?"
+        confirm: "Are you sure you want to delete your account?"
+        leave_blank: "(leave blank if you don't want to change it)"
+        current_password: "(we need your current password to confirm your changes)"
+        back: "Back"
+        min_characters: "characters minimum"
   activerecord:
     models:
       lesson:
