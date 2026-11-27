@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_24_212306) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_27_230523) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -97,7 +97,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_24_212306) do
   end
 
   add_foreign_key "lessons", "instruments"
-  add_foreign_key "lessons", "users"
-  add_foreign_key "sections", "lessons"
+  add_foreign_key "lessons", "users", on_delete: :cascade
+  add_foreign_key "sections", "lessons", on_delete: :cascade
   add_foreign_key "zooms", "sections", on_delete: :cascade
 end
