@@ -16,7 +16,7 @@
       </span>
       <div class="actions">
         <%= fa_icon("unlock", data: { "section-target": "screenLockIndicator", tutorid: "lock-indicator" }) %>
-        <%= link_to "Cancel", lesson_path(@lesson), data: { tutorid: "cancel-button" } %>
+        <%= link_to t(:cancel), lesson_path(@lesson), data: { tutorid: "cancel-button" } %>
       </div>
     </div>
     <div class="bottom" data-tutorid="section-info">
