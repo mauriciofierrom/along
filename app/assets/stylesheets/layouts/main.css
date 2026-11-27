@@ -1,6 +1,6 @@
 .banner {
     order: 1;
-    align-self: flex-start;
+    align-self: center;
     color: var(--primary);
     font-family: "superMagic", "Super Magic", fantasy;
     text-transform: capitalize;
