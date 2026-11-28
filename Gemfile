@@ -105,7 +105,7 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
-  gem "webdrivers"
+  gem "selenium-webdriver"
   gem "factory_bot_rails", "~> 6.5.1"
   gem "shoulda-matchers", "~> 7.0.1"
   gem "json_schemer"
